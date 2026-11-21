@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "assets": [
+    "fonts/retro_font.fnt",
+    "fonts/retro_font.tga",
+    "models/altar_pedestal.obj",
+    "models/crystal_octa.obj",
+    "models/ring_torus.obj",
+    "patches/crystalline_fm.lua",
+    "patches/emerald_aether.lua",
+    "patches/glass_spire.lua",
+    "patches/wormwood_grains.lua",
+    "scripts/dsp/arp.lua",
+    "scripts/dsp/generators.lua",
+    "scripts/main.lua",
+    "scripts/scene/stage.lua",
+    "scripts/ui/layout.lua",
+    "scripts/ui/widgets.lua",
+    "shaders/hud.frag.glsl",
+    "shaders/hud.vert.glsl",
+    "shaders/mesh.frag.glsl",
+    "shaders/mesh.vert.glsl",
+    "shaders/sprite.frag.glsl",
+    "shaders/sprite.vert.glsl",
+    "sounds/absinthe_bell.wav",
+    "sounds/glass_pad.wav",
+    "sprites/fairy_wisp.tga",
+    "sprites/osc_rune.tga",
+    "voxels/fairy_spire.gfvox"
+  ]
+}

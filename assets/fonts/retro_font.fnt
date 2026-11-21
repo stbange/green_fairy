@@ -1,0 +1,7 @@
+atlas fonts/retro_font.tga
+cell_w 8
+cell_h 8
+cols 16
+rows 6
+first_char 32
+char_count 96

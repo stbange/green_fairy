@@ -27,6 +27,9 @@ typedef struct GFLuaHost {
     char entry_script[128];
     char active_preset_name[64];
     char active_preset_realm[40];
+    char looper_state[24];
+    char active_melody_name[64];
+    int looper_event_count;
     char last_error[512];
     int reload_count;
 } GFLuaHost;
@@ -39,6 +42,8 @@ bool gf_lua_load_entry(GFLuaHost *h, const char *rel_script_path);
 bool gf_lua_reload(GFLuaHost *h);
 bool gf_lua_apply_preset(GFLuaHost *h, const char *rel_preset_path);
 bool gf_lua_call_mutator(GFLuaHost *h, const char *action, float amount, float randomness);
+bool gf_lua_apply_melody(GFLuaHost *h, const char *rel_melody_path);
+bool gf_lua_looper_action(GFLuaHost *h, const char *action);
 
 bool gf_lua_update(GFLuaHost *h, float dt, const GFAudioTelemetry *tel);
 bool gf_lua_render_ui(GFLuaHost *h, int vp_w, int vp_h);

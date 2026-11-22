@@ -63,6 +63,13 @@ static void test_lua_real_scripts_and_bindings(void) {
     GF_ASSERT(gf_lua_on_input(&host, "pointer_up", 1, 200.0f, 20.0f, 0.0f));
     GF_ASSERT(gf_lua_on_xr_ray(&host, "xr_ray_move", 0, gf_vec3(0, 1.4f, 0), gf_vec3(0, 0, -1), 0.5f));
 
+    GF_ASSERT(gf_lua_apply_melody(&host, "melodies/organ_cathedrals/01_cornfield_cathedral_organ.lua"));
+    GF_ASSERT_STR_EQ(host.looper_state, "playing");
+    GF_ASSERT(host.looper_event_count >= 10);
+    GF_ASSERT(!gf_lua_apply_melody(&host, "melodies/nonexistent_melody.lua"));
+    GF_ASSERT(gf_lua_looper_action(&host, "stop"));
+    GF_ASSERT_STR_EQ(host.looper_state, "stopped");
+
     GF_ASSERT(gf_lua_reload(&host));
     GF_ASSERT(host.reload_count == 1);
 

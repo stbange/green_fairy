@@ -37,3 +37,19 @@ The synthesizer SHALL provide a Mutator engine capable of generating musical var
 - **GIVEN** an active preset loaded in the Performance Bridge & Mutator Lab with Mutation Depth set to `0.35`
 - **WHEN** the user triggers the 3D Mutate lever
 - **THEN** oscillator, filter, envelope, effect, and modulation parameters shift within musically bounded ranges, the previous state is pushed to Mutation History, and output remains finite and non-clipping
+
+### Requirement: Polyphonic phrase recording and continuous loop playback
+The synthesizer SHALL provide a polyphonic phrase recorder and looper (`assets/scripts/dsp/looper.lua`) controllable from the Room 6 3D Phrase Looper rack, the 2D Compass/Mobile Touch HUD, keyboard shortcuts, and the Web toolbar, supporting armed first-note trigger recording, seamless loop wrap-around, live overdubbing, speed scaling, and semitone transposition.
+
+#### Scenario: Recording and looping a short note sequence
+- **GIVEN** the user activates Record (`REC` button or `L` key)
+- **WHEN** the user plays a sequence of notes or chords and toggles Record/Play again
+- **THEN** recording starts automatically on the first note-on without leading silence, captures note timings/durations/velocities, and immediately loops the recorded sequence continuously without stuck notes
+
+### Requirement: Curated 100+ slow ambient cinematic Hans Zimmer melody library
+The external `assets/melodies/` directory SHALL contain at least 100 slow, ambient, cinematic, Hans Zimmer-inspired polyphonic melodies (`38–70 BPM`) across six suites (`organ_cathedrals`, `desert_prophecies`, `neon_dystopia`, `dream_architectures`, `elegiac_hymns`, and `deep_cosmos`) indexed by `assets/melodies/catalog.json` and fetched on demand on Web.
+
+#### Scenario: Selecting and looping an external cinematic melody
+- **GIVEN** `assets/melodies/catalog.json` indexing 108 external `.lua` melodies
+- **WHEN** the user selects a melody from any of the six cinematic suites
+- **THEN** the engine loads the external `.lua` score (hydrating over HTTP on Web if needed) and loops its polyphonic pedal bass, harmonic swells, and melodic motifs through the active synthesizer patch

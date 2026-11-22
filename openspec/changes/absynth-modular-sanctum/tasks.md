@@ -30,6 +30,7 @@
 - [x] 5.1 Expand external `assets/sounds/` (16 acoustic/spectral `.wav` textures: bowed glass, choir vowels, waterphone, metallic bell, breath flute, cosmic sweep, plucked harp, crystal grains, etc.) and `assets/wavetables/` (16 harmonic/formant wavetables) and update `assets/manifest.json`; verify zero embedded binary assets in `src/`.
 - [x] 5.2 Create the 320+ curated external `.lua` preset library across 8 directories (`fantasy_realms`, `deep_space`, `bioluminescent_abyss`, `crystalline_sanctum`, `ancient_mythology`, `cybernetic_ruins`, `astral_choirs`, `rhythmic_odysseys` — 40 presets each) plus `assets/patches/catalog.json`, and update `README.md` documenting all 7 rooms, modular patching, DSP modules, and preset realms.
 - [x] 5.3 Implement automated preset catalog & audio diversity validator (`tests/unit/c/test_preset_vault.c`) verifying all 320+ presets load cleanly, wire valid modular cables, produce finite non-silent non-clipping stereo audio, and exhibit distinct spectral/temporal characteristics across realms.
+- [x] 5.4 Implement polyphonic phrase recorder & overdub looper (`assets/scripts/dsp/looper.lua`, Room 6 3D Looper Rack, Compass/Touch HUD `REC`/`LOOP`/`CLR`, and Web toolbar) plus 108 external slow ambient cinematic Hans Zimmer-inspired `.lua` melodies across 6 suites in `assets/melodies/` (`catalog.json`), verified via unit and E2E suites.
 
 ## 6. Full-System >=95% Coverage Gates, E2E Suites & GitHub Pages Update
 

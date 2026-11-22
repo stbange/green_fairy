@@ -12,7 +12,7 @@ Built on a real-time **C11 + SDL3 + OpenGL (GL 3.3 Core / WebGL2 & GLES 3.0)** c
   3. **Room 3 — 68-Stage Envelope Observatory**: Giant 3D holographic breakpoint rail where stages can be dragged in 3D across 12 assignable envelopes.
   4. **Room 4 — Clockwork Mod & Trunk Patchbay**: Triple LFO + Quad VCA matrix, 16-Step Polyrhythmic Sequencer, and Central Cross-Room Satellite Trunk Patchbay.
   5. **Room 5 — Aetherium & Acoustics Chamber**: 24-grain Aetherizer Pro, Bidirectional Waveguide Pipe, 6-Voice Chordal Multi-Comb, 6-Tap Stereo Delay, and 8x8 Hadamard FDN Space Cathedral Reverb.
-  6. **Room 6 — Performance Bridge & Mutator Lab**: Floating 3D XYZ Morph Orb, tilted 25-key 3D synthesizer console, Drone Hold Latch, 8-scale Microtuning, 8 Macro knobs, and the Absynth Sound-Breeding **Mutator** with 16-slot undo history.
+  6. **Room 6 — Performance Bridge, Phrase Looper & Mutator Lab**: Floating 3D XYZ Morph Orb, tilted 25-key 3D synthesizer console, polyphonic **Phrase Recorder & Overdub Looper** rack (`REC`, `PLAY/STOP`, `OVERDUB`, `SPEED`, `TRANSPOSE`), Drone Hold Latch, 8-scale Microtuning, 8 Macro knobs, and the Absynth Sound-Breeding **Mutator** with 16-slot undo history.
   7. **Room 7 — Astral Preset Archive**: 3D browser across **8 thematic realms (320+ external `.lua` presets)**.
 - **True Audio + CV Modular Patchbay & Catenary Cables (`src/dsp/patchbay.c`, `src/render/cable_renderer.c`)**
   - ~100 typed Audio, CV, and Trigger jacks supporting stackable many-to-many connections, draggable mid-cable bipolar **3D Attenuverter Rings** (`[-2.0, +2.0]`), overhead cross-room ceiling conduits, Kahn topological sorting, and 1-sample `tanhf`-saturated feedback loops.
@@ -21,11 +21,12 @@ Built on a real-time **C11 + SDL3 + OpenGL (GL 3.3 Core / WebGL2 & GLES 3.0)** c
   - **9 Oscillator Modes**: Band-limited mip-mapped Single & Double Wavetables, Carrier/Mod + External-Bus FM, RingMod, Crossfaded Sample, 16-Grain Stereo Cloud Granular, Recursive Fractalizer, 4th-Order Polyphase Hilbert Single-Sideband Frequency Shifter, and 8-Voice Stereo Super-Unison.
   - **14 Filter Topologies & 6 Waveshapers**: 12 dB SVF (LP/HP/BP/Notch), 24 dB Nonlinear ZDF Ladder (LP24/HP24/BP24), 4-Stage Allpass, Key-Tracked Damped Karplus-Strong `Comb+` / `Comb-`, 5-Vowel (`A-E-I-O-U`) Formant Filter, Granular Cloud Filter, and 256-point Wave-Transfer Shapers.
   - **12x 68-Stage Envelopes, 16-Step Polyrhythmic Sequencer & 8 Microtunings**: Sustain, Loop, Tempo-Synced Rhythmic Pulse, Per-Stage Embedded `Env-LFO`, and CV/Macro `Scrub` modes; `12-TET`, `Just`, `Pythagorean`, `Bohlen-Pierce`, `Quarter-Tone`, `Pelog`, `Carlos Alpha`, and `Harmonic` scales.
-- **320+ Atmospheric Presets Across 8 Realms (`assets/patches/`)**
-  - `fantasy_realms/`, `deep_space/`, `bioluminescent_abyss/`, `crystalline_sanctum/`, `ancient_mythology/`, `cybernetic_ruins/`, `astral_choirs/`, and `rhythmic_odysseys/` (40 external `.lua` presets each + on-demand HTTP hydration on Web).
+- **320+ Atmospheric Presets (`assets/patches/`) & 108 Cinematic Melodies (`assets/melodies/`)**
+  - **8 Preset Realms**: `fantasy_realms/`, `deep_space/`, `bioluminescent_abyss/`, `crystalline_sanctum/`, `ancient_mythology/`, `cybernetic_ruins/`, `astral_choirs/`, and `rhythmic_odysseys/` (40 external `.lua` presets each + on-demand HTTP hydration on Web).
+  - **6 Slow Ambient Cinematic Hans Zimmer Melody Suites (108 External `.lua` Scores)**: `organ_cathedrals/`, `desert_prophecies/`, `neon_dystopia/`, `dream_architectures/`, `elegiac_hymns/`, and `deep_cosmos/` (`38–70 BPM` polyphonic pedal progressions, modal laments, and pipe-organ ostinatos), plus live note-sequence recording (`L` / `REC`), loop playback (`Space` / `LOOP`), and overdubbing.
 - **Dual-Mode Cross-Platform Navigation**
-  - **Desktop (Windows, Linux, macOS, Web)**: `WASD`/Arrows + right-drag mouse-look free-walk, `1`–`7` room teleport, click any 3D rack header for smooth cubic **Rack-Focus** zoom (`Esc` to return).
-  - **Mobile Touch Web**: Automatic touch mode with dual-zone virtual thumb walk/look pads, tap-to-focus rack framing, enlarged 3D control hitboxes, and collapsible multi-touch polyphonic keyboard + Drone Latch strip.
+  - **Desktop (Windows, Linux, macOS, Web)**: `WASD`/Arrows + right-drag mouse-look free-walk, `1`–`7` room teleport, click any 3D rack header for smooth cubic **Rack-Focus** zoom (`Esc` to return), `L` to record/loop a phrase, `Space` to play/stop, `[` / `]` to cycle melodies.
+  - **Mobile Touch Web**: Automatic touch mode with Hor+ portrait FOV, pointer-isolated 1-finger look & 2-finger pinch/glide walk, dual-zone virtual thumb pads, one-tap `REC` / `LOOP` / `CLR` HUD buttons, and collapsible multi-touch polyphonic keyboard + Drone Latch strip.
   - **WebXR (`immersive-vr`)**: Stereoscopic 3D room rendering, controller room teleportation, and 6DoF XR laser ray knob twisting & 3D cable patching.
 
 ## Directory Structure
@@ -34,8 +35,9 @@ Built on a real-time **C11 + SDL3 + OpenGL (GL 3.3 Core / WebGL2 & GLES 3.0)** c
 green_fairy/
 ├── assets/                 # 100% external assets beside the binary (zero baked-in data)
 │   ├── manifest.json       # Core boot asset list for fast Web HTTP hydration
-│   ├── scripts/            # Lua 7-room sanctum, Mutator, generators, arpeggiator, compass
+│   ├── scripts/            # Lua 7-room sanctum, Phrase Looper, Mutator, generators, compass
 │   ├── patches/            # catalog.json + 320+ external .lua presets across 8 realms
+│   ├── melodies/           # catalog.json + 108 external cinematic .lua melodies across 6 suites
 │   ├── wavetables/         # 16 external harmonic/formant wavetable definitions
 │   ├── sounds/             # 16 external acoustic & spectral .wav textures
 │   ├── models/             # Retro-3D room shells, archways, racks, knobs, faders, jacks

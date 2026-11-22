@@ -324,12 +324,101 @@ run_test("screen_3d_dragging_and_mobile_touch", function()
     gf_on_input({type="nav_key", id=27, x=0, y=0, extra=1.0})
 end)
 
+-- 6. Polyphonic Phrase Recorder, Overdub Looper & All 108 Slow Ambient Cinematic Hans Zimmer Melodies
+run_test("phrase_looper_recording_overdub_and_108_zimmer_melodies", function()
+    gf_on_mode_change("desktop")
+    local st = gf_get_state()
+    local lp = st.looper
+    check(lp ~= nil, "looper initialized")
+    check(#lp.catalog >= 108, "expected >=108 external Zimmer melodies, got " .. tostring(#lp.catalog))
+
+    -- Validate all 108 external .lua melody files parse cleanly and have valid musical events
+    for i, entry in ipairs(lp.catalog) do
+        check(lp:load_melody_file(entry.path, false), "load melody " .. i .. ": " .. entry.path)
+        check(#lp.events >= 8, "melody has >=8 events: " .. entry.path)
+        check(lp.bpm >= 30 and lp.bpm <= 90, "slow cinematic BPM: " .. entry.path)
+    end
+    check(not lp:load_melody_file("melodies/nonexistent_404.lua", true), "reject missing melody")
+
+    -- Step melodies & suites + load paired synth patch + step full loop wrap-around
+    check(gf_on_melody_path(lp.catalog[1].path), "gf_on_melody_path ok")
+    check(lp.state == "playing", "auto-plays loaded melody")
+    for _ = 1, 40 do
+        gf_update(0.85, {rms_l = 0.25, rms_r = 0.25, active_voices = 4})
+    end
+    check(gf_on_looper_action("step:1") and gf_on_looper_action("step:-1"), "step melody +/-1")
+    check(gf_on_looper_action("suite:1") and gf_on_looper_action("suite:-1"), "step suite +/-1")
+    check(gf_on_looper_action("pair_patch"), "load paired preset")
+    check(gf_on_looper_action("stop") and lp.state == "stopped", "stop melody")
+    check(gf_on_looper_action("play") and lp.state == "playing", "play melody")
+    check(gf_on_looper_action("play_toggle") and lp.state == "stopped", "play_toggle -> stop")
+
+    -- Arm & cancel recording, then record a polyphonic 3-note phrase + held final note -> auto loop!
+    check(gf_on_looper_action("record") and lp.state == "rec_armed", "rec armed")
+    check(gf_on_looper_action("record") and lp.state == "stopped", "cancel armed rec")
+    check(gf_on_looper_action("record") and lp.state == "rec_armed", "re-arm rec")
+
+    gf_on_input({type="note_on", id=48, x=0, y=0, extra=0.82}) -- triggers recording at t=0!
+    check(lp.state == "recording", "first note starts recording")
+    gf_update(0.35, {rms_l = 0.2, rms_r = 0.2, active_voices = 1})
+    gf_on_input({type="note_on", id=55, x=0, y=0, extra=0.78})
+    gf_update(0.45, {rms_l = 0.2, rms_r = 0.2, active_voices = 2})
+    gf_on_input({type="note_off", id=48, x=0, y=0, extra=0.0})
+    gf_on_input({type="note_on", id=60, x=0, y=0, extra=0.88}) -- leave 55 & 60 open when finishing rec
+    gf_update(0.40, {rms_l = 0.2, rms_r = 0.2, active_voices = 2})
+
+    check(gf_on_looper_action("record") and lp.state == "playing", "finish rec -> immediate loop playback")
+    gf_on_input({type="note_off", id=55, x=0, y=0, extra=0.0})
+    gf_on_input({type="note_off", id=60, x=0, y=0, extra=0.0})
+    check(#lp.events == 3, "recorded 3 notes into loop")
+
+    -- Live Overdub a 4th note on top of the playing loop!
+    check(gf_on_looper_action("overdub") and lp.overdub == true, "enable overdub")
+    gf_update(0.25, {rms_l = 0.2, rms_r = 0.2, active_voices = 2})
+    gf_on_input({type="note_on", id=67, x=0, y=0, extra=0.75})
+    gf_update(0.30, {rms_l = 0.2, rms_r = 0.2, active_voices = 3})
+    gf_on_input({type="note_off", id=67, x=0, y=0, extra=0.0})
+    check(#lp.events == 4, "overdubbed 4th note into loop")
+    for _ = 1, 15 do gf_update(0.35, {rms_l = 0.2, rms_r = 0.2, active_voices = 2}) end
+
+    -- Exercise keyboard shortcuts (Space=32, L=108, [=91, ]=93, 0=48) & HUD REC/LOOP/CLR buttons
+    gf_on_input({type="nav_key", id=32,  x=0, y=0, extra=1.0}) -- pause
+    gf_on_input({type="nav_key", id=32,  x=0, y=0, extra=1.0}) -- resume
+    gf_on_input({type="nav_key", id=91,  x=0, y=0, extra=1.0}) -- prev melody
+    gf_on_input({type="nav_key", id=93,  x=0, y=0, extra=1.0}) -- next melody
+    gf_on_input({type="nav_key", id=48,  x=0, y=0, extra=1.0}) -- clear
+    gf_on_input({type="nav_key", id=108, x=0, y=0, extra=1.0}) -- arm rec
+    gf_on_input({type="nav_key", id=32,  x=0, y=0, extra=1.0}) -- cancel armed via space
+
+    local Compass = require("ui.compass_minimap")
+    gf_on_mode_change("touch")
+    gf_render_ui(390, 844)
+    local thud = Compass.compute_hud(390, 844, "touch", gf.spatial.camera_state())
+    Compass.handle_hud_pointer({type="pointer_down", id=31, x=thud.rec_btn[1]+8,  y=thud.rec_btn[2]+8},  390, 844, "touch", st)
+    Compass.handle_hud_pointer({type="pointer_down", id=32, x=thud.loop_btn[1]+8, y=thud.loop_btn[2]+8}, 390, 844, "touch", st)
+    Compass.handle_hud_pointer({type="pointer_down", id=33, x=thud.clr_btn[1]+8,  y=thud.clr_btn[2]+8},  390, 844, "touch", st)
+
+    -- Exercise Room 6 3D Looper Rack knobs/switches/buttons via camera aim
+    gf_on_mode_change("desktop")
+    local lx, lz = -4.35, 0.30
+    for _, ly in ipairs({0.50, -0.22, -0.46, -0.68}) do
+        for _, xoff in ipairs({-0.75, -0.25, 0.25, 0.75}) do
+            gf.scene.set_camera(0.0, 1.50 + ly, 1.8, lx + xoff * 0.3, 1.50 + ly, lz + xoff * 0.3, 42.0)
+            gf_on_input({type="pointer_down", id=1, x=640, y=360, extra=0})
+            gf_on_input({type="pointer_move", id=1, x=640, y=315, extra=0})
+            gf_on_input({type="pointer_up",   id=1, x=640, y=315, extra=0})
+        end
+    end
+    gf_on_looper_action("stop")
+end)
+
 debug.sethook()
 
 local target_files = {
     "scripts/main.lua",
     "scripts/dsp/generators.lua",
     "scripts/dsp/arp.lua",
+    "scripts/dsp/looper.lua",
     "scripts/dsp/mutator.lua",
     "scripts/rooms/rack_builder.lua",
     "scripts/rooms/sanctum_floorplan.lua",

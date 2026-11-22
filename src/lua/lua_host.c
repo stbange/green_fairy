@@ -1209,6 +1209,17 @@ static int l_ui_input_mode(lua_State *L) {
     return 1;
 }
 
+static int l_ui_set_looper_status(lua_State *L) {
+    GFLuaHost *h = get_host(L);
+    const char *st = luaL_optstring(L, 1, "stopped");
+    const char *name = luaL_optstring(L, 2, "None");
+    int cnt = (int)luaL_optinteger(L, 3, 0);
+    snprintf(h->looper_state, sizeof(h->looper_state), "%s", st);
+    snprintf(h->active_melody_name, sizeof(h->active_melody_name), "%s", name);
+    h->looper_event_count = cnt;
+    return 0;
+}
+
 /* ---------------- gf.assets & gf.log bindings ---------------- */
 
 static int l_assets_list(lua_State *L) {
@@ -1328,6 +1339,7 @@ static const luaL_Reg g_scene_lib[] = {
 static const luaL_Reg g_ui_lib[] = {
     {"rect", l_ui_rect}, {"line", l_ui_line}, {"text", l_ui_text},
     {"viewport", l_ui_viewport}, {"input_mode", l_ui_input_mode},
+    {"set_looper_status", l_ui_set_looper_status},
     {NULL, NULL}
 };
 
@@ -1392,6 +1404,8 @@ bool gf_lua_init(GFLuaHost *h, const GFAssetManager *am, GFSynth *synth,
     h->viewport_h = 720;
     snprintf(h->active_preset_name, sizeof(h->active_preset_name), "Init Sanctum");
     snprintf(h->active_preset_realm, sizeof(h->active_preset_realm), "fantasy_realms");
+    snprintf(h->looper_state, sizeof(h->looper_state), "stopped");
+    snprintf(h->active_melody_name, sizeof(h->active_melody_name), "None");
     h->L = create_sandboxed_vm(h);
     return h->L != NULL;
 }
@@ -1496,6 +1510,34 @@ bool gf_lua_call_mutator(GFLuaHost *h, const char *action, float amount, float r
     lua_pushnumber(h->L, amount);
     lua_pushnumber(h->L, randomness);
     return pcall_with_trace(h, h->L, 3, 0) == LUA_OK;
+}
+
+bool gf_lua_apply_melody(GFLuaHost *h, const char *rel_melody_path) {
+    if (!h || !h->L || !rel_melody_path) return false;
+    lua_getglobal(h->L, "gf_on_melody_path");
+    if (!lua_isfunction(h->L, -1)) {
+        lua_pop(h->L, 1);
+        return false;
+    }
+    lua_pushstring(h->L, rel_melody_path);
+    if (pcall_with_trace(h, h->L, 1, 1) != LUA_OK) return false;
+    bool ok = lua_toboolean(h->L, -1) != 0;
+    lua_pop(h->L, 1);
+    return ok;
+}
+
+bool gf_lua_looper_action(GFLuaHost *h, const char *action) {
+    if (!h || !h->L || !action) return false;
+    lua_getglobal(h->L, "gf_on_looper_action");
+    if (!lua_isfunction(h->L, -1)) {
+        lua_pop(h->L, 1);
+        return false;
+    }
+    lua_pushstring(h->L, action);
+    if (pcall_with_trace(h, h->L, 1, 1) != LUA_OK) return false;
+    bool ok = lua_toboolean(h->L, -1) != 0;
+    lua_pop(h->L, 1);
+    return ok;
 }
 
 bool gf_lua_update(GFLuaHost *h, float dt, const GFAudioTelemetry *tel) {

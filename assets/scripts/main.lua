@@ -1,6 +1,7 @@
 -- Green Fairy v2.0: Seven-Room Retro-3D Modular Sanctum Entry Orchestrator
 
 local Arp       = require("dsp.arp")
+local Looper    = require("dsp.looper")
 local Mutator   = require("dsp.mutator")
 local Floorplan = require("rooms.sanctum_floorplan")
 local R1        = require("rooms.r1_oscillators")
@@ -17,6 +18,7 @@ local State = {
     preset_name = "Emerald Aether",
     voices = 0,
     arp = Arp.new(),
+    looper = nil,
     pressed_notes = {},
     walk_keys = {w = false, s = false, a = false, d = false},
     drag = nil, -- Active 3D pointer/XR drag interaction (bound to pointer id)
@@ -24,16 +26,57 @@ local State = {
     pinch_prev = nil,
 }
 
+local function on_looper_key_visual(note, down)
+    if down then State.pressed_notes[note] = true else State.pressed_notes[note] = nil end
+    R6.set_key_visual(note, down)
+end
+
 function State.note_on(note, vel)
+    local v = vel or 0.85
     State.pressed_notes[note] = true
     R6.set_key_visual(note, true)
-    State.arp:note_on(note, vel or 0.85)
+    if State.looper then State.looper:on_live_note_on(note, v) end
+    State.arp:note_on(note, v)
 end
 
 function State.note_off(note)
     State.pressed_notes[note] = nil
     R6.set_key_visual(note, false)
+    if State.looper then State.looper:on_live_note_off(note) end
     State.arp:note_off(note)
+end
+
+function State.looper_action(act)
+    if not State.looper then return false end
+    local ok = false
+    if act == "record" then
+        ok = State.looper:record_toggle(on_looper_key_visual)
+    elseif act == "play_toggle" then
+        ok = State.looper:play_toggle(on_looper_key_visual)
+    elseif act == "play" then
+        ok = State.looper:play(on_looper_key_visual)
+    elseif act == "stop" then
+        ok = State.looper:stop(on_looper_key_visual)
+    elseif act == "clear" then
+        ok = State.looper:clear(on_looper_key_visual)
+    elseif act == "overdub" then
+        State.looper.overdub = not State.looper.overdub
+        ok = true
+    elseif act == "next" or act == "step:1" then
+        ok = State.looper:step_melody(1, on_looper_key_visual)
+    elseif act == "prev" or act == "step:-1" then
+        ok = State.looper:step_melody(-1, on_looper_key_visual)
+    elseif act == "suite:1" then
+        ok = State.looper:step_suite(1, on_looper_key_visual)
+    elseif act == "suite:-1" then
+        ok = State.looper:step_suite(-1, on_looper_key_visual)
+    elseif act == "pair_patch" then
+        if State.looper.recommended_patch then
+            ok = gf_on_preset_path(State.looper.recommended_patch)
+        end
+    end
+    R6.refresh_looper_curve(State.looper)
+    return ok
 end
 
 local function clamp01(v)
@@ -57,6 +100,12 @@ local function apply_widget_norm(w_info, norm)
         Mutator.depth = real_v
     elseif w_info.action == "mutator:rand" then
         Mutator.randomness = real_v
+    elseif w_info.action == "looper:speed" and State.looper then
+        State.looper.speed = real_v
+    elseif w_info.action == "looper:transpose" and State.looper then
+        State.looper.transpose = math.floor(real_v + 0.5)
+    elseif w_info.action == "looper:vel" and State.looper then
+        State.looper.vel_scale = real_v
     elseif w_info.action == "harm:bar" then
         R1.on_harmonic_drag(w_info.aux, norm)
     elseif w_info.action == "seq:step" then
@@ -69,6 +118,11 @@ local function dispatch_button_action(act)
     if not act or act == "" then return end
     if R1.on_action(act) or R3.on_action(act) or R7.on_action(act) then
         State.preset_name = R7.active_name
+        return
+    end
+    local lp_cmd = act:match("^looper:(.+)$")
+    if lp_cmd then
+        State.looper_action(lp_cmd)
         return
     end
     if act == "mutator:mutate" then
@@ -115,6 +169,8 @@ local function begin_3d_pick(pk, x, y, stack_mod)
             if pk.param == "voice.drone_latch" and nxt < 0.5 then gf.synth.all_notes_off() end
         elseif pk.action == "arp:toggle" then
             State.arp:set_enabled(nxt >= 0.5)
+        elseif pk.action == "looper:overdub" and State.looper then
+            State.looper.overdub = (nxt >= 0.5)
         end
         return true
     elseif k == "button" then
@@ -156,6 +212,12 @@ function gf_init()
     R6.build()
     R7.build()
 
+    State.looper = Looper.new()
+    if #State.looper.catalog > 0 then
+        State.looper:select_index(1, false, on_looper_key_visual)
+    end
+    R6.refresh_looper_curve(State.looper)
+
     if #R7.all_presets > 0 then
         R7.select_global(1)
         State.preset_name = R7.active_name
@@ -163,7 +225,8 @@ function gf_init()
     gf.spatial.teleport_room(6)
     gf.spatial.sync_widgets()
     Mutator.clear_history()
-    gf.log(string.format("Green Fairy 7-Room Sanctum initialized (%d presets, mode=%s)", #R7.all_presets, State.mode))
+    gf.log(string.format("Green Fairy 7-Room Sanctum initialized (%d presets, %d melodies, mode=%s)",
+                         #R7.all_presets, #State.looper.catalog, State.mode))
 end
 
 function gf_on_preset_path(rel_path)
@@ -177,6 +240,17 @@ function gf_on_preset_path(rel_path)
     R7.refresh_labels()
     Mutator.clear_history()
     return true
+end
+
+function gf_on_melody_path(rel_path)
+    if not State.looper then return false end
+    local ok = State.looper:load_melody_file(rel_path, true, on_looper_key_visual)
+    R6.refresh_looper_curve(State.looper)
+    return ok
+end
+
+function gf_on_looper_action(action)
+    return State.looper_action(action)
 end
 
 function gf_on_mutator(action, amount, randomness)
@@ -198,6 +272,12 @@ function gf_update(dt, tel)
     Compass.step_touch_walk(dt)
     Floorplan.update(dt, tel)
     R5.update_spectrum(tel)
+    if State.looper then
+        State.looper:update(dt, on_looper_key_visual)
+        if State.looper.state == "playing" or State.looper.state == "recording" then
+            R6.refresh_looper_curve(State.looper)
+        end
+    end
     State.arp:update(dt)
 end
 
@@ -229,6 +309,16 @@ function gf_on_input(ev)
             gf.spatial.teleport_room(kc - 48)
         elseif down and kc == 27 then
             gf.spatial.exit_focus()
+        elseif down and kc == 32 then
+            State.looper_action("play_toggle")
+        elseif down and kc == 108 then
+            State.looper_action("record")
+        elseif down and kc == 91 then
+            State.looper_action("prev")
+        elseif down and kc == 93 then
+            State.looper_action("next")
+        elseif down and kc == 48 then
+            State.looper_action("clear")
         end
         return
     elseif ev.type == "mouse_look" then

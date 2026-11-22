@@ -16,18 +16,21 @@
       font-size: 11px; border-radius: 3px;
     }
     body.gf-touch-mode #gf-overlay-bar {
-      bottom: auto; top: 130px; left: 10px; right: 10px;
+      bottom: auto; top: 126px; left: 10px; right: 10px;
       flex-wrap: nowrap; gap: 4px; padding: 3px 6px; font-size: 10px;
     }
-    body.gf-touch-mode #gf-mode-badge { font-size: 9px; white-space: nowrap; }
-    body.gf-touch-mode .gf-select { flex: 1 1 auto; min-width: 0; max-width: none; padding: 3px 4px; font-size: 10px; }
+    body.gf-touch-mode #gf-mode-badge { display: none; }
+    body.gf-touch-mode .gf-desktop-only { display: none; }
+    body.gf-touch-mode .gf-select { flex: 1 1 0; min-width: 0; max-width: none; padding: 3px 4px; font-size: 10px; }
     body.gf-touch-mode .gf-btn { padding: 3px 5px; font-size: 10px; white-space: nowrap; }
     body.gf-touch-mode #gf-xr-btn:disabled { display: none; }
     .gf-btn, .gf-select {
       background: #0b2622; color: #8dffbe; border: 1px solid #35e585;
       padding: 4px 7px; cursor: pointer; font-family: monospace; font-size: 11px;
     }
-    .gf-select { max-width: 210px; }
+    .gf-btn.gf-rec-active { background: #6b1616; border-color: #ff6b6b; color: #ffd6d6; }
+    .gf-btn.gf-loop-active { background: #145c3e; border-color: #6bffb8; color: #ffffff; }
+    .gf-select { max-width: 195px; }
     .gf-btn:disabled { opacity: 0.45; cursor: not-allowed; }
     #gf-loading {
       position: fixed; inset: 0; display: flex; flex-direction: column; gap: 8px;
@@ -44,6 +47,9 @@
     <span id="gf-mode-badge">MODE: DESKTOP</span>
     <select id="gf-preset-select" class="gf-select" title="320+ Fantasy &amp; Space Presets"></select>
     <button id="gf-mutate-btn" class="gf-btn" title="Breed Sound Mutation">MUTATE</button>
+    <select id="gf-melody-select" class="gf-select" title="108 Slow Ambient Cinematic Hans Zimmer Melodies"></select>
+    <button id="gf-rec-btn" class="gf-btn gf-desktop-only" title="Record / Loop Short Note Sequence (Key: L)">REC</button>
+    <button id="gf-loop-btn" class="gf-btn gf-desktop-only" title="Play / Stop Loop or Melody (Key: Space)">LOOP</button>
     <button id="gf-audio-btn" class="gf-btn">AUDIO</button>
     <button id="gf-xr-btn" class="gf-btn" disabled>WEBXR N/A</button>
   </div>

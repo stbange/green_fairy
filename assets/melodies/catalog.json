@@ -1,0 +1,870 @@
+{
+  "version": 1,
+  "melodyCount": 108,
+  "melodies": [
+    {
+      "path": "melodies/organ_cathedrals/01_cornfield_cathedral_organ.lua",
+      "name": "Cornfield Cathedral Organ",
+      "suite": "organ_cathedrals",
+      "bpm": 48,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/01_seraphim_six_wings.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/02_gargantua_horizon_pulse.lua",
+      "name": "Gargantua Horizon Pulse",
+      "suite": "organ_cathedrals",
+      "bpm": 51,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/04_runesong_cathedral.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/03_tesseract_fifth_dimension.lua",
+      "name": "Tesseract Fifth Dimension",
+      "suite": "organ_cathedrals",
+      "bpm": 54,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/07_cherubim_harmonic_ring.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/04_endurance_docking_ostinato.lua",
+      "name": "Endurance Docking Ostinato",
+      "suite": "organ_cathedrals",
+      "bpm": 57,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/10_enchanted_briar_pad.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/05_miller_planet_tidal_tick.lua",
+      "name": "Miller Planet Tidal Tick",
+      "suite": "organ_cathedrals",
+      "bpm": 60,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/13_angelus_bell_and_vox.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/06_murph_bookshelf_cipher.lua",
+      "name": "Murph Bookshelf Cipher",
+      "suite": "organ_cathedrals",
+      "bpm": 63,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/16_will_o_wisp_nocturne.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/07_lazarus_beacon_chimes.lua",
+      "name": "Lazarus Beacon Chimes",
+      "suite": "organ_cathedrals",
+      "bpm": 66,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/19_solitude_of_monks.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/08_wormhole_saturn_transit.lua",
+      "name": "Wormhole Saturn Transit",
+      "suite": "organ_cathedrals",
+      "bpm": 69,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/22_whispering_willows.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/09_gentle_night_pipe_prayer.lua",
+      "name": "Gentle Night Pipe Prayer",
+      "suite": "organ_cathedrals",
+      "bpm": 50,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/25_whispering_gallery.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/10_cooper_station_dawn.lua",
+      "name": "Cooper Station Dawn",
+      "suite": "organ_cathedrals",
+      "bpm": 53,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/28_frostflower_bloom.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/11_cryosleep_glass_arpeggio.lua",
+      "name": "Cryosleep Glass Arpeggio",
+      "suite": "organ_cathedrals",
+      "bpm": 56,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/31_eternity_formant.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/12_relativity_pendulum_3x4.lua",
+      "name": "Relativity Pendulum 3x4",
+      "suite": "organ_cathedrals",
+      "bpm": 59,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/34_arcane_library_dust.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/13_singularity_cathedral_swell.lua",
+      "name": "Singularity Cathedral Swell",
+      "suite": "organ_cathedrals",
+      "bpm": 62,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/37_apotheosis_swell.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/14_mann_glacier_minimalism.lua",
+      "name": "Mann Glacier Minimalism",
+      "suite": "organ_cathedrals",
+      "bpm": 65,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/40_green_fairy_absinthe.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/15_brand_solitude_hymn.lua",
+      "name": "Brand Solitude Hymn",
+      "suite": "organ_cathedrals",
+      "bpm": 68,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/03_monastic_nebula_chant.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/16_orbital_chapel_carillon.lua",
+      "name": "Orbital Chapel Carillon",
+      "suite": "organ_cathedrals",
+      "bpm": 49,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/06_sunken_elven_spire.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/17_gravity_equation_canon.lua",
+      "name": "Gravity Equation Canon",
+      "suite": "organ_cathedrals",
+      "bpm": 52,
+      "beats": 24,
+      "recommendedPatch": "patches/astral_choirs/09_choir_of_pleiades.lua"
+    },
+    {
+      "path": "melodies/organ_cathedrals/18_starlight_organ_benediction.lua",
+      "name": "Starlight Organ Benediction",
+      "suite": "organ_cathedrals",
+      "bpm": 55,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/12_gossamer_wing_cloud.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/01_arrakis_monolith_dawn.lua",
+      "name": "Arrakis Monolith Dawn",
+      "suite": "desert_prophecies",
+      "bpm": 40,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/01_oracle_of_delphi_vapor.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/02_pauls_prescient_dream.lua",
+      "name": "Pauls Prescient Dream",
+      "suite": "desert_prophecies",
+      "bpm": 42,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/04_runesong_cathedral.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/03_gom_jabbar_litany.lua",
+      "name": "Gom Jabbar Litany",
+      "suite": "desert_prophecies",
+      "bpm": 44,
+      "beats": 24,
+      "recommendedPatch": "patches/ancient_mythology/07_elysian_reed_pipe.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/04_sietch_tabr_water_echo.lua",
+      "name": "Sietch Tabr Water Echo",
+      "suite": "desert_prophecies",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/10_enchanted_briar_pad.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/05_shai_hulud_seismic_chant.lua",
+      "name": "Shai Hulud Seismic Chant",
+      "suite": "desert_prophecies",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/13_anubis_scales.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/06_caladan_farewell_rain.lua",
+      "name": "Caladan Farewell Rain",
+      "suite": "desert_prophecies",
+      "bpm": 50,
+      "beats": 24,
+      "recommendedPatch": "patches/fantasy_realms/16_will_o_wisp_nocturne.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/07_bene_gesserit_veil.lua",
+      "name": "Bene Gesserit Veil",
+      "suite": "desert_prophecies",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/19_orpheus_underworld.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/08_fremen_moon_procession.lua",
+      "name": "Fremen Moon Procession",
+      "suite": "desert_prophecies",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/22_whispering_willows.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/09_spice_melange_mirage.lua",
+      "name": "Spice Melange Mirage",
+      "suite": "desert_prophecies",
+      "bpm": 56,
+      "beats": 24,
+      "recommendedPatch": "patches/ancient_mythology/25_poseidon_trident_comb.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/10_golden_path_lament.lua",
+      "name": "Golden Path Lament",
+      "suite": "desert_prophecies",
+      "bpm": 40,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/28_frostflower_bloom.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/11_chani_dune_horizon.lua",
+      "name": "Chani Dune Horizon",
+      "suite": "desert_prophecies",
+      "bpm": 42,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/31_gilgamesh_flood.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/12_sardaukar_iron_drone.lua",
+      "name": "Sardaukar Iron Drone",
+      "suite": "desert_prophecies",
+      "bpm": 44,
+      "beats": 24,
+      "recommendedPatch": "patches/fantasy_realms/34_arcane_library_dust.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/13_quiet_between_storms.lua",
+      "name": "Quiet Between Storms",
+      "suite": "desert_prophecies",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/37_titanomachy_sub.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/14_crysknife_sacred_vow.lua",
+      "name": "Crysknife Sacred Vow",
+      "suite": "desert_prophecies",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/40_green_fairy_absinthe.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/15_wormsign_phrygian_horn.lua",
+      "name": "Wormsign Phrygian Horn",
+      "suite": "desert_prophecies",
+      "bpm": 50,
+      "beats": 24,
+      "recommendedPatch": "patches/ancient_mythology/03_bronze_talos_resonance.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/16_imperial_tent_nocturne.lua",
+      "name": "Imperial Tent Nocturne",
+      "suite": "desert_prophecies",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/06_sunken_elven_spire.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/17_prophecy_of_muaddib.lua",
+      "name": "Prophecy of Muaddib",
+      "suite": "desert_prophecies",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/ancient_mythology/09_labyrinth_of_knossos.lua"
+    },
+    {
+      "path": "melodies/desert_prophecies/18_eternal_erg_meditation.lua",
+      "name": "Eternal Erg Meditation",
+      "suite": "desert_prophecies",
+      "bpm": 56,
+      "beats": 24,
+      "recommendedPatch": "patches/fantasy_realms/12_gossamer_wing_cloud.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/01_sea_wall_deluge.lua",
+      "name": "Sea Wall Deluge",
+      "suite": "neon_dystopia",
+      "bpm": 38,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/01_abandoned_dyson_mainframe.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/02_mesa_industrial_sunrise.lua",
+      "name": "Mesa Industrial Sunrise",
+      "suite": "neon_dystopia",
+      "bpm": 40,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/04_dyson_sphere_harmonics.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/03_tears_in_neon_rain.lua",
+      "name": "Tears in Neon Rain",
+      "suite": "neon_dystopia",
+      "bpm": 42,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/07_vacuum_tube_overdrive.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/04_baseline_interrogation_pulse.lua",
+      "name": "Baseline Interrogation Pulse",
+      "suite": "neon_dystopia",
+      "bpm": 44,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/10_andromeda_veil.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/05_las_vegas_amber_ruins.lua",
+      "name": "Las Vegas Amber Ruins",
+      "suite": "neon_dystopia",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/13_telemetry_numbers_station.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/06_wallace_corp_monolith.lua",
+      "name": "Wallace Corp Monolith",
+      "suite": "neon_dystopia",
+      "bpm": 48,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/16_quasar_redshift.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/07_wooden_horse_memory.lua",
+      "name": "Wooden Horse Memory",
+      "suite": "neon_dystopia",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/19_modulated_carrier_wave.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/08_hologram_farewell_waltz.lua",
+      "name": "Hologram Farewell Waltz",
+      "suite": "neon_dystopia",
+      "bpm": 52,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/22_orbital_decay.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/09_snow_on_broken_steps.lua",
+      "name": "Snow on Broken Steps",
+      "suite": "neon_dystopia",
+      "bpm": 38,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/25_kowloon_neon_drizzle.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/10_offworld_blimp_horn.lua",
+      "name": "Offworld Blimp Horn",
+      "suite": "neon_dystopia",
+      "bpm": 40,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/28_supernova_remnant.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/11_replicant_soul_elegy.lua",
+      "name": "Replicant Soul Elegy",
+      "suite": "neon_dystopia",
+      "bpm": 42,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/31_faraday_cage_resonance.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/12_sapper_farm_fog.lua",
+      "name": "Sapper Farm Fog",
+      "suite": "neon_dystopia",
+      "bpm": 44,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/34_europa_subsurface.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/13_k_solitary_apartment.lua",
+      "name": "K Solitary Apartment",
+      "suite": "neon_dystopia",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/37_copper_coil_feedback.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/14_acid_rain_rooftop_brass.lua",
+      "name": "Acid Rain Rooftop Brass",
+      "suite": "neon_dystopia",
+      "bpm": 48,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/40_omega_centauri_halo.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/15_blackout_2022_sub_hymn.lua",
+      "name": "Blackout 2022 Sub Hymn",
+      "suite": "neon_dystopia",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/03_neon_rain_arpeggio.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/16_stelline_glass_forest.lua",
+      "name": "Stelline Glass Forest",
+      "suite": "neon_dystopia",
+      "bpm": 52,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/06_magnetar_aurora.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/17_deckard_desert_exile.lua",
+      "name": "Deckard Desert Exile",
+      "suite": "neon_dystopia",
+      "bpm": 38,
+      "beats": 16,
+      "recommendedPatch": "patches/cybernetic_ruins/09_broken_android_choir.lua"
+    },
+    {
+      "path": "melodies/neon_dystopia/18_cyberopolis_midnight_glide.lua",
+      "name": "Cyberopolis Midnight Glide",
+      "suite": "neon_dystopia",
+      "bpm": 40,
+      "beats": 24,
+      "recommendedPatch": "patches/deep_space/12_dark_matter_filament.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/01_time_in_limbo_cycle.lua",
+      "name": "Time in Limbo Cycle",
+      "suite": "dream_architectures",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/01_hilbert_quartz_prism.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/02_folding_paris_boulevard.lua",
+      "name": "Folding Paris Boulevard",
+      "suite": "dream_architectures",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/04_medusa_jellyfish_pulse.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/03_spinning_totem_adagio.lua",
+      "name": "Spinning Totem Adagio",
+      "suite": "dream_architectures",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/07_frostbite_kalimba.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/04_paradox_staircase_canon.lua",
+      "name": "Paradox Staircase Canon",
+      "suite": "dream_architectures",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/10_sunken_galleon_bell.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/05_half_remembered_dream.lua",
+      "name": "Half Remembered Dream",
+      "suite": "dream_architectures",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/13_opal_iridescence.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/06_snow_fortress_descent.lua",
+      "name": "Snow Fortress Descent",
+      "suite": "dream_architectures",
+      "bpm": 56,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/16_midnight_zone_echo.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/07_mal_shadow_lullaby.lua",
+      "name": "Mal Shadow Lullaby",
+      "suite": "dream_architectures",
+      "bpm": 58,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/19_snowflake_fractal.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/08_zero_gravity_corridor.lua",
+      "name": "Zero Gravity Corridor",
+      "suite": "dream_architectures",
+      "bpm": 60,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/22_anglerfish_lure.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/09_five_levels_below.lua",
+      "name": "Five Levels Below",
+      "suite": "dream_architectures",
+      "bpm": 62,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/25_crystal_armonica_pro.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/10_mombasa_rain_pursuit.lua",
+      "name": "Mombasa Rain Pursuit",
+      "suite": "dream_architectures",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/28_submarine_bulkhead.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/11_cathedral_of_memory.lua",
+      "name": "Cathedral of Memory",
+      "suite": "dream_architectures",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/31_rime_frost_filigree.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/12_kick_synchronization_brass.lua",
+      "name": "Kick Synchronization Brass",
+      "suite": "dream_architectures",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/34_halocline_whisper.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/13_cobol_midnight_train.lua",
+      "name": "Cobol Midnight Train",
+      "suite": "dream_architectures",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/37_garnet_wavefolder.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/14_architects_glass_bridge.lua",
+      "name": "Architects Glass Bridge",
+      "suite": "dream_architectures",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/40_abyssal_lanternfish.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/15_unbuilt_shoreline_waves.lua",
+      "name": "Unbuilt Shoreline Waves",
+      "suite": "dream_architectures",
+      "bpm": 56,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/03_obsidian_mirror_bell.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/16_subconscious_tide_swell.lua",
+      "name": "Subconscious Tide Swell",
+      "suite": "dream_architectures",
+      "bpm": 58,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/06_pelagic_glass_tide.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/17_vault_paper_pinwheel.lua",
+      "name": "Vault Paper Pinwheel",
+      "suite": "dream_architectures",
+      "bpm": 60,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/09_beryl_harmonic_chime.lua"
+    },
+    {
+      "path": "melodies/dream_architectures/18_waking_on_flight_home.lua",
+      "name": "Waking on Flight Home",
+      "suite": "dream_architectures",
+      "bpm": 62,
+      "beats": 16,
+      "recommendedPatch": "patches/bioluminescent_abyss/12_kraken_deep_sub.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/01_journey_to_the_thin_line.lua",
+      "name": "Journey to the Thin Line",
+      "suite": "elegiac_hymns",
+      "bpm": 44,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/01_seraphim_six_wings.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/02_elysian_wheatfields.lua",
+      "name": "Elysian Wheatfields",
+      "suite": "elegiac_hymns",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/04_runesong_cathedral.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/03_chevaliers_rose_arch.lua",
+      "name": "Chevaliers Rose Arch",
+      "suite": "elegiac_hymns",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/07_cherubim_harmonic_ring.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/04_now_we_walk_free.lua",
+      "name": "Now We Walk Free",
+      "suite": "elegiac_hymns",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/10_enchanted_briar_pad.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/05_honor_the_fallen_legion.lua",
+      "name": "Honor the Fallen Legion",
+      "suite": "elegiac_hymns",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/13_angelus_bell_and_vox.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/06_dunkirk_mole_eternity.lua",
+      "name": "Dunkirk Mole Eternity",
+      "suite": "elegiac_hymns",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/16_will_o_wisp_nocturne.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/07_last_samurai_cherry_mist.lua",
+      "name": "Last Samurai Cherry Mist",
+      "suite": "elegiac_hymns",
+      "bpm": 56,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/19_solitude_of_monks.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/08_solomon_twelve_years_hymn.lua",
+      "name": "Solomon Twelve Years Hymn",
+      "suite": "elegiac_hymns",
+      "bpm": 58,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/22_whispering_willows.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/09_da_vinci_louvre_glass.lua",
+      "name": "Da Vinci Louvre Glass",
+      "suite": "elegiac_hymns",
+      "bpm": 60,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/25_whispering_gallery.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/10_pearl_harbor_twilight.lua",
+      "name": "Pearl Harbor Twilight",
+      "suite": "elegiac_hymns",
+      "bpm": 44,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/28_frostflower_bloom.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/11_crimson_tide_deep_chorale.lua",
+      "name": "Crimson Tide Deep Chorale",
+      "suite": "elegiac_hymns",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/31_eternity_formant.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/12_prince_of_egypt_burning_bush.lua",
+      "name": "Prince of Egypt Burning Bush",
+      "suite": "elegiac_hymns",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/34_arcane_library_dust.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/13_king_arthur_sarmatian_snow.lua",
+      "name": "King Arthur Sarmatian Snow",
+      "suite": "elegiac_hymns",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/37_apotheosis_swell.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/14_angels_and_demons_illuminati.lua",
+      "name": "Angels and Demons Illuminati",
+      "suite": "elegiac_hymns",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/40_green_fairy_absinthe.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/15_broken_crown_requiem.lua",
+      "name": "Broken Crown Requiem",
+      "suite": "elegiac_hymns",
+      "bpm": 54,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/03_monastic_nebula_chant.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/16_pacific_island_benediction.lua",
+      "name": "Pacific Island Benediction",
+      "suite": "elegiac_hymns",
+      "bpm": 56,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/06_sunken_elven_spire.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/17_colosseum_dust_and_shadows.lua",
+      "name": "Colosseum Dust and Shadows",
+      "suite": "elegiac_hymns",
+      "bpm": 58,
+      "beats": 16,
+      "recommendedPatch": "patches/astral_choirs/09_choir_of_pleiades.lua"
+    },
+    {
+      "path": "melodies/elegiac_hymns/18_cathedral_candle_processional.lua",
+      "name": "Cathedral Candle Processional",
+      "suite": "elegiac_hymns",
+      "bpm": 60,
+      "beats": 16,
+      "recommendedPatch": "patches/fantasy_realms/12_gossamer_wing_cloud.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/01_neptune_lima_station.lua",
+      "name": "Neptune Lima Station",
+      "suite": "deep_cosmos",
+      "bpm": 38,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/01_event_horizon_monolith.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/02_heptapod_palindrome_circle.lua",
+      "name": "Heptapod Palindrome Circle",
+      "suite": "deep_cosmos",
+      "bpm": 40,
+      "beats": 20,
+      "recommendedPatch": "patches/crystalline_sanctum/04_glacial_crevasse_echo.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/03_solaris_ocean_mirror.lua",
+      "name": "Solaris Ocean Mirror",
+      "suite": "deep_cosmos",
+      "bpm": 42,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/07_lagrange_point_silence.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/04_lagrange_point_lullaby.lua",
+      "name": "Lagrange Point Lullaby",
+      "suite": "deep_cosmos",
+      "bpm": 44,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/10_selenite_moon_cave.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/05_cassini_final_plunge.lua",
+      "name": "Cassini Final Plunge",
+      "suite": "deep_cosmos",
+      "bpm": 46,
+      "beats": 20,
+      "recommendedPatch": "patches/deep_space/13_voyager_golden_echo.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/06_dark_phoenix_solar_flare.lua",
+      "name": "Dark Phoenix Solar Flare",
+      "suite": "deep_cosmos",
+      "bpm": 48,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/16_permafrost_mirage.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/07_pillars_of_creation_choir.lua",
+      "name": "Pillars of Creation Choir",
+      "suite": "deep_cosmos",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/19_nebula_nursery.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/08_voyager_pale_blue_dot.lua",
+      "name": "Voyager Pale Blue Dot",
+      "suite": "deep_cosmos",
+      "bpm": 52,
+      "beats": 20,
+      "recommendedPatch": "patches/crystalline_sanctum/22_shattered_ice_palace.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/09_krypton_farewell_stars.lua",
+      "name": "Krypton Farewell Stars",
+      "suite": "deep_cosmos",
+      "bpm": 38,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/25_launchpad_umbilical.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/10_europa_subsurface_cathedral.lua",
+      "name": "Europa Subsurface Cathedral",
+      "suite": "deep_cosmos",
+      "bpm": 40,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/28_polar_stratosphere.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/11_oort_halo_suspend.lua",
+      "name": "Oort Halo Suspend",
+      "suite": "deep_cosmos",
+      "bpm": 42,
+      "beats": 20,
+      "recommendedPatch": "patches/deep_space/31_deep_field_cathedral.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/12_cosmic_background_whisper.lua",
+      "name": "Cosmic Background Whisper",
+      "suite": "deep_cosmos",
+      "bpm": 44,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/34_hailstone_granular.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/13_apollo_shadow_side_moon.lua",
+      "name": "Apollo Shadow Side Moon",
+      "suite": "deep_cosmos",
+      "bpm": 46,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/37_gravity_wave_chirp.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/14_andromeda_drift_5x4.lua",
+      "name": "Andromeda Drift 5x4",
+      "suite": "deep_cosmos",
+      "bpm": 48,
+      "beats": 20,
+      "recommendedPatch": "patches/crystalline_sanctum/40_sanctum_of_pure_ice.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/15_magnetar_slow_resonance.lua",
+      "name": "Magnetar Slow Resonance",
+      "suite": "deep_cosmos",
+      "bpm": 50,
+      "beats": 16,
+      "recommendedPatch": "patches/deep_space/03_cryosleep_drift.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/16_helia_aurora_crown.lua",
+      "name": "Helia Aurora Crown",
+      "suite": "deep_cosmos",
+      "bpm": 52,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/06_tourmaline_lattice.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/17_celestial_equator_chorale.lua",
+      "name": "Celestial Equator Chorale",
+      "suite": "deep_cosmos",
+      "bpm": 38,
+      "beats": 20,
+      "recommendedPatch": "patches/deep_space/09_cassini_ring_crossing.lua"
+    },
+    {
+      "path": "melodies/deep_cosmos/18_heat_death_last_chord.lua",
+      "name": "Heat Death Last Chord",
+      "suite": "deep_cosmos",
+      "bpm": 40,
+      "beats": 16,
+      "recommendedPatch": "patches/crystalline_sanctum/12_cryogenic_glass_bowl.lua"
+    }
+  ]
+}

@@ -57,6 +57,7 @@ bool gf_app_is_nav_key(int key_code) {
     if (c == 27) return true; /* Escape: exit Rack-Focus */
     if (c >= '1' && c <= '7') return true; /* 1..7: instant room teleport */
     if (c == 'w' || c == 'a' || c == 's' || c == 'd') return true; /* WASD walk */
+    if (c == ' ' || c == 'l' || c == '[' || c == ']' || c == '0') return true; /* Looper & Melody transport */
     return false;
 }
 
@@ -471,6 +472,16 @@ bool gf_app_run_e2e_script(GFApp *app, const char *script_path) {
             if (sscanf(line, "%*s %191s", rpath) == 1) {
                 gf_lua_apply_preset(&app->lua, rpath);
             }
+        } else if (strcmp(cmd, "MELODY") == 0) {
+            char mpath[192] = {0};
+            if (sscanf(line, "%*s %191s", mpath) == 1) {
+                gf_lua_apply_melody(&app->lua, mpath);
+            }
+        } else if (strcmp(cmd, "LOOPER") == 0) {
+            char lact[64] = {0};
+            if (sscanf(line, "%*s %63s", lact) == 1) {
+                gf_lua_looper_action(&app->lua, lact);
+            }
         } else if (strcmp(cmd, "STEP") == 0) {
             int frames = 1;
             sscanf(line, "%*s %d", &frames);
@@ -519,6 +530,7 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         "\"rmsL\":%.4f,\"rmsR\":%.4f,\"voxelsEnabled\":%s,\"drawCalls\":%u,\"reloadCount\":%d,"
         "\"room\":%d,\"camMode\":\"%s\",\"focusedRack\":%d,\"cableCount\":%d,"
         "\"yaw\":%.4f,\"pitch\":%.4f,"
+        "\"looperState\":\"%s\",\"melody\":\"%s\",\"loopEvents\":%d,"
         "\"visibleRooms\":%d,\"droneLatch\":%s,\"preset\":\"%s\",\"realm\":\"%s\"}",
         gf_input_mode_name(app->lua.input_mode),
         (unsigned long long)app->frame_count,
@@ -534,6 +546,9 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         cable_cnt,
         app->scene.camera.yaw,
         app->scene.camera.pitch,
+        app->lua.looper_state,
+        app->lua.active_melody_name,
+        app->lua.looper_event_count,
         app->renderer.last_visible_rooms,
         app->synth.drone_latch ? "true" : "false",
         app->lua.active_preset_name,

@@ -6,6 +6,9 @@
   const modeBadge = document.getElementById("gf-mode-badge");
   const presetSelect = document.getElementById("gf-preset-select");
   const mutateBtn = document.getElementById("gf-mutate-btn");
+  const melodySelect = document.getElementById("gf-melody-select");
+  const recBtn = document.getElementById("gf-rec-btn");
+  const loopBtn = document.getElementById("gf-loop-btn");
   const audioBtn = document.getElementById("gf-audio-btn");
   const xrBtn = document.getElementById("gf-xr-btn");
 
@@ -14,6 +17,7 @@
   let fetchedAssets = [];
   let fetchedSet = new Set();
   let presetCatalog = [];
+  let melodyCatalog = [];
 
   function detectInputMode() {
     const params = new URLSearchParams(window.location.search);
@@ -74,7 +78,7 @@
     fetchedSet = new Set();
     await Promise.all(list.map((rel) => fetchAssetIntoFS(rel)));
 
-    /* Parse catalog.json if present to populate 320+ preset selector */
+    /* Parse patches/catalog.json to populate 320+ preset selector */
     try {
       const catBytes = Module.FS.readFile("/assets/patches/catalog.json", { encoding: "utf8" });
       const catJson = JSON.parse(catBytes);
@@ -102,6 +106,40 @@
         presetSelect.appendChild(grp);
       }
     }
+
+    /* Parse melodies/catalog.json to populate 108+ Hans Zimmer cinematic melodies */
+    try {
+      const melBytes = Module.FS.readFile("/assets/melodies/catalog.json", { encoding: "utf8" });
+      const melJson = JSON.parse(melBytes);
+      melodyCatalog = melJson.melodies || [];
+    } catch (_) {
+      melodyCatalog = [];
+    }
+
+    if (melodySelect && melodyCatalog.length > 0) {
+      melodySelect.innerHTML = "";
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "Zimmer Melodies (" + melodyCatalog.length + ")...";
+      melodySelect.appendChild(placeholder);
+
+      const bySuite = {};
+      for (const m of melodyCatalog) {
+        if (!bySuite[m.suite]) bySuite[m.suite] = [];
+        bySuite[m.suite].push(m);
+      }
+      for (const [suite, items] of Object.entries(bySuite)) {
+        const grp = document.createElement("optgroup");
+        grp.label = suite.replace(/_/g, " ").toUpperCase();
+        for (const it of items) {
+          const opt = document.createElement("option");
+          opt.value = it.path;
+          opt.textContent = it.name + " (" + it.bpm + " BPM)";
+          grp.appendChild(opt);
+        }
+        melodySelect.appendChild(grp);
+      }
+    }
   }
 
   async function loadPresetOnDemand(relPath) {
@@ -114,12 +152,45 @@
     return ok;
   }
 
-  /* Gently warm remaining presets in small background batches after interactive ready */
+  function syncLooperButtons() {
+    if (!ready || !Module._gf_web_get_status_json) return;
+    try {
+      const st = JSON.parse(Module.UTF8ToString(Module._gf_web_get_status_json()));
+      const isRec = st.looperState === "recording" || st.looperState === "rec_armed";
+      const isPlay = st.looperState === "playing";
+      if (recBtn) {
+        recBtn.textContent = isRec ? "REC*" : "REC";
+        recBtn.classList.toggle("gf-rec-active", isRec);
+      }
+      if (loopBtn) {
+        loopBtn.textContent = isPlay ? "STOP" : "LOOP";
+        loopBtn.classList.toggle("gf-loop-active", isPlay);
+      }
+    } catch (_) {}
+  }
+
+  async function loadMelodyOnDemand(relPath) {
+    if (!ready) return false;
+    if (!relPath) {
+      window.GreenFairy.looper("stop");
+      return true;
+    }
+    await fetchAssetIntoFS(relPath);
+    const ptr = Module.stringToNewUTF8(relPath);
+    const ok = Module._gf_web_apply_melody_path(ptr) === 1;
+    Module._free(ptr);
+    if (ok && melodySelect) melodySelect.value = relPath;
+    syncLooperButtons();
+    return ok;
+  }
+
+  /* Gently warm remaining presets & melodies in small background batches after interactive ready */
   function scheduleBackgroundVaultWarmup() {
+    const combined = presetCatalog.concat(melodyCatalog);
     let idx = 0;
     function stepBatch() {
-      if (idx >= presetCatalog.length) return;
-      const batch = presetCatalog.slice(idx, idx + 8);
+      if (idx >= combined.length) return;
+      const batch = combined.slice(idx, idx + 8);
       idx += 8;
       Promise.all(batch.map((p) => fetchAssetIntoFS(p.path).catch(() => {}))).finally(() => {
         setTimeout(stepBatch, 60);
@@ -240,10 +311,14 @@
     }
 
     window.addEventListener("keydown", (e) => {
-      if (e.repeat || !ready || document.activeElement === presetSelect) return;
+      if (e.repeat || !ready || document.activeElement === presetSelect || document.activeElement === melodySelect) return;
+      if (e.key === " ") e.preventDefault();
       unlockAudio();
       const kc = mapKeyCode(e);
-      if (kc > 0) Module._gf_web_key(kc, 1);
+      if (kc > 0) {
+        Module._gf_web_key(kc, 1);
+        syncLooperButtons();
+      }
     });
     window.addEventListener("keyup", (e) => {
       if (!ready) return;
@@ -280,6 +355,29 @@
         window.GreenFairy.mutate("mutate", 0.32, 0.45);
       });
     }
+    if (melodySelect) {
+      melodySelect.addEventListener("change", () => {
+        unlockAudio();
+        loadMelodyOnDemand(melodySelect.value);
+        canvas.focus();
+      });
+    }
+    if (recBtn) {
+      recBtn.addEventListener("click", () => {
+        unlockAudio();
+        window.GreenFairy.looper("record");
+        canvas.focus();
+      });
+    }
+    if (loopBtn) {
+      loopBtn.addEventListener("click", () => {
+        unlockAudio();
+        window.GreenFairy.looper("play_toggle");
+        canvas.focus();
+      });
+    }
+    setInterval(syncLooperButtons, 350);
+
     audioBtn.addEventListener("click", unlockAudio);
     xrBtn.addEventListener("click", async () => {
       unlockAudio();
@@ -297,6 +395,7 @@
     isReady: () => ready,
     getFetchedAssets: () => fetchedAssets.slice(),
     getCatalog: () => presetCatalog.slice(),
+    getMelodyCatalog: () => melodyCatalog.slice(),
     getMode: () => modeLabel(currentMode).toLowerCase(),
     getStatus: () => {
       if (!ready || !Module._gf_web_get_status_json) return null;
@@ -307,6 +406,15 @@
     focusRack: (id) => { if (ready) Module._gf_web_focus_rack(id); },
     exitFocus: () => { if (ready) Module._gf_web_exit_focus(); },
     loadPreset: (relPath) => loadPresetOnDemand(relPath),
+    loadMelody: (relPath) => loadMelodyOnDemand(relPath),
+    looper: (action = "play_toggle") => {
+      if (!ready || !Module._gf_web_looper_action) return false;
+      const p = Module.stringToNewUTF8(action);
+      const ok = Module._gf_web_looper_action(p) === 1;
+      Module._free(p);
+      syncLooperButtons();
+      return ok;
+    },
     connectCable: (src, dst, gain = 0.8) => {
       if (!ready) return 0;
       const p0 = Module.stringToNewUTF8(src);

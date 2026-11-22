@@ -300,6 +300,14 @@ EMSCRIPTEN_KEEPALIVE int gf_web_apply_preset_path(const char *rel_path) {
     return gf_lua_apply_preset(&g_app.lua, rel_path) ? 1 : 0;
 }
 
+EMSCRIPTEN_KEEPALIVE int gf_web_apply_melody_path(const char *rel_path) {
+    return gf_lua_apply_melody(&g_app.lua, rel_path) ? 1 : 0;
+}
+
+EMSCRIPTEN_KEEPALIVE int gf_web_looper_action(const char *action) {
+    return gf_lua_looper_action(&g_app.lua, action ? action : "play_toggle") ? 1 : 0;
+}
+
 EMSCRIPTEN_KEEPALIVE int gf_web_connect_cable(const char *src_name, const char *dst_name, float gain) {
     int p0 = gf_port_from_name(src_name);
     int p1 = gf_port_from_name(dst_name);

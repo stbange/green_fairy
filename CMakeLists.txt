@@ -191,7 +191,7 @@ if(EMSCRIPTEN)
     "SHELL:-sALLOW_MEMORY_GROWTH=1"
     "SHELL:-sFORCE_FILESYSTEM=1"
     "SHELL:-sEXPORTED_RUNTIME_METHODS=['FS','UTF8ToString','stringToNewUTF8','HEAPF32']"
-    "SHELL:-sEXPORTED_FUNCTIONS=['_main','_malloc','_free','_gf_web_start','_gf_platform_set_input_mode','_gf_web_resize','_gf_web_pointer','_gf_web_pointer_ex','_gf_web_key','_gf_web_note_on','_gf_web_note_off','_gf_web_set_xy','_gf_web_set_voxels','_gf_web_teleport_room','_gf_web_focus_rack','_gf_web_exit_focus','_gf_web_apply_preset_path','_gf_web_connect_cable','_gf_web_disconnect_port','_gf_web_mutator','_gf_web_resume_audio','_gf_webxr_begin_frame','_gf_webxr_render_eye','_gf_webxr_controller_input','_gf_webxr_controller_ray','_gf_webxr_end_frame','_gf_webxr_exit','_gf_web_get_status_json']"
+    "SHELL:-sEXPORTED_FUNCTIONS=['_main','_malloc','_free','_gf_web_start','_gf_platform_set_input_mode','_gf_web_resize','_gf_web_pointer','_gf_web_pointer_ex','_gf_web_key','_gf_web_note_on','_gf_web_note_off','_gf_web_set_xy','_gf_web_set_voxels','_gf_web_teleport_room','_gf_web_focus_rack','_gf_web_exit_focus','_gf_web_apply_preset_path','_gf_web_apply_melody_path','_gf_web_looper_action','_gf_web_connect_cable','_gf_web_disconnect_port','_gf_web_mutator','_gf_web_resume_audio','_gf_webxr_begin_frame','_gf_webxr_render_eye','_gf_webxr_controller_input','_gf_webxr_controller_ray','_gf_webxr_end_frame','_gf_webxr_exit','_gf_web_get_status_json']"
   )
   add_custom_command(TARGET green_fairy POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

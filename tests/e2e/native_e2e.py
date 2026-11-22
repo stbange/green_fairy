@@ -50,13 +50,20 @@ def verify_external_assets_and_clean_src(repo_root, sibling_assets):
             sz = os.path.getsize(p)
             assert sz < 65536, f"Suspiciously large source file (embedded binary asset?): {p} ({sz} bytes)"
 
-    # Verify external 320+ preset vault & 16 sound samples exist beside binary
+    # Verify external 320+ preset vault & 108+ Hans Zimmer melody vault exist beside binary
     preset_files = []
     for root, _, files in os.walk(os.path.join(sibling_assets, "patches")):
         for fn in files:
             if fn.endswith(".lua"):
                 preset_files.append(fn)
     assert len(preset_files) >= 320, f"Expected >=320 external .lua presets beside binary, found {len(preset_files)}"
+
+    melody_files = []
+    for root, _, files in os.walk(os.path.join(sibling_assets, "melodies")):
+        for fn in files:
+            if fn.endswith(".lua"):
+                melody_files.append(fn)
+    assert len(melody_files) >= 108, f"Expected >=108 external .lua melodies beside binary, found {len(melody_files)}"
 
 
 def main():
@@ -134,6 +141,24 @@ def main():
             "MUTATE 0.65 0.90",
             "STEP 2",
             f"SAVE_WAV {wav_mutated} 8192",
+            "NOTE_OFF 52",
+            "NOTE_OFF 59",
+            "NOTE_OFF 64",
+            # Record a short 2-note phrase into Looper, release all live keys, and verify looped playback!
+            "PRESET patches/fantasy_realms/01_emerald_sanctum_choir.lua",
+            "LOOPER record",
+            "NOTE_ON 48 0.90",
+            "STEP 15",
+            "NOTE_OFF 48",
+            "NOTE_ON 55 0.88",
+            "STEP 15",
+            "NOTE_OFF 55",
+            "LOOPER record",
+            "STEP 4",
+            f"SAVE_WAV {os.path.join(tmp, 'looped.wav')} 8192",
+            "MELODY melodies/dream_architectures/01_time_in_limbo_cycle.lua",
+            "STEP 4",
+            "LOOPER stop",
             # Voxel & Mobile Touch checks in Room 6
             "TELEPORT 6",
             "VOXELS 0",
@@ -143,9 +168,6 @@ def main():
             "STEP 2",
             f"SAVE_PPM {ppm_touch}",
             "RELOAD",
-            "NOTE_OFF 52",
-            "NOTE_OFF 59",
-            "NOTE_OFF 64",
             "STEP 2",
         ]
 
@@ -195,6 +217,7 @@ def main():
         rms_unp, _, _ = read_wav_metrics(wav_unplugged)
         rms_rep, pk_rep, smp_rep = read_wav_metrics(wav_repatched)
         rms_mut, pk_mut, smp_mut = read_wav_metrics(wav_mutated)
+        rms_loop, pk_loop, _ = read_wav_metrics(os.path.join(tmp, "looped.wav"))
 
         assert rms_base > 0.02 and pk_base <= 1.0, f"Base preset audio invalid: rms={rms_base:.4f}, peak={pk_base:.4f}"
         assert rms_unp < rms_base * 0.25, f"Unplugging osc->filter cables did not attenuate signal! ({rms_unp:.4f} vs {rms_base:.4f})"
@@ -204,6 +227,7 @@ def main():
         assert rms_mut > 0.015 and pk_mut <= 1.0, f"Mutated audio invalid: rms={rms_mut:.4f}, peak={pk_mut:.4f}"
         mut_wave_diff = sum(abs(a - b) for a, b in zip(smp_rep[:4000], smp_mut[:4000])) / 4000.0
         assert mut_wave_diff > 10.0, f"Mutator did not alter audio waveform (diff={mut_wave_diff})"
+        assert rms_loop > 0.01 and pk_loop <= 1.0, f"Recorded phrase loop audio invalid: rms={rms_loop:.4f}, peak={pk_loop:.4f}"
 
         # Verify external Lua hot-override without recompiling C
         custom_assets = os.path.join(tmp, "custom_assets")

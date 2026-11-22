@@ -18,6 +18,9 @@ function Compass.compute_hud(w, h, mode, cam)
         top_bar = {10, 8, math.min(w - 20, 760), bar_h},
         room_btns = {},
         exit_focus_btn = nil,
+        rec_btn = nil,
+        loop_btn = nil,
+        clr_btn = nil,
         drone_btn = nil,
         keys_toggle_btn = nil,
         keyboard = nil,
@@ -35,14 +38,20 @@ function Compass.compute_hud(w, h, mode, cam)
     end
 
     local row3_y = ry + bar_h + 6
-    if cam and cam.mode == "focus" then
-        hud.exit_focus_btn = {10, row3_y, is_touch and 134 or 144, is_touch and 34 or 30}
-    end
-
-    hud.drone_btn = {w - 112, row3_y, 102, is_touch and 34 or 28}
+    local row3_h = is_touch and 34 or 28
+    hud.drone_btn = {w - 102, row3_y, 92, row3_h}
 
     if is_touch then
-        hud.keys_toggle_btn = {w - 220, row3_y, 102, 34}
+        hud.keys_toggle_btn = {w - 190, row3_y, 84, row3_h}
+        if cam and cam.mode == "focus" then
+            hud.exit_focus_btn = {10, row3_y, 84, row3_h}
+            hud.rec_btn  = {98,  row3_y, 46, row3_h}
+            hud.loop_btn = {148, row3_y, 50, row3_h}
+        else
+            hud.rec_btn  = {10,  row3_y, 54, row3_h}
+            hud.loop_btn = {68,  row3_y, 64, row3_h}
+            hud.clr_btn  = {136, row3_y, 48, row3_h}
+        end
         local kb_h = Compass.mobile_keys_open and math.min(132, math.floor(h * 0.19)) or 0
         if kb_h > 0 then
             hud.keyboard = {10, h - kb_h - 8, w - 20, kb_h}
@@ -52,6 +61,13 @@ function Compass.compute_hud(w, h, mode, cam)
             hud.walk_pad = {14, pad_y, 108, 108}
             hud.look_pad = {w - 122, pad_y, 108, 108}
         end
+    else
+        if cam and cam.mode == "focus" then
+            hud.exit_focus_btn = {10, row3_y, 144, row3_h}
+        end
+        hud.clr_btn  = {w - 158, row3_y, 50, row3_h}
+        hud.loop_btn = {w - 230, row3_y, 66, row3_h}
+        hud.rec_btn  = {w - 292, row3_y, 56, row3_h}
     end
     return hud
 end
@@ -69,17 +85,19 @@ function Compass.render(w, h, mode, state)
     local cam = gf.spatial.camera_state()
     local hud = Compass.compute_hud(w, h, mode, cam)
     local narrow = (w < 540) or (mode == "touch")
+    local lp_state = state.looper and state.looper.state or "stopped"
 
-    -- 1. Sleek Top-Left Room & Preset Status Plaque
+    -- 1. Sleek Top-Left Room & Preset/Melody Status Plaque
     local tb = hud.top_bar
     gf.ui.rect(tb[1], tb[2], tb[3], tb[4], 0.03, 0.07, 0.09, 0.82)
-    local p_name = (state.preset_name or "Sanctum"):sub(1, narrow and 16 or 24):upper()
-    local r_name = (cam.room_name or "BRIDGE"):sub(1, narrow and 12 or 28):upper()
-    local nav_hint = (mode == "desktop") and (cam.mode == "focus" and "[ESC: WALK]" or "[WASD+RMB | CLICK RACK HEADER]") or ""
+    local p_name = (state.preset_name or "Sanctum"):sub(1, narrow and 15 or 22):upper()
+    local r_name = (cam.room_name or "BRIDGE"):sub(1, narrow and 11 or 22):upper()
+    local lp_tag = (lp_state == "playing") and " [LOOP]" or ((lp_state == "recording" or lp_state == "rec_armed") and " [REC]" or "")
+    local nav_hint = (mode == "desktop") and (cam.mode == "focus" and "[ESC: WALK]" or "[WASD+RMB | L:REC SPACE:LOOP]") or ""
     local line = narrow
-        and string.format("R%d %s - %s - V:%d", cam.room, r_name, p_name, state.voices or 0)
-        or  string.format("R%d %s - %s - V:%d %s", cam.room, r_name, p_name, state.voices or 0, nav_hint)
-    gf.ui.text(tb[1] + 8, tb[2] + 8, narrow and 1.05 or 1.35, line, 0.52, 1.0, 0.84, 1.0)
+        and string.format("R%d %s - %s - V:%d%s", cam.room, r_name, p_name, state.voices or 0, lp_tag)
+        or  string.format("R%d %s - %s - V:%d%s %s", cam.room, r_name, p_name, state.voices or 0, lp_tag, nav_hint)
+    gf.ui.text(tb[1] + 8, tb[2] + 8, narrow and 1.02 or 1.30, line, 0.52, 1.0, 0.84, 1.0)
 
     -- 2. 7-Room Quick-Teleport Compass Nodes
     for r = 1, 7 do
@@ -89,23 +107,41 @@ function Compass.render(w, h, mode, state)
         gf.ui.text(b[1] + 4, b[2] + 9, narrow and 0.98 or 1.15, ROOM_TAGS[r], cur and 1.0 or 0.68, 1.0, cur and 0.88 or 0.80, 1.0)
     end
 
-    -- 3. Drone Hold Latch Indicator & Exit Rack-Focus Badge
+    -- 3. Looper Transport (REC / LOOP / CLR), Drone Hold Latch & Exit Rack-Focus Badge
+    if hud.rec_btn then
+        local rb = hud.rec_btn
+        local is_rec = (lp_state == "recording" or lp_state == "rec_armed")
+        gf.ui.rect(rb[1], rb[2], rb[3], rb[4], is_rec and 0.72 or 0.18, is_rec and 0.18 or 0.08, 0.12, 0.90)
+        gf.ui.text(rb[1] + 6, rb[2] + 8, narrow and 1.0 or 1.15, is_rec and "REC*" or "REC", 1.0, 0.88, 0.84, 1.0)
+    end
+    if hud.loop_btn then
+        local lb = hud.loop_btn
+        local is_play = (lp_state == "playing")
+        gf.ui.rect(lb[1], lb[2], lb[3], lb[4], is_play and 0.14 or 0.06, is_play and 0.62 or 0.22, is_play and 0.42 or 0.26, 0.90)
+        gf.ui.text(lb[1] + 6, lb[2] + 8, narrow and 1.0 or 1.15, is_play and "STOP" or "LOOP", 0.92, 1.0, 0.92, 1.0)
+    end
+    if hud.clr_btn then
+        local cb = hud.clr_btn
+        gf.ui.rect(cb[1], cb[2], cb[3], cb[4], 0.10, 0.16, 0.22, 0.88)
+        gf.ui.text(cb[1] + 7, cb[2] + 8, narrow and 1.0 or 1.15, "CLR", 0.85, 0.92, 1.0, 1.0)
+    end
+
     local db = hud.drone_btn
     local drone_on = (gf.synth.get_param("voice.drone_latch") or 0) >= 0.5
     gf.ui.rect(db[1], db[2], db[3], db[4], drone_on and 0.22 or 0.05, drone_on and 0.62 or 0.14, 0.35, 0.88)
-    gf.ui.text(db[1] + 7, db[2] + 8, narrow and 1.05 or 1.2, drone_on and "DRONE:ON" or "DRONE:OFF", 0.95, 1.0, 0.9, 1.0)
+    gf.ui.text(db[1] + 6, db[2] + 8, narrow and 1.0 or 1.15, drone_on and "DRONE:ON" or "DRONE", 0.95, 1.0, 0.9, 1.0)
 
     if hud.exit_focus_btn then
         local eb = hud.exit_focus_btn
         gf.ui.rect(eb[1], eb[2], eb[3], eb[4], 0.18, 0.45, 0.52, 0.92)
-        gf.ui.text(eb[1] + 7, eb[2] + 8, narrow and 1.05 or 1.25, narrow and "< ROOM VIEW" or "< BACK TO ROOM", 1.0, 1.0, 0.85, 1.0)
+        gf.ui.text(eb[1] + 6, eb[2] + 8, narrow and 1.0 or 1.20, narrow and "< ROOM" or "< BACK TO ROOM", 1.0, 1.0, 0.85, 1.0)
     end
 
     -- 4. Mobile Touch Controls: Dual-Zone Walk/Look Pads & Collapsible Multi-Touch Keyboard
     if mode == "touch" then
         local kt = hud.keys_toggle_btn
         gf.ui.rect(kt[1], kt[2], kt[3], kt[4], 0.08, 0.28, 0.32, 0.88)
-        gf.ui.text(kt[1] + 8, kt[2] + 8, 1.05, Compass.mobile_keys_open and "HIDE KEYS" or "SHOW KEYS", 0.7, 1.0, 0.9, 1.0)
+        gf.ui.text(kt[1] + 6, kt[2] + 8, 1.0, Compass.mobile_keys_open and "HIDE KEY" or "SHOW KEY", 0.7, 1.0, 0.9, 1.0)
 
         if hud.walk_pad then
             local wp, lp = hud.walk_pad, hud.look_pad
@@ -145,6 +181,18 @@ function Compass.handle_hud_pointer(ev, w, h, mode, state)
         end
         if point_in_rect(ev.x, ev.y, hud.exit_focus_btn) then
             gf.spatial.exit_focus()
+            return true
+        end
+        if point_in_rect(ev.x, ev.y, hud.rec_btn) and state.looper_action then
+            state.looper_action("record")
+            return true
+        end
+        if point_in_rect(ev.x, ev.y, hud.loop_btn) and state.looper_action then
+            state.looper_action("play_toggle")
+            return true
+        end
+        if point_in_rect(ev.x, ev.y, hud.clr_btn) and state.looper_action then
+            state.looper_action("clear")
             return true
         end
         if point_in_rect(ev.x, ev.y, hud.drone_btn) then

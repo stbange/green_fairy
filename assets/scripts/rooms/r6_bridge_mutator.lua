@@ -96,6 +96,37 @@ function R6.build()
         {kind="button", x= 0.52, y=-0.34, w=0.78, h=0.14, label="VOXELS TOGGLE",  action="scene:voxels",      color=RB.COLOR_BUTTON},
         {kind="button", x= 0.00, y=-0.62, w=0.95, h=0.13, label="INIT DEFAULT",   action="mutator:reset_init",color={0.9, 0.55, 0.45, 1.0}},
     })
+
+    -- 5. Cinematic Phrase Looper & Hans Zimmer Score Vault Rack (-4.35, 1.50, 0.30)
+    local lx, lz = -4.35, 0.30
+    R6.looper_rack = RB.add_rack(6, "CINEMATIC PHRASE LOOPER & ZIMMER VAULT", lx, 1.50, lz,
+                                 math.atan(0.0 - lx, 1.8 - lz), 2.45, 1.82, {0.96, 0.78, 0.36, 1.0})
+    RB.add_controls(6, R6.looper_rack, {
+        {kind="knob",      x=-0.82, y= 0.50, w=0.11,           min=0.4, max=2.0, default=1.0, label="SPEED",     action="looper:speed"},
+        {kind="step_dial", x=-0.28, y= 0.50, w=0.11, steps=25, min=-12, max=12,  default=0.0, label="TRANSPOSE", action="looper:transpose", color=RB.COLOR_DIAL},
+        {kind="knob",      x= 0.28, y= 0.50, w=0.11,           min=0.3, max=1.4, default=1.0, label="DYNAMICS",  action="looper:vel"},
+        {kind="switch",    x= 0.82, y= 0.50, w=0.10,           min=0,   max=1,   default=0.0, label="OVERDUB",   action="looper:overdub",   color=RB.COLOR_SWITCH},
+
+        {kind="button",    x=-0.72, y=-0.22, w=0.62, h=0.14, label="REC PHRASE",  action="looper:record",     color={0.98, 0.40, 0.36, 1.0}},
+        {kind="button",    x= 0.00, y=-0.22, w=0.62, h=0.14, label="PLAY / STOP", action="looper:play_toggle",color={0.32, 1.00, 0.76, 1.0}},
+        {kind="button",    x= 0.72, y=-0.22, w=0.62, h=0.14, label="CLEAR LOOP",  action="looper:clear",      color=RB.COLOR_SWITCH},
+
+        {kind="button",    x=-0.82, y=-0.46, w=0.46, h=0.13, label="< MELODY",    action="looper:step:-1",    color=RB.COLOR_DIAL},
+        {kind="button",    x=-0.28, y=-0.46, w=0.46, h=0.13, label="MELODY >",    action="looper:step:1",     color=RB.COLOR_DIAL},
+        {kind="button",    x= 0.28, y=-0.46, w=0.46, h=0.13, label="< SUITE",     action="looper:suite:-1",   color=RB.COLOR_BUTTON},
+        {kind="button",    x= 0.82, y=-0.46, w=0.46, h=0.13, label="SUITE >",     action="looper:suite:1",    color=RB.COLOR_BUTTON},
+
+        {kind="button",    x= 0.00, y=-0.68, w=1.25, h=0.12, label="LOAD PAIRED PATCH", action="looper:pair_patch", color={0.55, 0.86, 1.0, 1.0}},
+    })
+end
+
+function R6.refresh_looper_curve(looper)
+    if R6.looper_rack and R6.looper_rack >= 0 and looper then
+        local ys = looper:build_curve(40)
+        local is_rec = (looper.state == "recording" or looper.state == "rec_armed")
+        gf.spatial.set_curve(9, R6.looper_rack, 0.0, 0.14, 2.05, 0.30, nil, ys, true,
+                             is_rec and 1.0 or 0.96, is_rec and 0.38 or 0.82, is_rec and 0.35 or 0.34, 0.95)
+    end
 end
 
 function R6.set_key_visual(note, pressed)

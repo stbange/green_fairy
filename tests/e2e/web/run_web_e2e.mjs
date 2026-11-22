@@ -187,12 +187,14 @@ async function main() {
       const bootInfo = await page.evaluate(() => ({
         fetchedCount: window.GreenFairy.getFetchedAssets().length,
         catalogCount: window.GreenFairy.getCatalog().length,
+        melodyCount: window.GreenFairy.getMelodyCatalog().length,
         mode: window.GreenFairy.getMode(),
         status: window.GreenFairy.getStatus(),
       }));
       assert(bootInfo.mode === "desktop", `Expected desktop mode, got ${bootInfo.mode}`);
       assert(bootInfo.catalogCount === 320, `Expected 320 presets in catalog, got ${bootInfo.catalogCount}`);
-      assert(bootInfo.fetchedCount < 120, `Boot should not eagerly block on all 320 presets (fetched ${bootInfo.fetchedCount})`);
+      assert(bootInfo.melodyCount === 108, `Expected 108 Hans Zimmer melodies in catalog, got ${bootInfo.melodyCount}`);
+      assert(bootInfo.fetchedCount < 120, `Boot should not eagerly block on all 320+108 files (fetched ${bootInfo.fetchedCount})`);
 
       // On-demand HTTP preset loading across Deep Space & Astral Choirs realms
       const okSpace = await page.evaluate(() => window.GreenFairy.loadPreset("patches/deep_space/05_oort_cloud_dust.lua"));
@@ -203,6 +205,31 @@ async function main() {
 
       const okChoir = await page.evaluate(() => window.GreenFairy.loadPreset("patches/astral_choirs/04_starlight_soprano_veil.lua"));
       assert(okChoir, "On-demand loadPreset for Astral Choirs failed");
+
+      // On-demand HTTP loading of slow ambient cinematic Hans Zimmer melodies across suites
+      const okZimmer = await page.evaluate(() => window.GreenFairy.loadMelody("melodies/desert_prophecies/05_shai_hulud_seismic_chant.lua"));
+      assert(okZimmer, "On-demand loadMelody for Desert Prophecies failed");
+      await page.waitForTimeout(150);
+      st = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(st.looperState === "playing" && st.melody.includes("Shai Hulud"), `Unexpected melody status: ${JSON.stringify(st)}`);
+      assert(httpLog.some((u) => u.includes("melodies/desert_prophecies/05_shai_hulud_seismic_chant.lua")), "Melody was not fetched via HTTP");
+      await page.evaluate(() => window.GreenFairy.looper("stop"));
+
+      // Live Phrase Recording & Loop Playback: click REC -> play 2 notes -> click REC -> verify continuous loop!
+      await page.click("#gf-rec-btn");
+      st = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(st.looperState === "rec_armed", `Expected rec_armed after clicking #gf-rec-btn, got ${st.looperState}`);
+      await page.keyboard.down("z");
+      await page.waitForTimeout(160);
+      await page.keyboard.up("z");
+      await page.keyboard.down("c");
+      await page.waitForTimeout(160);
+      await page.keyboard.up("c");
+      await page.click("#gf-rec-btn");
+      await page.waitForTimeout(120);
+      st = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(st.looperState === "playing" && st.loopEvents === 2, `Expected recorded 2-note loop playing, got ${JSON.stringify(st)}`);
+      await page.click("#gf-loop-btn"); // Stop loop before next check
 
       // Navigate across rooms (1..7 quick jump + WASD walk) and verify frustum culling
       await page.keyboard.press("1");
@@ -245,7 +272,7 @@ async function main() {
       const shot = await page.screenshot();
       assert(shot.length > 4000, `Canvas screenshot unexpectedly small (${shot.length} bytes)`);
       assert(errors.length === 0, `Desktop console/page errors: ${errors.join("; ")}`);
-      console.log(`PASS [Web Desktop 7-Room]: bootMs=${bootMs}ms, catalog=${bootInfo.catalogCount}, cables=${st.cableCount}, drawCalls=${st.drawCalls}`);
+      console.log(`PASS [Web Desktop 7-Room]: bootMs=${bootMs}ms, presets=${bootInfo.catalogCount}, melodies=${bootInfo.melodyCount}, cables=${st.cableCount}`);
       await ctx.close();
     }
 

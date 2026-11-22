@@ -156,6 +156,9 @@ static void test_app_lifecycle_midi_xr_and_e2e_script(void) {
         "CONNECT osc1.audio_out flt1.in 0.85\n"
         "MUTATE 0.25 0.40\n"
         "PRESET patches/emerald_aether.lua\n"
+        "MELODY melodies/organ_cathedrals/01_cornfield_cathedral_organ.lua\n"
+        "STEP 2\n"
+        "LOOPER stop\n"
         "NOTE_ON 60 0.9\n"
         "XY 0.7 0.4 0.6\n"
         "XY 0.5 0.5\n"
@@ -176,6 +179,7 @@ static void test_app_lifecycle_midi_xr_and_e2e_script(void) {
     GF_ASSERT(gf_app_get_status_json(&app, json, sizeof(json)) > 20);
     GF_ASSERT(strstr(json, "\"xrFrames\":1") != NULL);
     GF_ASSERT(strstr(json, "\"cableCount\":") != NULL);
+    GF_ASSERT(strstr(json, "\"looperState\":") != NULL);
 
     GF_ASSERT(!gf_app_write_ppm(NULL, 1, 1, NULL));
     GF_ASSERT(!gf_app_write_wav(NULL, 44100, NULL, 0));

@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  Project: Green Fairy — an Absynth-inspired software synthesizer with retro 3D graphics.
+  Tech stack: Core engine in C11, SDL3, OpenGL (GL 3.3 Core on desktop / GLES 3.0 & WebGL2 on Web/WebXR), embedded Lua 5.4 scripting host.
+  Targets: Windows, Linux, macOS, Web (Emscripten/WebAssembly), and WebXR (stereoscopic VR/XR session).
+  Mobile Web: Automatically switches to touch-optimized controls when running on touch/mobile viewports.
+  Architecture split:
+    - C core engine: real-time DSP synthesis, SDL3/OpenGL/WebXR runtime, external asset I/O, Lua VM host & bindings.
+    - External Lua scripts: UI layout/screens, 3D scene choreography, patches/presets, macros/arpeggiator, custom wavetable & envelope generators (hot-reloadable).
+  External assets: Graphics (3D meshes, sprites, voxels, shaders, fonts), audio samples, patches, and Lua scripts MUST live in folders beside the executable — never baked into the binary.
+  Quality gates: Unit test suite MUST achieve >= 95% line/branch coverage across C core and Lua scripts; automated E2E tests MUST verify native headless rendering/DSP and Web/mobile-touch/WebXR flows.
+
+rules:
+  proposal:
+    - State explicit scope and non-goals clearly.
+    - Map every user requirement to concrete capabilities.
+  specs:
+    - Use RFC 2119 normative language (SHALL / MUST / SHOULD) and concrete GIVEN/WHEN/THEN scenarios.
+    - Keep capability specs modular and testable.
+  design:
+    - Document exact directory layout, C/Lua API boundary, DSP signal graph, OpenGL/WebGL2/WebXR rendering architecture, asset loading, and test/coverage strategy.
+  tasks:
+    - Break work into small, verifiable milestones with explicit unit-test (>=95% coverage) and E2E verification tasks.

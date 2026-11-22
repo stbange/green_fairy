@@ -1,0 +1,102 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug (Ninja)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "GF_BUILD_TESTS": "ON",
+        "GF_ENABLE_COVERAGE": "OFF"
+      }
+    },
+    {
+      "name": "linux-coverage",
+      "displayName": "Linux Coverage (GCC gcov)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux-coverage",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "GF_BUILD_TESTS": "ON",
+        "GF_ENABLE_COVERAGE": "ON"
+      }
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Linux Release (Ninja)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GF_BUILD_TESTS": "ON",
+        "GF_ENABLE_COVERAGE": "OFF"
+      }
+    },
+    {
+      "name": "windows-release",
+      "displayName": "Windows Release (Ninja)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/windows-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GF_BUILD_TESTS": "ON",
+        "GF_ENABLE_COVERAGE": "OFF"
+      }
+    },
+    {
+      "name": "macos-release",
+      "displayName": "macOS Release (Ninja)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/macos-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GF_BUILD_TESTS": "ON",
+        "GF_ENABLE_COVERAGE": "OFF"
+      }
+    },
+    {
+      "name": "web-emscripten",
+      "displayName": "Web / WebXR (Emscripten)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/web-emscripten",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GF_BUILD_TESTS": "OFF",
+        "GF_ENABLE_COVERAGE": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug"
+    },
+    {
+      "name": "linux-coverage",
+      "configurePreset": "linux-coverage"
+    },
+    {
+      "name": "linux-release",
+      "configurePreset": "linux-release"
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-release"
+    },
+    {
+      "name": "macos-release",
+      "configurePreset": "macos-release"
+    },
+    {
+      "name": "web-emscripten",
+      "configurePreset": "web-emscripten"
+    }
+  ]
+}

@@ -1,0 +1,1926 @@
+{
+  "version": 2,
+  "count": 320,
+  "presets": [
+    {
+      "id": 1,
+      "name": "Emerald Sanctum Choir",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/01_emerald_sanctum_choir.lua"
+    },
+    {
+      "id": 2,
+      "name": "Lothlorien Glass Harp",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/02_lothlorien_glass_harp.lua"
+    },
+    {
+      "id": 3,
+      "name": "Misty Avalon Flute",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/03_misty_avalon_flute.lua"
+    },
+    {
+      "id": 4,
+      "name": "Runesong Cathedral",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/04_runesong_cathedral.lua"
+    },
+    {
+      "id": 5,
+      "name": "Fae Lantern Whisper",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/05_fae_lantern_whisper.lua"
+    },
+    {
+      "id": 6,
+      "name": "Sunken Elven Spire",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/06_sunken_elven_spire.lua"
+    },
+    {
+      "id": 7,
+      "name": "Starlight Over Rivendell",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/07_starlight_over_rivendell.lua"
+    },
+    {
+      "id": 8,
+      "name": "Moonwell Harmonium",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/08_moonwell_harmonium.lua"
+    },
+    {
+      "id": 9,
+      "name": "Sylvan Windchimes",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/09_sylvan_windchimes.lua"
+    },
+    {
+      "id": 10,
+      "name": "Enchanted Briar Pad",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/10_enchanted_briar_pad.lua"
+    },
+    {
+      "id": 11,
+      "name": "Crystal Brook Dulcimer",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/11_crystal_brook_dulcimer.lua"
+    },
+    {
+      "id": 12,
+      "name": "Gossamer Wing Cloud",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/12_gossamer_wing_cloud.lua"
+    },
+    {
+      "id": 13,
+      "name": "Ancient Oak Breath",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/13_ancient_oak_breath.lua"
+    },
+    {
+      "id": 14,
+      "name": "Twilight Cairn Drone",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/14_twilight_cairn_drone.lua"
+    },
+    {
+      "id": 15,
+      "name": "Silverymoon Lute",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/15_silverymoon_lute.lua"
+    },
+    {
+      "id": 16,
+      "name": "Will O Wisp Nocturne",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/16_will_o_wisp_nocturne.lua"
+    },
+    {
+      "id": 17,
+      "name": "Pixie Dust Celestia",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/17_pixie_dust_celestia.lua"
+    },
+    {
+      "id": 18,
+      "name": "Cloudspire Carillon",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/18_cloudspire_carillon.lua"
+    },
+    {
+      "id": 19,
+      "name": "Verdant Sanctuary",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/19_verdant_sanctuary.lua"
+    },
+    {
+      "id": 20,
+      "name": "Dragonfly Meadow",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/20_dragonfly_meadow.lua"
+    },
+    {
+      "id": 21,
+      "name": "Mythril Bell Tower",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/21_mythril_bell_tower.lua"
+    },
+    {
+      "id": 22,
+      "name": "Whispering Willows",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/22_whispering_willows.lua"
+    },
+    {
+      "id": 23,
+      "name": "Alchemist Glass Vessel",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/23_alchemist_glass_vessel.lua"
+    },
+    {
+      "id": 24,
+      "name": "Solstice Sunbeam",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/24_solstice_sunbeam.lua"
+    },
+    {
+      "id": 25,
+      "name": "Barrow Downs Fog",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/25_barrow_downs_fog.lua"
+    },
+    {
+      "id": 26,
+      "name": "Celestial Harpsichord",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/26_celestial_harpsichord.lua"
+    },
+    {
+      "id": 27,
+      "name": "Nymph Echo Pool",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/27_nymph_echo_pool.lua"
+    },
+    {
+      "id": 28,
+      "name": "Frostflower Bloom",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/28_frostflower_bloom.lua"
+    },
+    {
+      "id": 29,
+      "name": "Amber Hearth Organ",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/29_amber_hearth_organ.lua"
+    },
+    {
+      "id": 30,
+      "name": "Wandering Bard Pipe",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/30_wandering_bard_pipe.lua"
+    },
+    {
+      "id": 31,
+      "name": "Feywild Horizon",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/31_feywild_horizon.lua"
+    },
+    {
+      "id": 32,
+      "name": "Glimmerglass Cavern",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/32_glimmerglass_cavern.lua"
+    },
+    {
+      "id": 33,
+      "name": "Highland Bagpipe Drone",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/33_highland_bagpipe_drone.lua"
+    },
+    {
+      "id": 34,
+      "name": "Arcane Library Dust",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/34_arcane_library_dust.lua"
+    },
+    {
+      "id": 35,
+      "name": "Moonlit Menhir",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/35_moonlit_menhir.lua"
+    },
+    {
+      "id": 36,
+      "name": "Spellweaver Loom",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/36_spellweaver_loom.lua"
+    },
+    {
+      "id": 37,
+      "name": "Starfall Sanctuary",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/37_starfall_sanctuary.lua"
+    },
+    {
+      "id": 38,
+      "name": "Ivory Tower Viol",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/38_ivory_tower_viol.lua"
+    },
+    {
+      "id": 39,
+      "name": "Mossy Ruin Psaltery",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/39_mossy_ruin_psaltery.lua"
+    },
+    {
+      "id": 40,
+      "name": "Green Fairy Absinthe",
+      "realm": "fantasy_realms",
+      "path": "patches/fantasy_realms/40_green_fairy_absinthe.lua"
+    },
+    {
+      "id": 41,
+      "name": "Event Horizon Monolith",
+      "realm": "deep_space",
+      "path": "patches/deep_space/01_event_horizon_monolith.lua"
+    },
+    {
+      "id": 42,
+      "name": "Pulsar B1919 Telemetry",
+      "realm": "deep_space",
+      "path": "patches/deep_space/02_pulsar_b1919_telemetry.lua"
+    },
+    {
+      "id": 43,
+      "name": "Cryosleep Drift",
+      "realm": "deep_space",
+      "path": "patches/deep_space/03_cryosleep_drift.lua"
+    },
+    {
+      "id": 44,
+      "name": "Dyson Sphere Harmonics",
+      "realm": "deep_space",
+      "path": "patches/deep_space/04_dyson_sphere_harmonics.lua"
+    },
+    {
+      "id": 45,
+      "name": "Oort Cloud Dust",
+      "realm": "deep_space",
+      "path": "patches/deep_space/05_oort_cloud_dust.lua"
+    },
+    {
+      "id": 46,
+      "name": "Magnetar Aurora",
+      "realm": "deep_space",
+      "path": "patches/deep_space/06_magnetar_aurora.lua"
+    },
+    {
+      "id": 47,
+      "name": "Lagrange Point Silence",
+      "realm": "deep_space",
+      "path": "patches/deep_space/07_lagrange_point_silence.lua"
+    },
+    {
+      "id": 48,
+      "name": "Heliosphere Bow Shock",
+      "realm": "deep_space",
+      "path": "patches/deep_space/08_heliosphere_bow_shock.lua"
+    },
+    {
+      "id": 49,
+      "name": "Cassini Ring Crossing",
+      "realm": "deep_space",
+      "path": "patches/deep_space/09_cassini_ring_crossing.lua"
+    },
+    {
+      "id": 50,
+      "name": "Andromeda Veil",
+      "realm": "deep_space",
+      "path": "patches/deep_space/10_andromeda_veil.lua"
+    },
+    {
+      "id": 51,
+      "name": "Singularity Accretion",
+      "realm": "deep_space",
+      "path": "patches/deep_space/11_singularity_accretion.lua"
+    },
+    {
+      "id": 52,
+      "name": "Dark Matter Filament",
+      "realm": "deep_space",
+      "path": "patches/deep_space/12_dark_matter_filament.lua"
+    },
+    {
+      "id": 53,
+      "name": "Voyager Golden Echo",
+      "realm": "deep_space",
+      "path": "patches/deep_space/13_voyager_golden_echo.lua"
+    },
+    {
+      "id": 54,
+      "name": "Exoplanet Terminus",
+      "realm": "deep_space",
+      "path": "patches/deep_space/14_exoplanet_terminus.lua"
+    },
+    {
+      "id": 55,
+      "name": "Kuiper Belt Ice",
+      "realm": "deep_space",
+      "path": "patches/deep_space/15_kuiper_belt_ice.lua"
+    },
+    {
+      "id": 56,
+      "name": "Quasar Redshift",
+      "realm": "deep_space",
+      "path": "patches/deep_space/16_quasar_redshift.lua"
+    },
+    {
+      "id": 57,
+      "name": "Zero Gravity Basilica",
+      "realm": "deep_space",
+      "path": "patches/deep_space/17_zero_gravity_basilica.lua"
+    },
+    {
+      "id": 58,
+      "name": "Solar Wind Sail",
+      "realm": "deep_space",
+      "path": "patches/deep_space/18_solar_wind_sail.lua"
+    },
+    {
+      "id": 59,
+      "name": "Nebula Nursery",
+      "realm": "deep_space",
+      "path": "patches/deep_space/19_nebula_nursery.lua"
+    },
+    {
+      "id": 60,
+      "name": "Cosmic Microwave Hum",
+      "realm": "deep_space",
+      "path": "patches/deep_space/20_cosmic_microwave_hum.lua"
+    },
+    {
+      "id": 61,
+      "name": "Hyperdrive Cooldown",
+      "realm": "deep_space",
+      "path": "patches/deep_space/21_hyperdrive_cooldown.lua"
+    },
+    {
+      "id": 62,
+      "name": "Orbital Decay",
+      "realm": "deep_space",
+      "path": "patches/deep_space/22_orbital_decay.lua"
+    },
+    {
+      "id": 63,
+      "name": "Neutron Star Crust",
+      "realm": "deep_space",
+      "path": "patches/deep_space/23_neutron_star_crust.lua"
+    },
+    {
+      "id": 64,
+      "name": "Interstellar Medium",
+      "realm": "deep_space",
+      "path": "patches/deep_space/24_interstellar_medium.lua"
+    },
+    {
+      "id": 65,
+      "name": "Launchpad Umbilical",
+      "realm": "deep_space",
+      "path": "patches/deep_space/25_launchpad_umbilical.lua"
+    },
+    {
+      "id": 66,
+      "name": "Rogue Planet Shadow",
+      "realm": "deep_space",
+      "path": "patches/deep_space/26_rogue_planet_shadow.lua"
+    },
+    {
+      "id": 67,
+      "name": "Tachyon Wake",
+      "realm": "deep_space",
+      "path": "patches/deep_space/27_tachyon_wake.lua"
+    },
+    {
+      "id": 68,
+      "name": "Supernova Remnant",
+      "realm": "deep_space",
+      "path": "patches/deep_space/28_supernova_remnant.lua"
+    },
+    {
+      "id": 69,
+      "name": "Galactic Core Tide",
+      "realm": "deep_space",
+      "path": "patches/deep_space/29_galactic_core_tide.lua"
+    },
+    {
+      "id": 70,
+      "name": "Ion Thruster Plume",
+      "realm": "deep_space",
+      "path": "patches/deep_space/30_ion_thruster_plume.lua"
+    },
+    {
+      "id": 71,
+      "name": "Deep Field Cathedral",
+      "realm": "deep_space",
+      "path": "patches/deep_space/31_deep_field_cathedral.lua"
+    },
+    {
+      "id": 72,
+      "name": "Wormhole Throat",
+      "realm": "deep_space",
+      "path": "patches/deep_space/32_wormhole_throat.lua"
+    },
+    {
+      "id": 73,
+      "name": "Titan Methane Sea",
+      "realm": "deep_space",
+      "path": "patches/deep_space/33_titan_methane_sea.lua"
+    },
+    {
+      "id": 74,
+      "name": "Europa Subsurface",
+      "realm": "deep_space",
+      "path": "patches/deep_space/34_europa_subsurface.lua"
+    },
+    {
+      "id": 75,
+      "name": "Starship Observation Deck",
+      "realm": "deep_space",
+      "path": "patches/deep_space/35_starship_observation_deck.lua"
+    },
+    {
+      "id": 76,
+      "name": "Parsec Solitude",
+      "realm": "deep_space",
+      "path": "patches/deep_space/36_parsec_solitude.lua"
+    },
+    {
+      "id": 77,
+      "name": "Gravity Wave Chirp",
+      "realm": "deep_space",
+      "path": "patches/deep_space/37_gravity_wave_chirp.lua"
+    },
+    {
+      "id": 78,
+      "name": "Celestial Equator",
+      "realm": "deep_space",
+      "path": "patches/deep_space/38_celestial_equator.lua"
+    },
+    {
+      "id": 79,
+      "name": "Void Between Galaxies",
+      "realm": "deep_space",
+      "path": "patches/deep_space/39_void_between_galaxies.lua"
+    },
+    {
+      "id": 80,
+      "name": "Omega Centauri Halo",
+      "realm": "deep_space",
+      "path": "patches/deep_space/40_omega_centauri_halo.lua"
+    },
+    {
+      "id": 81,
+      "name": "Mariana Bioluminescence",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/01_mariana_bioluminescence.lua"
+    },
+    {
+      "id": 82,
+      "name": "Siren Whale Formants",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/02_siren_whale_formants.lua"
+    },
+    {
+      "id": 83,
+      "name": "Hydrothermal Vent Choir",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/03_hydrothermal_vent_choir.lua"
+    },
+    {
+      "id": 84,
+      "name": "Medusa Jellyfish Pulse",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/04_medusa_jellyfish_pulse.lua"
+    },
+    {
+      "id": 85,
+      "name": "Abyssal Bathysphere",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/05_abyssal_bathysphere.lua"
+    },
+    {
+      "id": 86,
+      "name": "Pelagic Glass Tide",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/06_pelagic_glass_tide.lua"
+    },
+    {
+      "id": 87,
+      "name": "Coral Reef Shimmer",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/07_coral_reef_shimmer.lua"
+    },
+    {
+      "id": 88,
+      "name": "Hadal Pressure Drone",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/08_hadal_pressure_drone.lua"
+    },
+    {
+      "id": 89,
+      "name": "Nautilus Spiral Shell",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/09_nautilus_spiral_shell.lua"
+    },
+    {
+      "id": 90,
+      "name": "Sunken Galleon Bell",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/10_sunken_galleon_bell.lua"
+    },
+    {
+      "id": 91,
+      "name": "Phosphor Plankton Drift",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/11_phosphor_plankton_drift.lua"
+    },
+    {
+      "id": 92,
+      "name": "Kraken Deep Sub",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/12_kraken_deep_sub.lua"
+    },
+    {
+      "id": 93,
+      "name": "Thermocline Refraction",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/13_thermocline_refraction.lua"
+    },
+    {
+      "id": 94,
+      "name": "Anemone Tentacle Sway",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/14_anemone_tentacle_sway.lua"
+    },
+    {
+      "id": 95,
+      "name": "Brine Pool Mirror",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/15_brine_pool_mirror.lua"
+    },
+    {
+      "id": 96,
+      "name": "Midnight Zone Echo",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/16_midnight_zone_echo.lua"
+    },
+    {
+      "id": 97,
+      "name": "Leviathan Slumber",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/17_leviathan_slumber.lua"
+    },
+    {
+      "id": 98,
+      "name": "Kelp Cathedral",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/18_kelp_cathedral.lua"
+    },
+    {
+      "id": 99,
+      "name": "Seafoam Vapor",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/19_seafoam_vapor.lua"
+    },
+    {
+      "id": 100,
+      "name": "Benthic Sonar Ping",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/20_benthic_sonar_ping.lua"
+    },
+    {
+      "id": 101,
+      "name": "Sargasso Sea Mist",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/21_sargasso_sea_mist.lua"
+    },
+    {
+      "id": 102,
+      "name": "Anglerfish Lure",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/22_anglerfish_lure.lua"
+    },
+    {
+      "id": 103,
+      "name": "Rift Valley Black Smoker",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/23_rift_valley_black_smoker.lua"
+    },
+    {
+      "id": 104,
+      "name": "Dolphin Bubble Ring",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/24_dolphin_bubble_ring.lua"
+    },
+    {
+      "id": 105,
+      "name": "Atlantis Dome Air",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/25_atlantis_dome_air.lua"
+    },
+    {
+      "id": 106,
+      "name": "Tidal Cavern Breath",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/26_tidal_cavern_breath.lua"
+    },
+    {
+      "id": 107,
+      "name": "Ctenophore Rainbow",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/27_ctenophore_rainbow.lua"
+    },
+    {
+      "id": 108,
+      "name": "Submarine Bulkhead",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/28_submarine_bulkhead.lua"
+    },
+    {
+      "id": 109,
+      "name": "Oceanic Trench Choir",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/29_oceanic_trench_choir.lua"
+    },
+    {
+      "id": 110,
+      "name": "Manta Ray Glide",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/30_manta_ray_glide.lua"
+    },
+    {
+      "id": 111,
+      "name": "Narwhal Ice Lead",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/31_narwhal_ice_lead.lua"
+    },
+    {
+      "id": 112,
+      "name": "Pearl Oyster Shimmer",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/32_pearl_oyster_shimmer.lua"
+    },
+    {
+      "id": 113,
+      "name": "Seamount Upwelling",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/33_seamount_upwelling.lua"
+    },
+    {
+      "id": 114,
+      "name": " Halocline Whisper",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/34_halocline_whisper.lua"
+    },
+    {
+      "id": 115,
+      "name": "Drowned Temple Organ",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/35_drowned_temple_organ.lua"
+    },
+    {
+      "id": 116,
+      "name": "Vampire Squid Cloak",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/36_vampire_squid_cloak.lua"
+    },
+    {
+      "id": 117,
+      "name": "Coelacanth Memory",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/37_coelacanth_memory.lua"
+    },
+    {
+      "id": 118,
+      "name": "Blue Hole Resonance",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/38_blue_hole_resonance.lua"
+    },
+    {
+      "id": 119,
+      "name": "Tsunami Undertow",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/39_tsunami_undertow.lua"
+    },
+    {
+      "id": 120,
+      "name": "Abyssal Lanternfish",
+      "realm": "bioluminescent_abyss",
+      "path": "patches/bioluminescent_abyss/40_abyssal_lanternfish.lua"
+    },
+    {
+      "id": 121,
+      "name": "Hilbert Quartz Prism",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/01_hilbert_quartz_prism.lua"
+    },
+    {
+      "id": 122,
+      "name": "Diamond Dust Cloud",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/02_diamond_dust_cloud.lua"
+    },
+    {
+      "id": 123,
+      "name": "Obsidian Mirror Bell",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/03_obsidian_mirror_bell.lua"
+    },
+    {
+      "id": 124,
+      "name": "Glacial Crevasse Echo",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/04_glacial_crevasse_echo.lua"
+    },
+    {
+      "id": 125,
+      "name": "Amethyst Geode Comb",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/05_amethyst_geode_comb.lua"
+    },
+    {
+      "id": 126,
+      "name": "Tourmaline Lattice",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/06_tourmaline_lattice.lua"
+    },
+    {
+      "id": 127,
+      "name": "Frostbite Kalimba",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/07_frostbite_kalimba.lua"
+    },
+    {
+      "id": 128,
+      "name": "Sapphire Spire",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/08_sapphire_spire.lua"
+    },
+    {
+      "id": 129,
+      "name": "Beryl Harmonic Chime",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/09_beryl_harmonic_chime.lua"
+    },
+    {
+      "id": 130,
+      "name": "Selenite Moon Cave",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/10_selenite_moon_cave.lua"
+    },
+    {
+      "id": 131,
+      "name": "Icicle Stalactite",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/11_icicle_stalactite.lua"
+    },
+    {
+      "id": 132,
+      "name": "Cryogenic Glass Bowl",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/12_cryogenic_glass_bowl.lua"
+    },
+    {
+      "id": 133,
+      "name": "Opal Iridescence",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/13_opal_iridescence.lua"
+    },
+    {
+      "id": 134,
+      "name": "Zircon Frequency Shift",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/14_zircon_frequency_shift.lua"
+    },
+    {
+      "id": 135,
+      "name": "Calcite Double Refract",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/15_calcite_double_refract.lua"
+    },
+    {
+      "id": 136,
+      "name": "Permafrost Mirage",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/16_permafrost_mirage.lua"
+    },
+    {
+      "id": 137,
+      "name": "Celestine Choir",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/17_celestine_choir.lua"
+    },
+    {
+      "id": 138,
+      "name": "Fluorite Octahedron",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/18_fluorite_octahedron.lua"
+    },
+    {
+      "id": 139,
+      "name": "Snowflake Fractal",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/19_snowflake_fractal.lua"
+    },
+    {
+      "id": 140,
+      "name": "Topaz Bell Matrix",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/20_topaz_bell_matrix.lua"
+    },
+    {
+      "id": 141,
+      "name": "Malachite Resonance",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/21_malachite_resonance.lua"
+    },
+    {
+      "id": 142,
+      "name": "Shattered Ice Palace",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/22_shattered_ice_palace.lua"
+    },
+    {
+      "id": 143,
+      "name": "Arctic Halo",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/23_arctic_halo.lua"
+    },
+    {
+      "id": 144,
+      "name": "Lapis Lazuli Vault",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/24_lapis_lazuli_vault.lua"
+    },
+    {
+      "id": 145,
+      "name": "Crystal Armonica Pro",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/25_crystal_armonica_pro.lua"
+    },
+    {
+      "id": 146,
+      "name": "Vitreous Humor",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/26_vitreous_humor.lua"
+    },
+    {
+      "id": 147,
+      "name": "Chandelier Harmonics",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/27_chandelier_harmonics.lua"
+    },
+    {
+      "id": 148,
+      "name": "Polar Stratosphere",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/28_polar_stratosphere.lua"
+    },
+    {
+      "id": 149,
+      "name": "Jade Chime Pavilion",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/29_jade_chime_pavilion.lua"
+    },
+    {
+      "id": 150,
+      "name": "Quartz Clockwork",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/30_quartz_clockwork.lua"
+    },
+    {
+      "id": 151,
+      "name": "Rime Frost Filigree",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/31_rime_frost_filigree.lua"
+    },
+    {
+      "id": 152,
+      "name": "Bergamot Prism",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/32_bergamot_prism.lua"
+    },
+    {
+      "id": 153,
+      "name": "Diamond Anvil Cell",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/33_diamond_anvil_cell.lua"
+    },
+    {
+      "id": 154,
+      "name": "Hailstone Granular",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/34_hailstone_granular.lua"
+    },
+    {
+      "id": 155,
+      "name": "SubzeroTuning Fork",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/35_subzerotuning_fork.lua"
+    },
+    {
+      "id": 156,
+      "name": "Glacier Calving Sub",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/36_glacier_calving_sub.lua"
+    },
+    {
+      "id": 157,
+      "name": "Garnet Wavefolder",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/37_garnet_wavefolder.lua"
+    },
+    {
+      "id": 158,
+      "name": "Crystalline Mutator",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/38_crystalline_mutator.lua"
+    },
+    {
+      "id": 159,
+      "name": "Mirror Lake Freeze",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/39_mirror_lake_freeze.lua"
+    },
+    {
+      "id": 160,
+      "name": "Sanctum Of Pure Ice",
+      "realm": "crystalline_sanctum",
+      "path": "patches/crystalline_sanctum/40_sanctum_of_pure_ice.lua"
+    },
+    {
+      "id": 161,
+      "name": "Oracle Of Delphi Vapor",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/01_oracle_of_delphi_vapor.lua"
+    },
+    {
+      "id": 162,
+      "name": "Himalayan Singing Bowl",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/02_himalayan_singing_bowl.lua"
+    },
+    {
+      "id": 163,
+      "name": "Bronze Talos Resonance",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/03_bronze_talos_resonance.lua"
+    },
+    {
+      "id": 164,
+      "name": "Hyperborean Lyre",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/04_hyperborean_lyre.lua"
+    },
+    {
+      "id": 165,
+      "name": "Throat Song Of Tengri",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/05_throat_song_of_tengri.lua"
+    },
+    {
+      "id": 166,
+      "name": "Nyx Velvet Canopy",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/06_nyx_velvet_canopy.lua"
+    },
+    {
+      "id": 167,
+      "name": "Elysian Reed Pipe",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/07_elysian_reed_pipe.lua"
+    },
+    {
+      "id": 168,
+      "name": "Olympus Cloud Throne",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/08_olympus_cloud_throne.lua"
+    },
+    {
+      "id": 169,
+      "name": "Labyrinth Of Knossos",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/09_labyrinth_of_knossos.lua"
+    },
+    {
+      "id": 170,
+      "name": "River Styx Ferryman",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/10_river_styx_ferryman.lua"
+    },
+    {
+      "id": 171,
+      "name": "Valhalla Horn Drone",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/11_valhalla_horn_drone.lua"
+    },
+    {
+      "id": 172,
+      "name": "Yggdrasil Root Hum",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/12_yggdrasil_root_hum.lua"
+    },
+    {
+      "id": 173,
+      "name": "Anubis Scales",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/13_anubis_scales.lua"
+    },
+    {
+      "id": 174,
+      "name": "Isis Temple Sistrum",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/14_isis_temple_sistrum.lua"
+    },
+    {
+      "id": 175,
+      "name": "Sumerian Cedar Flute",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/15_sumerian_cedar_flute.lua"
+    },
+    {
+      "id": 176,
+      "name": "Babylonian Star Chart",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/16_babylonian_star_chart.lua"
+    },
+    {
+      "id": 177,
+      "name": "Phoenix Ash Swell",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/17_phoenix_ash_swell.lua"
+    },
+    {
+      "id": 178,
+      "name": "Medusa Stone Gaze",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/18_medusa_stone_gaze.lua"
+    },
+    {
+      "id": 179,
+      "name": "Orpheus Underworld",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/19_orpheus_underworld.lua"
+    },
+    {
+      "id": 180,
+      "name": "Aeolian Wind Harp",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/20_aeolian_wind_harp.lua"
+    },
+    {
+      "id": 181,
+      "name": "Shangri La Bell",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/21_shangri_la_bell.lua"
+    },
+    {
+      "id": 182,
+      "name": "Vedic Soma Chant",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/22_vedic_soma_chant.lua"
+    },
+    {
+      "id": 183,
+      "name": "Aztec Obsidian Flute",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/23_aztec_obsidian_flute.lua"
+    },
+    {
+      "id": 184,
+      "name": "Druid Stone Circle",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/24_druid_stone_circle.lua"
+    },
+    {
+      "id": 185,
+      "name": "Poseidon Trident Comb",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/25_poseidon_trident_comb.lua"
+    },
+    {
+      "id": 186,
+      "name": "Prometheus Ember",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/26_prometheus_ember.lua"
+    },
+    {
+      "id": 187,
+      "name": "Sphinx Desert Riddle",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/27_sphinx_desert_riddle.lua"
+    },
+    {
+      "id": 188,
+      "name": "Atlas Sky Burden",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/28_atlas_sky_burden.lua"
+    },
+    {
+      "id": 189,
+      "name": "Freya Amber Tears",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/29_freya_amber_tears.lua"
+    },
+    {
+      "id": 190,
+      "name": "Odin Ravens",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/30_odin_ravens.lua"
+    },
+    {
+      "id": 191,
+      "name": "Gilgamesh Flood",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/31_gilgamesh_flood.lua"
+    },
+    {
+      "id": 192,
+      "name": "Minerva Owl Wing",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/32_minerva_owl_wing.lua"
+    },
+    {
+      "id": 193,
+      "name": "Chiron Centaur Bow",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/33_chiron_centaur_bow.lua"
+    },
+    {
+      "id": 194,
+      "name": "Hecate Crossroads",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/34_hecate_crossroads.lua"
+    },
+    {
+      "id": 195,
+      "name": "Boreas North Wind",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/35_boreas_north_wind.lua"
+    },
+    {
+      "id": 196,
+      "name": "Zephyr Spring Choir",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/36_zephyr_spring_choir.lua"
+    },
+    {
+      "id": 197,
+      "name": "Titanomachy Sub",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/37_titanomachy_sub.lua"
+    },
+    {
+      "id": 198,
+      "name": "Golden Fleece Shimmer",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/38_golden_fleece_shimmer.lua"
+    },
+    {
+      "id": 199,
+      "name": "Ambrosia Chalice",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/39_ambrosia_chalice.lua"
+    },
+    {
+      "id": 200,
+      "name": "Pantheon Oculus",
+      "realm": "ancient_mythology",
+      "path": "patches/ancient_mythology/40_pantheon_oculus.lua"
+    },
+    {
+      "id": 201,
+      "name": "Abandoned Dyson Mainframe",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/01_abandoned_dyson_mainframe.lua"
+    },
+    {
+      "id": 202,
+      "name": "Ghost In Magnetic Tape",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/02_ghost_in_magnetic_tape.lua"
+    },
+    {
+      "id": 203,
+      "name": "Neon Rain Arpeggio",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/03_neon_rain_arpeggio.lua"
+    },
+    {
+      "id": 204,
+      "name": "Oxidized Copper Circuit",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/04_oxidized_copper_circuit.lua"
+    },
+    {
+      "id": 205,
+      "name": "Bode Shifted Transmission",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/05_bode_shifted_transmission.lua"
+    },
+    {
+      "id": 206,
+      "name": "Suborbital Relay Hum",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/06_suborbital_relay_hum.lua"
+    },
+    {
+      "id": 207,
+      "name": "Vacuum Tube Overdrive",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/07_vacuum_tube_overdrive.lua"
+    },
+    {
+      "id": 208,
+      "name": "Silicon Wasteland",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/08_silicon_wasteland.lua"
+    },
+    {
+      "id": 209,
+      "name": "Broken Android Choir",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/09_broken_android_choir.lua"
+    },
+    {
+      "id": 210,
+      "name": "CRT Phosphor Burn",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/10_crt_phosphor_burn.lua"
+    },
+    {
+      "id": 211,
+      "name": "Datacenter Cryo Leak",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/11_datacenter_cryo_leak.lua"
+    },
+    {
+      "id": 212,
+      "name": "Rustbelt Monolith",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/12_rustbelt_monolith.lua"
+    },
+    {
+      "id": 213,
+      "name": "Telemetry Numbers Station",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/13_telemetry_numbers_station.lua"
+    },
+    {
+      "id": 214,
+      "name": "Ferrite Core Memory",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/14_ferrite_core_memory.lua"
+    },
+    {
+      "id": 215,
+      "name": "Laserdisc Rot Pad",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/15_laserdisc_rot_pad.lua"
+    },
+    {
+      "id": 216,
+      "name": "Cyberpunk Alley Steam",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/16_cyberpunk_alley_steam.lua"
+    },
+    {
+      "id": 217,
+      "name": "Rogue AI Lullaby",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/17_rogue_ai_lullaby.lua"
+    },
+    {
+      "id": 218,
+      "name": "High Voltage Substation",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/18_high_voltage_substation.lua"
+    },
+    {
+      "id": 219,
+      "name": "Modulated Carrier Wave",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/19_modulated_carrier_wave.lua"
+    },
+    {
+      "id": 220,
+      "name": "Analog Tape Flutter",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/20_analog_tape_flutter.lua"
+    },
+    {
+      "id": 221,
+      "name": "Bitcrushed Relic",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/21_bitcrushed_relic.lua"
+    },
+    {
+      "id": 222,
+      "name": "Mecha Hangar Echo",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/22_mecha_hangar_echo.lua"
+    },
+    {
+      "id": 223,
+      "name": "Fiberoptic Glass Hum",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/23_fiberoptic_glass_hum.lua"
+    },
+    {
+      "id": 224,
+      "name": " EMP Aftermath",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/24_emp_aftermath.lua"
+    },
+    {
+      "id": 225,
+      "name": " Kowloon Neon Drizzle",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/25_kowloon_neon_drizzle.lua"
+    },
+    {
+      "id": 226,
+      "name": "Decommissioned Reactor",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/26_decommissioned_reactor.lua"
+    },
+    {
+      "id": 227,
+      "name": "Synthesizer Graveyard",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/27_synthesizer_graveyard.lua"
+    },
+    {
+      "id": 228,
+      "name": "Dead Satellite Beacon",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/28_dead_satellite_beacon.lua"
+    },
+    {
+      "id": 229,
+      "name": "Transistor Warmth",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/29_transistor_warmth.lua"
+    },
+    {
+      "id": 230,
+      "name": "Hologram Flicker",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/30_hologram_flicker.lua"
+    },
+    {
+      "id": 231,
+      "name": " Faraday Cage Resonance",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/31_faraday_cage_resonance.lua"
+    },
+    {
+      "id": 232,
+      "name": " Glitch In The Sanctum",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/32_glitch_in_the_sanctum.lua"
+    },
+    {
+      "id": 233,
+      "name": " VHS Tracking Pad",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/33_vhs_tracking_pad.lua"
+    },
+    {
+      "id": 234,
+      "name": "Solenoid Rhythm",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/34_solenoid_rhythm.lua"
+    },
+    {
+      "id": 235,
+      "name": " Brushed Metal Drone",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/35_brushed_metal_drone.lua"
+    },
+    {
+      "id": 236,
+      "name": " Neural Net Dream",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/36_neural_net_dream.lua"
+    },
+    {
+      "id": 237,
+      "name": " Copper Coil Feedback",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/37_copper_coil_feedback.lua"
+    },
+    {
+      "id": 238,
+      "name": " Clock Skew Drift",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/38_clock_skew_drift.lua"
+    },
+    {
+      "id": 239,
+      "name": " Terminal Amber Glow",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/39_terminal_amber_glow.lua"
+    },
+    {
+      "id": 240,
+      "name": " Post Human Cathedral",
+      "realm": "cybernetic_ruins",
+      "path": "patches/cybernetic_ruins/40_post_human_cathedral.lua"
+    },
+    {
+      "id": 241,
+      "name": "Seraphim Six Wings",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/01_seraphim_six_wings.lua"
+    },
+    {
+      "id": 242,
+      "name": "Cathedral Of Alpha Centauri",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/02_cathedral_of_alpha_centauri.lua"
+    },
+    {
+      "id": 243,
+      "name": "Monastic Nebula Chant",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/03_monastic_nebula_chant.lua"
+    },
+    {
+      "id": 244,
+      "name": "Starlight Soprano Veil",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/04_starlight_soprano_veil.lua"
+    },
+    {
+      "id": 245,
+      "name": "Celestial Vowel Morph",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/05_celestial_vowel_morph.lua"
+    },
+    {
+      "id": 246,
+      "name": "Gregorian Void Organ",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/06_gregorian_void_organ.lua"
+    },
+    {
+      "id": 247,
+      "name": "Cherubim Harmonic Ring",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/07_cherubim_harmonic_ring.lua"
+    },
+    {
+      "id": 248,
+      "name": "Valkyrie Overtones",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/08_valkyrie_overtones.lua"
+    },
+    {
+      "id": 249,
+      "name": "Choir Of Pleiades",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/09_choir_of_pleiades.lua"
+    },
+    {
+      "id": 250,
+      "name": "Astral Basilica",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/10_astral_basilica.lua"
+    },
+    {
+      "id": 251,
+      "name": "Luminiferous Aether Vox",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/11_luminiferous_aether_vox.lua"
+    },
+    {
+      "id": 252,
+      "name": "Sistine In Orbit",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/12_sistine_in_orbit.lua"
+    },
+    {
+      "id": 253,
+      "name": "Angelus Bell And Vox",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/13_angelus_bell_and_vox.lua"
+    },
+    {
+      "id": 254,
+      "name": "Overtone Cloister",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/14_overtone_cloister.lua"
+    },
+    {
+      "id": 255,
+      "name": "Cosmic Kyrie",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/15_cosmic_kyrie.lua"
+    },
+    {
+      "id": 256,
+      "name": "Solar Corona Chorus",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/16_solar_corona_chorus.lua"
+    },
+    {
+      "id": 257,
+      "name": "Byzantine Dome Drone",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/17_byzantine_dome_drone.lua"
+    },
+    {
+      "id": 258,
+      "name": "Polyphonic Starlight",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/18_polyphonic_starlight.lua"
+    },
+    {
+      "id": 259,
+      "name": "Solitude Of Monks",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/19_solitude_of_monks.lua"
+    },
+    {
+      "id": 260,
+      "name": "Aetherial Alto",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/20_aetherial_alto.lua"
+    },
+    {
+      "id": 261,
+      "name": "Sanctus In Bohlen Pierce",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/21_sanctus_in_bohlen_pierce.lua"
+    },
+    {
+      "id": 262,
+      "name": "Vesper Nebula",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/22_vesper_nebula.lua"
+    },
+    {
+      "id": 263,
+      "name": "Hymn To Cassiopeia",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/23_hymn_to_cassiopeia.lua"
+    },
+    {
+      "id": 264,
+      "name": "Glass Harmonium Vox",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/24_glass_harmonium_vox.lua"
+    },
+    {
+      "id": 265,
+      "name": "Whispering Gallery",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/25_whispering_gallery.lua"
+    },
+    {
+      "id": 266,
+      "name": "Choir Of Nine Realms",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/26_choir_of_nine_realms.lua"
+    },
+    {
+      "id": 267,
+      "name": "Sacred Geometry Pad",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/27_sacred_geometry_pad.lua"
+    },
+    {
+      "id": 268,
+      "name": "Resonant Nave",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/28_resonant_nave.lua"
+    },
+    {
+      "id": 269,
+      "name": "Astral Counterpoint",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/29_astral_counterpoint.lua"
+    },
+    {
+      "id": 270,
+      "name": "Boreal Choir",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/30_boreal_choir.lua"
+    },
+    {
+      "id": 271,
+      "name": "Eternity Formant",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/31_eternity_formant.lua"
+    },
+    {
+      "id": 272,
+      "name": "Luminous Magnificat",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/32_luminous_magnificat.lua"
+    },
+    {
+      "id": 273,
+      "name": "Halo Of Lyra",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/33_halo_of_lyra.lua"
+    },
+    {
+      "id": 274,
+      "name": "Transcendental Ooh",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/34_transcendental_ooh.lua"
+    },
+    {
+      "id": 275,
+      "name": "Stained Glass Rose",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/35_stained_glass_rose.lua"
+    },
+    {
+      "id": 276,
+      "name": "Pilgrim Of Orion",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/36_pilgrim_of_orion.lua"
+    },
+    {
+      "id": 277,
+      "name": "Apotheosis Swell",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/37_apotheosis_swell.lua"
+    },
+    {
+      "id": 278,
+      "name": "Silent Monastery",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/38_silent_monastery.lua"
+    },
+    {
+      "id": 279,
+      "name": "Crown Chakra Shimmer",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/39_crown_chakra_shimmer.lua"
+    },
+    {
+      "id": 280,
+      "name": "Final Benediction",
+      "realm": "astral_choirs",
+      "path": "patches/astral_choirs/40_final_benediction.lua"
+    },
+    {
+      "id": 281,
+      "name": "Clockwork Astrolabe",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/01_clockwork_astrolabe.lua"
+    },
+    {
+      "id": 282,
+      "name": "68 Stage Pulsar Train",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/02_68_stage_pulsar_train.lua"
+    },
+    {
+      "id": 283,
+      "name": "Polyrhythmic Chronometer",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/03_polyrhythmic_chronometer.lua"
+    },
+    {
+      "id": 284,
+      "name": "Orbital Resonance 5x7",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/04_orbital_resonance_5x7.lua"
+    },
+    {
+      "id": 285,
+      "name": "Perpetual Pendulum Arp",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/05_perpetual_pendulum_arp.lua"
+    },
+    {
+      "id": 286,
+      "name": "Tachyon Step Matrix",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/06_tachyon_step_matrix.lua"
+    },
+    {
+      "id": 287,
+      "name": "Celestial Orrery",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/07_celestial_orrery.lua"
+    },
+    {
+      "id": 288,
+      "name": "Silk Road Caravan",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/08_silk_road_caravan.lua"
+    },
+    {
+      "id": 289,
+      "name": "Subterranean Train",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/09_subterranean_train.lua"
+    },
+    {
+      "id": 290,
+      "name": "Biomechanical Heartbeat",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/10_biomechanical_heartbeat.lua"
+    },
+    {
+      "id": 291,
+      "name": "Gamelan Starlight",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/11_gamelan_starlight.lua"
+    },
+    {
+      "id": 292,
+      "name": "Euclidean Mirage",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/12_euclidean_mirage.lua"
+    },
+    {
+      "id": 293,
+      "name": "Time Crystal Lattice",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/13_time_crystal_lattice.lua"
+    },
+    {
+      "id": 294,
+      "name": "Photon Torpedo Seq",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/14_photon_torpedo_seq.lua"
+    },
+    {
+      "id": 295,
+      "name": "Nomad Desert Pulse",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/15_nomad_desert_pulse.lua"
+    },
+    {
+      "id": 296,
+      "name": "Fibonacci Spiral Gate",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/16_fibonacci_spiral_gate.lua"
+    },
+    {
+      "id": 297,
+      "name": "Magnetic Levitation",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/17_magnetic_levitation.lua"
+    },
+    {
+      "id": 298,
+      "name": "Sundial Shadow Step",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/18_sundial_shadow_step.lua"
+    },
+    {
+      "id": 299,
+      "name": "Escaping Gravity Arp",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/19_escaping_gravity_arp.lua"
+    },
+    {
+      "id": 300,
+      "name": "Quantum Tunneling",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/20_quantum_tunneling.lua"
+    },
+    {
+      "id": 301,
+      "name": "Steam Automaton",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/21_steam_automaton.lua"
+    },
+    {
+      "id": 302,
+      "name": "Marimba Of Mars",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/22_marimba_of_mars.lua"
+    },
+    {
+      "id": 303,
+      "name": "Aurora Pulse Gate",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/23_aurora_pulse_gate.lua"
+    },
+    {
+      "id": 304,
+      "name": "Meteor Shower Taps",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/24_meteor_shower_taps.lua"
+    },
+    {
+      "id": 305,
+      "name": "Deep Sea Sonar Seq",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/25_deep_sea_sonar_seq.lua"
+    },
+    {
+      "id": 306,
+      "name": "Watchmaker Sanctum",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/26_watchmaker_sanctum.lua"
+    },
+    {
+      "id": 307,
+      "name": "Rhythmic Formant Talk",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/27_rhythmic_formant_talk.lua"
+    },
+    {
+      "id": 308,
+      "name": "Tribal Nebula",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/28_tribal_nebula.lua"
+    },
+    {
+      "id": 309,
+      "name": "Solar Flare Cycle",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/29_solar_flare_cycle.lua"
+    },
+    {
+      "id": 310,
+      "name": "Spinning Top Gyro",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/30_spinning_top_gyro.lua"
+    },
+    {
+      "id": 311,
+      "name": "Pendulum Wave 16",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/31_pendulum_wave_16.lua"
+    },
+    {
+      "id": 312,
+      "name": "Crystal Cavern Drops",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/32_crystal_cavern_drops.lua"
+    },
+    {
+      "id": 313,
+      "name": "Starship Engine Idle",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/33_starship_engine_idle.lua"
+    },
+    {
+      "id": 314,
+      "name": "Synchrotron Beam",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/34_synchrotron_beam.lua"
+    },
+    {
+      "id": 315,
+      "name": "Midnight Express Pad",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/35_midnight_express_pad.lua"
+    },
+    {
+      "id": 316,
+      "name": "Krautrock Horizon",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/36_krautrock_horizon.lua"
+    },
+    {
+      "id": 317,
+      "name": "Berlin School Odyssey",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/37_berlin_school_odyssey.lua"
+    },
+    {
+      "id": 318,
+      "name": "Polyrhythm 9 Against 4",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/38_polyrhythm_9_against_4.lua"
+    },
+    {
+      "id": 319,
+      "name": "Modular Trunk Groove",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/39_modular_trunk_groove.lua"
+    },
+    {
+      "id": 320,
+      "name": "Infinite Odyssey",
+      "realm": "rhythmic_odysseys",
+      "path": "patches/rhythmic_odysseys/40_infinite_odyssey.lua"
+    }
+  ]
+}

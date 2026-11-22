@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" href="data:," />
+  <title>Green Fairy — 3D Modular Synth Sanctum</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #050d0f; color: #72f7a8; font-family: monospace; }
+    #canvas { display: block; width: 100vw; height: 100vh; touch-action: none; outline: none; }
+    #gf-overlay-bar {
+      position: fixed; bottom: 10px; right: 12px; z-index: 20;
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      background: rgba(5, 16, 20, 0.88); border: 1px solid #2ed97a; padding: 5px 8px;
+      font-size: 11px; border-radius: 3px;
+    }
+    body.gf-touch-mode #gf-overlay-bar {
+      bottom: auto; top: 96px; left: 10px; right: auto;
+    }
+    .gf-btn, .gf-select {
+      background: #0b2622; color: #8dffbe; border: 1px solid #35e585;
+      padding: 4px 7px; cursor: pointer; font-family: monospace; font-size: 11px;
+    }
+    .gf-select { max-width: 210px; }
+    .gf-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    #gf-loading {
+      position: fixed; inset: 0; display: flex; flex-direction: column; gap: 8px;
+      align-items: center; justify-content: center; background: #050d0f; z-index: 30;
+    }
+  </style>
+</head>
+<body>
+  <div id="gf-loading">
+    <h2>GREEN FAIRY SANCTUM</h2>
+    <p id="gf-status-msg">Hydrating external 3D sanctum &amp; DSP assets...</p>
+  </div>
+  <div id="gf-overlay-bar">
+    <span id="gf-mode-badge">MODE: DESKTOP</span>
+    <select id="gf-preset-select" class="gf-select" title="320+ Fantasy &amp; Space Presets"></select>
+    <button id="gf-mutate-btn" class="gf-btn" title="Breed Sound Mutation">MUTATE</button>
+    <button id="gf-audio-btn" class="gf-btn">AUDIO</button>
+    <button id="gf-xr-btn" class="gf-btn" disabled>WEBXR N/A</button>
+  </div>
+  <canvas id="canvas" tabindex="0" oncontextmenu="event.preventDefault()"></canvas>
+  <script src="js/webxr.js"></script>
+  <script src="js/bridge.js"></script>
+  {{{ SCRIPT }}}
+</body>
+</html>

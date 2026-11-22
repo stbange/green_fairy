@@ -1,0 +1,75 @@
+name: Green Fairy CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linux-coverage-and-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build and headless GL dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build cmake gcc gcovr xvfb libgl1-mesa-dev libegl1-mesa-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxfixes-dev libasound2-dev libpulse-dev libwayland-dev libxkbcommon-dev
+      - name: Configure and build (coverage)
+        run: |
+          cmake --preset linux-coverage
+          cmake --build --preset linux-coverage
+      - name: Run C unit tests and enforce >=95% coverage
+        run: |
+          ctest --test-dir build/linux-coverage --output-on-failure
+          gcovr --root . build/linux-coverage --filter '^src/' --fail-under-line 95
+      - name: Run Lua unit tests and enforce >=95% coverage
+        run: |
+          ./build/linux-coverage/gf_lua_test_runner --assets assets --fail-under 95
+      - name: Run native headless E2E suite
+        run: |
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 python3 tests/e2e/native_e2e.py ./build/linux-coverage/green_fairy
+
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure and build (Windows)
+        shell: pwsh
+        run: |
+          cmake --preset windows-release
+          cmake --build --preset windows-release
+          ctest --test-dir build/windows-release --output-on-failure
+
+  macos-build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure and build (macOS)
+        run: |
+          brew install ninja
+          cmake --preset macos-release
+          cmake --build --preset macos-release
+          ctest --test-dir build/macos-release --output-on-failure
+
+  web-emscripten-and-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 4.0.6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Ninja and Playwright Chromium
+        run: |
+          sudo apt-get update && sudo apt-get install -y ninja-build
+          npm --prefix tests/e2e/web ci || npm --prefix tests/e2e/web install
+          npx --prefix tests/e2e/web playwright install chromium
+      - name: Build Emscripten Web/WebXR target
+        run: |
+          emcmake cmake --preset web-emscripten
+          cmake --build --preset web-emscripten
+      - name: Run Web, Mobile Touch, and WebXR E2E suite
+        run: |
+          node tests/e2e/web/run_web_e2e.mjs build/web-emscripten

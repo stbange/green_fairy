@@ -1,0 +1,23 @@
+# Build directories
+build/
+.deps/
+out/
+dist/
+
+# Coverage and test outputs
+*.gcda
+*.gcno
+*.gcov
+coverage/
+test-results/
+playwright-report/
+.cache/
+
+# Node / Playwright local installs
+node_modules/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,4 +1,4 @@
-/* Green Fairy WebXR Immersive Session Manager */
+/* Green Fairy WebXR Immersive 7-Room Session & 6DoF Controller Ray Manager */
 window.GreenFairyXR = (function () {
   let activeSession = null;
   let refSpace = null;
@@ -6,6 +6,7 @@ window.GreenFairyXR = (function () {
   let projMatPtr = 0;
   let lastTs = 0;
   let prevTriggers = {};
+  let prevTeleports = {};
 
   function getWebGLContext(canvas) {
     if (window.Module && window.Module.ctx) return window.Module.ctx;
@@ -30,6 +31,23 @@ window.GreenFairyXR = (function () {
     }
   }
 
+  function extractRayFromSource(src, frame, space) {
+    if (src && src.rayOrigin && src.rayDir) {
+      return { o: src.rayOrigin, d: src.rayDir };
+    }
+    if (src && src.targetRaySpace && frame && typeof frame.getPose === "function") {
+      const rp = frame.getPose(src.targetRaySpace, space);
+      if (rp && rp.transform && rp.transform.matrix) {
+        const m = rp.transform.matrix;
+        return {
+          o: [m[12], m[13], m[14]],
+          d: [-m[8], -m[9], -m[10]],
+        };
+      }
+    }
+    return null;
+  }
+
   async function enter(canvas, btn, onStateChange) {
     if (activeSession || !navigator.xr) return false;
     const gl = getWebGLContext(canvas);
@@ -39,13 +57,12 @@ window.GreenFairyXR = (function () {
           gl.makeXRCompatible(),
           new Promise((resolve) => setTimeout(resolve, 250)),
         ]);
-      } catch (_) {
-        /* Emulated or software WebGL2 backends may not support makeXRCompatible */
-      }
+      } catch (_) {}
     }
     const session = await navigator.xr.requestSession("immersive-vr");
     activeSession = session;
     prevTriggers = {};
+    prevTeleports = {};
     lastTs = 0;
 
     if (typeof XRWebGLLayer !== "undefined" && gl) {
@@ -84,12 +101,23 @@ window.GreenFairyXR = (function () {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
       }
 
-      /* Forward XR controller trigger state */
+      /* Forward 6DoF XR controller rays, trigger grabs (3D knobs & cables), and room teleports */
       const sources = session.inputSources || [];
       for (let i = 0; i < sources.length; i++) {
-        const gp = sources[i] && sources[i].gamepad;
-        const trig = gp && gp.buttons && gp.buttons[0] ? (gp.buttons[0].value || (gp.buttons[0].pressed ? 1 : 0)) : 0;
-        if (Math.abs((prevTriggers[i] || 0) - trig) > 0.25) {
+        const src = sources[i];
+        const gp = src && src.gamepad;
+        const trig = gp && gp.buttons && gp.buttons[0]
+          ? (gp.buttons[0].value ?? (gp.buttons[0].pressed ? 1 : 0))
+          : 0;
+        const squeeze = gp && gp.buttons && gp.buttons[1] && gp.buttons[1].pressed;
+        const tpRoom = src.teleportRoom || (squeeze && !prevTeleports[i] ? ((i % 7) + 1) : 0);
+        prevTeleports[i] = !!squeeze;
+
+        const ray = extractRayFromSource(src, frame, refSpace);
+        if (ray && Module._gf_webxr_controller_ray) {
+          Module._gf_webxr_controller_ray(i, ray.o[0], ray.o[1], ray.o[2],
+                                          ray.d[0], ray.d[1], ray.d[2], trig, tpRoom);
+        } else if (Math.abs((prevTriggers[i] || 0) - trig) > 0.25) {
           prevTriggers[i] = trig;
           Module._gf_webxr_controller_input(i + 1, trig);
         }
@@ -102,8 +130,10 @@ window.GreenFairyXR = (function () {
         const vp = baseLayer && typeof baseLayer.getViewport === "function"
           ? baseLayer.getViewport(v)
           : { x: i * 480, y: 0, width: 480, height: 720 };
-        const viewMat = v.transform && v.transform.inverse ? v.transform.inverse.matrix : new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
-        const projMat = v.projectionMatrix || new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
+        const viewMat = v.transform && v.transform.inverse
+          ? v.transform.inverse.matrix
+          : new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
+        const projMat = v.projectionMatrix || new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,1,0, 0,0,0,1]);
         Module.HEAPF32.set(viewMat, viewMatPtr >> 2);
         Module.HEAPF32.set(projMat, projMatPtr >> 2);
         Module._gf_webxr_render_eye(viewMatPtr, projMatPtr, vp.x, vp.y, vp.width, vp.height);

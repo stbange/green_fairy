@@ -1,4 +1,4 @@
--- Green Fairy: Procedural Wavetable & Multi-Stage Envelope Generators
+-- Green Fairy: Procedural Wavetable, Multi-Stage Envelope & Modular Patch Applicator
 local M = {}
 
 function M.gen_harmonic_table(harmonics, size)
@@ -30,7 +30,6 @@ function M.gen_crystal_table(size)
 end
 
 function M.build_aether_envelope()
-    -- Multi-stage Absynth-style breathing envelope with sustain and loop
     return {
         {0.00, 0.00,  0.0},
         {0.03, 0.95, -0.3},
@@ -65,9 +64,25 @@ function M.apply_patch(patch)
             if wt.b then gf.synth.set_wavetable(ch, true, wt.b) end
         end
     end
+    if patch.harmonics then
+        for ch, hm in pairs(patch.harmonics) do
+            if hm.a then gf.synth.set_harmonics(ch, false, hm.a) end
+            if hm.b then gf.synth.set_harmonics(ch, true, hm.b) end
+        end
+    end
+    if patch.shapers then
+        for ch, curve in pairs(patch.shapers) do
+            gf.synth.set_shaper_curve(ch, curve)
+        end
+    end
     if patch.envelopes then
         for slot, env in pairs(patch.envelopes) do
             gf.synth.set_envelope(slot, env.points, env.sustain or -1, env.loop_start or -1, env.loop_end or -1)
+        end
+    end
+    if patch.sequencer then
+        for step, st in ipairs(patch.sequencer) do
+            gf.synth.set_seq_step(step, st[1] or 0, st[2] or 0.5, st[3] ~= false)
         end
     end
     if patch.params then
@@ -75,8 +90,18 @@ function M.apply_patch(patch)
             gf.synth.set_param(k, v)
         end
     end
-    if patch.xy then
+    if patch.xyz then
+        gf.synth.set_xyz(patch.xyz[1] or 0.5, patch.xyz[2] or 0.5, patch.xyz[3] or 0.5)
+    elseif patch.xy then
         gf.synth.set_xy(patch.xy[1] or 0.5, patch.xy[2] or 0.5)
+    end
+    if patch.cables then
+        if not patch.append_cables then
+            gf.patchbay.clear()
+        end
+        for _, c in ipairs(patch.cables) do
+            gf.patchbay.connect(c[1], c[2], c[3] or 0.8)
+        end
     end
     return true
 end

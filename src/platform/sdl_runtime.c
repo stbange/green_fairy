@@ -138,6 +138,12 @@ static void SDLCALL audio_callback(void *userdata, SDL_AudioStream *stream, int 
 static void pump_sdl_events(void) {
     SDL_Event ev;
     while (SDL_PollEvent(&ev)) {
+#ifdef __EMSCRIPTEN__
+        /* On Web, bridge.js owns DOM touch/mouse/key/resize input to avoid duplicate conflicting events */
+        if (ev.type == SDL_EVENT_QUIT) {
+            g_app.running = false;
+        }
+#else
         switch (ev.type) {
             case SDL_EVENT_QUIT:
                 g_app.running = false;
@@ -165,34 +171,38 @@ static void pump_sdl_events(void) {
                 else if (ev.key.key < 128) gf_app_handle_key(&g_app, (int)ev.key.key, false);
                 break;
             case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+                if (ev.button.which == SDL_TOUCH_MOUSEID) break;
                 float ex = (ev.button.button == SDL_BUTTON_RIGHT) ? 2.0f
                          : ((SDL_GetModState() & SDL_KMOD_SHIFT) ? 1.0f : 0.0f);
                 gf_app_handle_pointer_ex(&g_app, "pointer_down", 0, ev.button.x, ev.button.y, ex);
                 break;
             }
             case SDL_EVENT_MOUSE_BUTTON_UP:
+                if (ev.button.which == SDL_TOUCH_MOUSEID) break;
                 gf_app_handle_pointer_ex(&g_app, "pointer_up", 0, ev.button.x, ev.button.y, 0.0f);
                 break;
             case SDL_EVENT_MOUSE_MOTION: {
+                if (ev.motion.which == SDL_TOUCH_MOUSEID) break;
                 float ex = (ev.motion.state & SDL_BUTTON_RMASK) ? 2.0f : 0.0f;
                 gf_app_handle_pointer_ex(&g_app, "pointer_move", 0, ev.motion.x, ev.motion.y, ex);
                 break;
             }
             case SDL_EVENT_FINGER_DOWN:
-                gf_app_handle_pointer(&g_app, "pointer_down", (int)(ev.tfinger.fingerID & 0x7FFF),
+                gf_app_handle_pointer(&g_app, "pointer_down", (int)(ev.tfinger.fingerID & 0x7FFF) + 10,
                                       ev.tfinger.x * (float)g_app.width, ev.tfinger.y * (float)g_app.height);
                 break;
             case SDL_EVENT_FINGER_MOTION:
-                gf_app_handle_pointer(&g_app, "pointer_move", (int)(ev.tfinger.fingerID & 0x7FFF),
+                gf_app_handle_pointer(&g_app, "pointer_move", (int)(ev.tfinger.fingerID & 0x7FFF) + 10,
                                       ev.tfinger.x * (float)g_app.width, ev.tfinger.y * (float)g_app.height);
                 break;
             case SDL_EVENT_FINGER_UP:
-                gf_app_handle_pointer(&g_app, "pointer_up", (int)(ev.tfinger.fingerID & 0x7FFF),
+                gf_app_handle_pointer(&g_app, "pointer_up", (int)(ev.tfinger.fingerID & 0x7FFF) + 10,
                                       ev.tfinger.x * (float)g_app.width, ev.tfinger.y * (float)g_app.height);
                 break;
             default:
                 break;
         }
+#endif
     }
 }
 
@@ -353,6 +363,9 @@ EMSCRIPTEN_KEEPALIVE const char *gf_web_get_status_json(void) {
 int gf_sdl_run(const GFAppConfig *cfg) {
     if (!cfg) return 1;
     g_max_frames = cfg->max_frames;
+
+    SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "0");
+    SDL_SetHint(SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         GF_LOGE("sdl", "SDL_Init(VIDEO) failed: %s", SDL_GetError());

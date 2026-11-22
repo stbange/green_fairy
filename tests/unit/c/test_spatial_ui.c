@@ -208,6 +208,19 @@ static void test_spatial_widgets_raypicking_and_curves(void) {
     GF_ASSERT(picked == w_knob);
     GF_ASSERT(hit_t > 0.2f);
 
+    /* Portrait mobile viewport (390x844): verify Hor+ FOV widening & exact ray-picking alignment */
+    GFMat4 p_view, p_proj;
+    gf_camera_focus_rack(&rig, rk, gf_vec3(0.0f, 1.5f, -21.5f), gf_vec3(0, 0, 1), 2.4f, 1.8f, 390.0f / 844.0f);
+    gf_camera_step(&rig, 1.0f);
+    gf_camera_compute_matrices(&rig, 390.0f / 844.0f, 0.08f, 85.0f, &p_view, &p_proj);
+    GF_ASSERT(p_proj.m[5] < proj.m[5]); /* Wider vertical FOV on portrait to preserve horizontal view */
+    GFVec4 p_clip = gf_mat4_mul_vec4(gf_mat4_mul(p_proj, p_view), (GFVec4){kw->world_pos.x, kw->world_pos.y, kw->world_pos.z, 1.0f});
+    float psx = ((p_clip.x / p_clip.w) * 0.5f + 0.5f) * 390.0f;
+    float psy = (0.5f - (p_clip.y / p_clip.w) * 0.5f) * 844.0f;
+    GFRay p_ray = gf_ray_from_screen(psx, psy, 390.0f, 844.0f, &p_view, &p_proj);
+    GF_ASSERT(gf_spatial_pick(&ui, p_ray, NULL, true, NULL) == w_knob);
+    GF_ASSERT(gf_camera_is_room_visible(&rig, &p_view, rig.fov_deg, 390.0f / 844.0f, 85.0f, 1));
+
     GFVec2 rack_xy;
     GF_ASSERT(gf_spatial_ray_to_rack_local(&ui, rk, ray, &rack_xy));
     GF_ASSERT_NEAR(rack_xy.x, -0.6f, 0.03f);

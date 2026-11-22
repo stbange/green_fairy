@@ -7,8 +7,8 @@
   <title>Green Fairy — 3D Modular Synth Sanctum</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
-    html, body { width: 100%; height: 100%; overflow: hidden; background: #050d0f; color: #72f7a8; font-family: monospace; }
-    #canvas { display: block; width: 100vw; height: 100vh; touch-action: none; outline: none; }
+    html, body { width: 100%; height: 100%; height: 100dvh; overflow: hidden; background: #050d0f; color: #72f7a8; font-family: monospace; overscroll-behavior: none; }
+    #canvas { display: block; width: 100vw; height: 100vh; height: 100dvh; touch-action: none; outline: none; }
     #gf-overlay-bar {
       position: fixed; bottom: 10px; right: 12px; z-index: 20;
       display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
@@ -16,8 +16,13 @@
       font-size: 11px; border-radius: 3px;
     }
     body.gf-touch-mode #gf-overlay-bar {
-      bottom: auto; top: 96px; left: 10px; right: auto;
+      bottom: auto; top: 130px; left: 10px; right: 10px;
+      flex-wrap: nowrap; gap: 4px; padding: 3px 6px; font-size: 10px;
     }
+    body.gf-touch-mode #gf-mode-badge { font-size: 9px; white-space: nowrap; }
+    body.gf-touch-mode .gf-select { flex: 1 1 auto; min-width: 0; max-width: none; padding: 3px 4px; font-size: 10px; }
+    body.gf-touch-mode .gf-btn { padding: 3px 5px; font-size: 10px; white-space: nowrap; }
+    body.gf-touch-mode #gf-xr-btn:disabled { display: none; }
     .gf-btn, .gf-select {
       background: #0b2622; color: #8dffbe; border: 1px solid #35e585;
       padding: 4px 7px; cursor: pointer; font-family: monospace; font-size: 11px;

@@ -303,6 +303,17 @@ run_test("screen_3d_dragging_and_mobile_touch", function()
     Compass.handle_hud_pointer({type="pointer_down", id=14, x=mhud.keys_toggle_btn[1]+10, y=mhud.keys_toggle_btn[2]+10}, mw, mh, "touch", gf_get_state())
     Compass.handle_hud_pointer({type="pointer_up",   id=14, x=mhud.keys_toggle_btn[1]+10, y=mhud.keys_toggle_btn[2]+10}, mw, mh, "touch", gf_get_state())
 
+    -- 1-finger damped touch look + 2-finger pinch/glide walk on open 3D space (pointer-ID isolated)
+    gf.spatial.teleport_room(6)
+    gf_on_input({type="pointer_down", id=21, x=80,  y=240, extra=0})
+    gf_on_input({type="pointer_move", id=21, x=110, y=230, extra=0})
+    gf_on_input({type="pointer_down", id=22, x=300, y=240, extra=0})
+    gf_on_input({type="pointer_move", id=21, x=95,  y=220, extra=0})
+    gf_on_input({type="pointer_move", id=22, x=320, y=220, extra=0})
+    gf_on_input({type="pointer_up",   id=22, x=320, y=220, extra=0})
+    gf_on_input({type="pointer_move", id=21, x=105, y=222, extra=0})
+    gf_on_input({type="pointer_up",   id=21, x=105, y=222, extra=0})
+
     -- XR mode & direct note_on/note_off/xr_trigger
     gf_on_mode_change("xr")
     gf_render_ui(960, 720)

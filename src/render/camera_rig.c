@@ -210,6 +210,17 @@ void gf_camera_look(GFCameraRig *rig, float delta_yaw_rad, float delta_pitch_rad
     rig->target = gf_vec3_add(rig->pos, dir_from_yaw_pitch(rig->yaw, rig->pitch));
 }
 
+static float effective_fov_deg_for_aspect(float base_fov_deg, float aspect) {
+    float fov = base_fov_deg > 5.0f ? base_fov_deg : 60.0f;
+    if (aspect >= 1.0f || aspect <= 0.05f) return fov;
+    /* Preserve comfortable horizontal FOV on portrait mobile viewports (Hor+ scaling) */
+    float half_rad = (fov * (GF_PI / 180.0f)) * 0.5f;
+    float clamped_aspect = gf_clampf(aspect, 0.50f, 1.0f);
+    float tan_v = tanf(half_rad) / clamped_aspect;
+    float out_deg = (2.0f * atanf(tan_v)) * (180.0f / GF_PI);
+    return gf_clampf(out_deg, fov, 98.0f);
+}
+
 void gf_camera_focus_rack(GFCameraRig *rig, int rack_id, GFVec3 rack_center,
                           GFVec3 rack_normal, float rack_w, float rack_h, float aspect) {
     if (!rig) return;
@@ -220,14 +231,15 @@ void gf_camera_focus_rack(GFCameraRig *rig, int rack_id, GFVec3 rack_center,
     }
 
     float focus_fov = 48.0f;
-    float half_v = tanf((focus_fov * GF_PI / 180.0f) * 0.5f);
     float safe_aspect = aspect > 0.25f ? aspect : 1.0f;
+    float eff_fov = effective_fov_deg_for_aspect(focus_fov, safe_aspect);
+    float half_v = tanf((eff_fov * GF_PI / 180.0f) * 0.5f);
     float half_h = half_v * safe_aspect;
 
-    float dist_v = (rack_h * 0.58f) / half_v;
+    float dist_v = (rack_h * 0.62f) / half_v;
     float dist_h = (rack_w * 0.60f) / half_h;
     float dist = dist_v > dist_h ? dist_v : dist_h;
-    dist = gf_clampf(dist, 0.95f, 4.80f);
+    dist = gf_clampf(dist, 0.95f, 4.65f);
 
     GFVec3 nrm = gf_vec3_normalize(rack_normal);
     if (gf_vec3_len(nrm) < 1e-4f) nrm = gf_vec3(0.0f, 0.0f, 1.0f);
@@ -297,9 +309,11 @@ void gf_camera_compute_matrices(const GFCameraRig *rig, float aspect, float near
     if (fabsf(dir.y) > 0.99f) {
         up = gf_vec3(0.0f, 0.0f, dir.y > 0.0f ? 1.0f : -1.0f);
     }
+    float safe_aspect = aspect > 0.05f ? aspect : 1.0f;
+    float eff_fov = effective_fov_deg_for_aspect(rig->fov_deg, safe_aspect);
     *out_view = gf_mat4_look_at(rig->pos, rig->target, up);
-    *out_proj = gf_mat4_perspective(rig->fov_deg * (GF_PI / 180.0f),
-                                    aspect > 0.05f ? aspect : 1.0f,
+    *out_proj = gf_mat4_perspective(eff_fov * (GF_PI / 180.0f),
+                                    safe_aspect,
                                     near_z > 0.01f ? near_z : 0.05f,
                                     far_z > 1.0f ? far_z : 80.0f);
 }
@@ -337,9 +351,11 @@ bool gf_camera_is_room_visible(const GFCameraRig *rig, const GFMat4 *view,
     if (depth + radius < 0.05f) return false;   /* Completely behind camera */
     if (depth - radius > far_z) return false;   /* Beyond far plane */
 
-    float half_v_rad = (fov_deg > 5.0f ? fov_deg : 60.0f) * (GF_PI / 180.0f) * 0.5f;
+    float safe_aspect = aspect > 0.1f ? aspect : 1.0f;
+    float eff_fov = effective_fov_deg_for_aspect(fov_deg, safe_aspect);
+    float half_v_rad = eff_fov * (GF_PI / 180.0f) * 0.5f;
     float tan_v = tanf(half_v_rad);
-    float tan_h = tan_v * (aspect > 0.1f ? aspect : 1.0f);
+    float tan_h = tan_v * safe_aspect;
     float sec_v = sqrtf(1.0f + tan_v * tan_v);
     float sec_h = sqrtf(1.0f + tan_h * tan_h);
 

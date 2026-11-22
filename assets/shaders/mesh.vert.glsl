@@ -17,8 +17,8 @@ out float v_light;
 void main() {
     vec4 world_pos = u_model * vec4(a_pos, 1.0);
     vec4 clip = u_proj * u_view * world_pos;
-    if (u_snap_res > 1.0) {
-        vec2 ndc = clip.xy / max(abs(clip.w), 0.0001);
+    if (u_snap_res > 1.0 && clip.w > 0.25) {
+        vec2 ndc = clip.xy / clip.w;
         ndc = floor(ndc * u_snap_res + 0.5) / u_snap_res;
         clip.xy = ndc * clip.w;
     }

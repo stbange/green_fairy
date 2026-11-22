@@ -249,14 +249,16 @@ async function main() {
       await ctx.close();
     }
 
-    // ---------------- Scenario 2: Mobile Touch 3D Walk/Look, Rack Focus & Multi-Touch Notes ----------------
+    // ---------------- Scenario 2: Mobile Touch 3D Walk/Look, Multi-Finger Stability, Rack Focus & Multi-Touch Notes ----------------
     {
       const ctx = await browser.newContext({
         viewport: { width: 390, height: 844 },
+        deviceScaleFactor: 3,
         hasTouch: true,
         isMobile: true,
       });
       const page = await ctx.newPage();
+      const cdp = await ctx.newCDPSession(page);
       const errors = [];
       page.on("pageerror", (e) => errors.push(e.message));
       page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
@@ -269,28 +271,52 @@ async function main() {
       const badge = await page.locator("#gf-mode-badge").textContent();
       assert(mode === "touch" && badge.includes("TOUCH"), `Expected mobile touch mode, got mode=${mode}, badge=${badge}`);
 
-      // Dispatch simultaneous 2-finger multi-touch chord on bottom keyboard + virtual walk pad drag
-      await page.evaluate(() => {
-        const c = document.getElementById("canvas");
-        const mkTouch = (id, x, y) => new Touch({ identifier: id, target: c, clientX: x, clientY: y, pageX: x, pageY: y });
-        const t1 = mkTouch(1, 55, 790);
-        const t2 = mkTouch(2, 235, 790);
-        const tw = mkTouch(3, 65, 620);
-        c.dispatchEvent(new TouchEvent("touchstart", { touches: [t1, t2, tw], changedTouches: [t1, t2, tw], cancelable: true, bubbles: true }));
-        const twMove = mkTouch(3, 65, 575);
-        c.dispatchEvent(new TouchEvent("touchmove", { touches: [t1, t2, twMove], changedTouches: [twMove], cancelable: true, bubbles: true }));
-      });
-      await page.waitForTimeout(220);
+      // 2a. Real CDP 1-finger drag on open 3D sky/archway (x: 60->140, y: 230->210): verify calm, smooth yaw/pitch with zero jumps
+      const st0 = await page.evaluate(() => window.GreenFairy.getStatus());
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 60, y: 230, id: 0 }] });
+      let prevYaw = st0.yaw;
+      for (let i = 1; i <= 4; i++) {
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 60 + i * 20, y: 230 - i * 5, id: 0 }] });
+        await page.waitForTimeout(25);
+        const sti = await page.evaluate(() => window.GreenFairy.getStatus());
+        const dYaw = sti.yaw - prevYaw;
+        assert(dYaw > 0.01 && dYaw < 0.20, `Expected smooth positive 1-finger yaw step, got dYaw=${dYaw}`);
+        prevYaw = sti.yaw;
+      }
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
 
-      // Release walk thumb while keeping multi-touch chord fingers 1 & 2 held, then trigger Rack-Focus!
-      await page.evaluate(() => {
-        const c = document.getElementById("canvas");
-        const mkTouch = (id, x, y) => new Touch({ identifier: id, target: c, clientX: x, clientY: y, pageX: x, pageY: y });
-        const t1 = mkTouch(1, 55, 790);
-        const t2 = mkTouch(2, 235, 790);
-        const twEnd = mkTouch(3, 65, 575);
-        c.dispatchEvent(new TouchEvent("touchend", { touches: [t1, t2], changedTouches: [twEnd], cancelable: true, bubbles: true }));
+      // 2b. Real CDP 2-finger pinch/glide on open 3D space: verify yaw does NOT ping-pong wildly between fingers!
+      const stBefore2F = await page.evaluate(() => window.GreenFairy.getStatus());
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: 70, y: 250, id: 1 }, { x: 310, y: 250, id: 2 }],
       });
+      for (let i = 1; i <= 4; i++) {
+        await cdp.send("Input.dispatchTouchEvent", {
+          type: "touchMove",
+          touchPoints: [{ x: 70 - i * 4, y: 250 - i * 6, id: 1 }, { x: 310 + i * 4, y: 250 - i * 6, id: 2 }],
+        });
+        await page.waitForTimeout(25);
+        const st2 = await page.evaluate(() => window.GreenFairy.getStatus());
+        assert(Math.abs(st2.yaw - stBefore2F.yaw) < 0.02, `2-finger walk must not spin camera yaw (${stBefore2F.yaw} -> ${st2.yaw})`);
+        assert(st2.drawCalls >= 100, `Expected intact 3D room rendering during 2-finger gesture, got drawCalls=${st2.drawCalls}`);
+      }
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+
+      // 2c. Simultaneous 2-finger multi-touch chord on bottom keyboard + virtual walk pad drag
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: 55, y: 790, id: 3 }, { x: 235, y: 790, id: 4 }, { x: 65, y: 650, id: 5 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: 55, y: 790, id: 3 }, { x: 235, y: 790, id: 4 }, { x: 65, y: 605, id: 5 }],
+      });
+      await page.waitForTimeout(180);
+
+      const stVoices = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(stVoices.activeVoices >= 2, `Expected >=2 simultaneous multi-touch voices, got ${stVoices.activeVoices}`);
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
 
       // Focus rack on mobile & inspect status
       await page.evaluate(() => window.GreenFairy.focusRack(0));
@@ -298,9 +324,8 @@ async function main() {
       const st = await page.evaluate(() => window.GreenFairy.getStatus());
       assert(st.mode === "touch", `Expected status.mode == touch, got ${st.mode}`);
       assert(st.camMode === "focus", `Expected mobile rack focus active, got ${st.camMode}`);
-      assert(st.activeVoices >= 2, `Expected >=2 simultaneous multi-touch voices, got ${st.activeVoices}`);
       assert(errors.length === 0, `Mobile console/page errors: ${errors.join("; ")}`);
-      console.log(`PASS [Web Mobile Touch]: mode=${st.mode}, voices=${st.activeVoices}, camMode=${st.camMode}`);
+      console.log(`PASS [Web Mobile Touch]: mode=${st.mode}, voices=${stVoices.activeVoices}, yaw=${prevYaw.toFixed(3)}, camMode=${st.camMode}`);
       await ctx.close();
     }
 

@@ -19,8 +19,9 @@ local State = {
     arp = Arp.new(),
     pressed_notes = {},
     walk_keys = {w = false, s = false, a = false, d = false},
-    drag = nil, -- Active 3D pointer/XR drag interaction
-    look_drag = nil,
+    drag = nil, -- Active 3D pointer/XR drag interaction (bound to pointer id)
+    scene_touches = {}, -- pointer_id -> {x = ..., y = ...} for 1-finger look & 2-finger pinch/walk
+    pinch_prev = nil,
 }
 
 function State.note_on(note, vel)
@@ -244,57 +245,118 @@ function gf_on_input(ev)
         return
     end
 
-    -- 2. 3D World-Space Raycast Interaction across all 7 rooms
+    -- 2. 3D World-Space Raycast Interaction & Multi-Finger Navigation across all 7 rooms
+    local pid = ev.id or 0
+
+    local function scene_touch_pair()
+        local a, b, cnt = nil, nil, 0
+        for _, pt in pairs(State.scene_touches) do
+            cnt = cnt + 1
+            if cnt == 1 then a = pt elseif cnt == 2 then b = pt end
+        end
+        return cnt, a, b
+    end
+
+    local function sync_pinch_anchor()
+        local cnt, a, b = scene_touch_pair()
+        if cnt >= 2 and a and b then
+            local dx, dy = b.x - a.x, b.y - a.y
+            State.pinch_prev = {
+                mx = (a.x + b.x) * 0.5,
+                my = (a.y + b.y) * 0.5,
+                dist = math.sqrt(dx * dx + dy * dy),
+            }
+        else
+            State.pinch_prev = nil
+        end
+    end
+
     if ev.type == "pointer_down" then
         if ev.extra == 2 then
-            State.look_drag = {last_x = ev.x, last_y = ev.y}
+            State.scene_touches[pid] = {x = ev.x, y = ev.y}
+            sync_pinch_anchor()
             return
         end
-        local pk = gf.spatial.pick_screen(ev.x, ev.y)
-        if not begin_3d_pick(pk, ev.x, ev.y, ev.extra == 1) then
-            -- Background drag in Free-Walk gently orbits look direction
-            State.look_drag = {last_x = ev.x, last_y = ev.y}
-        end
-    elseif ev.type == "pointer_move" then
-        if State.look_drag then
-            local dx = (ev.x - State.look_drag.last_x) * 0.0045
-            local dy = -(ev.y - State.look_drag.last_y) * 0.0038
-            State.look_drag.last_x, State.look_drag.last_y = ev.x, ev.y
-            gf.spatial.look(dx, dy)
-            return
-        end
-        local pk = gf.spatial.pick_screen(ev.x, ev.y)
         if not State.drag then
+            local pk = gf.spatial.pick_screen(ev.x, ev.y)
+            if begin_3d_pick(pk, ev.x, ev.y, ev.extra == 1) then
+                if State.drag then State.drag.id = pid end
+                return
+            end
+        end
+        -- Open 3D space touch/drag: 1 finger smoothly orbits look; 2 fingers pinch/glide to walk
+        State.scene_touches[pid] = {x = ev.x, y = ev.y}
+        sync_pinch_anchor()
+    elseif ev.type == "pointer_move" then
+        if State.drag and (State.drag.id == nil or State.drag.id == pid) then
+            local pk = gf.spatial.pick_screen(ev.x, ev.y)
+            local dr = State.drag
+            if dr.kind == "cable" then
+                gf.spatial.cable_update_screen(ev.x, ev.y, pk.hit == "widget" and pk.id or -1, dr.dist)
+            elseif dr.kind == "ring" then
+                local ng = math.max(-2.0, math.min(2.0, dr.start_gain + (dr.start_y - ev.y) / 95.0))
+                gf.patchbay.set_gain(dr.cable_id, ng)
+            elseif dr.kind == "value" then
+                local n = dr.start_norm + (dr.start_y - ev.y) / 140.0
+                apply_widget_norm(dr.info, n)
+            elseif dr.kind == "env_node" then
+                local lx, ly = gf.spatial.ray_to_rack(dr.rack, ev.x, ev.y)
+                if lx and ly then R3.on_node_drag(dr.aux, lx, ly) end
+            elseif dr.kind == "xyz_orb" then
+                local nx = clamp01(dr.ox + (ev.x - dr.start_x) / 180.0)
+                local ny = clamp01(dr.oy + (dr.start_y - ev.y) / 180.0)
+                local nz = clamp01(dr.oz + (dr.start_y - ev.y) * 0.5 / 180.0)
+                gf.synth.set_xyz(nx, ny, nz)
+                gf.spatial.sync_widgets()
+            elseif dr.kind == "piano_key" and pk.hit == "widget" and pk.kind == "piano_key" and pk.aux ~= dr.note then
+                State.note_off(dr.note)
+                dr.note = pk.aux
+                State.note_on(dr.note, 0.88)
+            end
+            return
+        end
+
+        local st = State.scene_touches[pid]
+        if st then
+            local prev_x, prev_y = st.x, st.y
+            st.x, st.y = ev.x, ev.y
+            local cnt, a, b = scene_touch_pair()
+            if cnt == 1 then
+                local sx = (State.mode == "touch") and (1.55 / math.max(320.0, vw)) or 0.0042
+                local sy = (State.mode == "touch") and (1.25 / math.max(320.0, vh)) or 0.0035
+                local dx = math.max(-0.11, math.min(0.11, (ev.x - prev_x) * sx))
+                local dy = math.max(-0.10, math.min(0.10, -(ev.y - prev_y) * sy))
+                gf.spatial.look(dx, dy)
+            elseif cnt >= 2 and a and b then
+                local ddx, ddy = b.x - a.x, b.y - a.y
+                local mx, my = (a.x + b.x) * 0.5, (a.y + b.y) * 0.5
+                local dist = math.sqrt(ddx * ddx + ddy * ddy)
+                if State.pinch_prev then
+                    local pinch_d = dist - State.pinch_prev.dist
+                    local pan_x = mx - State.pinch_prev.mx
+                    local pan_y = State.pinch_prev.my - my
+                    local fwd = math.max(-0.35, math.min(0.35, pinch_d * 0.015 + pan_y * 0.009))
+                    local rgt = math.max(-0.30, math.min(0.30, pan_x * 0.008))
+                    if math.abs(fwd) > 1e-4 or math.abs(rgt) > 1e-4 then
+                        gf.spatial.walk(fwd, rgt, 0.16)
+                    end
+                end
+                State.pinch_prev = {mx = mx, my = my, dist = dist}
+            end
+            return
+        end
+
+        if not State.drag and State.mode ~= "touch" then
+            local pk = gf.spatial.pick_screen(ev.x, ev.y)
             gf.spatial.set_hover(pk.hit == "widget" and pk.id or -1, -1)
             gf.spatial.set_ring_hover(pk.hit == "ring" and pk.cable_id or -1, -1)
-            return
-        end
-        local dr = State.drag
-        if dr.kind == "cable" then
-            gf.spatial.cable_update_screen(ev.x, ev.y, pk.hit == "widget" and pk.id or -1, dr.dist)
-        elseif dr.kind == "ring" then
-            local ng = math.max(-2.0, math.min(2.0, dr.start_gain + (dr.start_y - ev.y) / 95.0))
-            gf.patchbay.set_gain(dr.cable_id, ng)
-        elseif dr.kind == "value" then
-            local n = dr.start_norm + (dr.start_y - ev.y) / 140.0
-            apply_widget_norm(dr.info, n)
-        elseif dr.kind == "env_node" then
-            local lx, ly = gf.spatial.ray_to_rack(dr.rack, ev.x, ev.y)
-            if lx and ly then R3.on_node_drag(dr.aux, lx, ly) end
-        elseif dr.kind == "xyz_orb" then
-            local nx = clamp01(dr.ox + (ev.x - dr.start_x) / 180.0)
-            local ny = clamp01(dr.oy + (dr.start_y - ev.y) / 180.0)
-            local nz = clamp01(dr.oz + (dr.start_y - ev.y) * 0.5 / 180.0)
-            gf.synth.set_xyz(nx, ny, nz)
-            gf.spatial.sync_widgets()
-        elseif dr.kind == "piano_key" and pk.hit == "widget" and pk.kind == "piano_key" and pk.aux ~= dr.note then
-            State.note_off(dr.note)
-            dr.note = pk.aux
-            State.note_on(dr.note, 0.88)
         end
     elseif ev.type == "pointer_up" then
-        State.look_drag = nil
-        if State.drag then
+        if State.scene_touches[pid] then
+            State.scene_touches[pid] = nil
+            sync_pinch_anchor()
+        end
+        if State.drag and (State.drag.id == nil or State.drag.id == pid) then
             if State.drag.kind == "cable" then
                 gf.spatial.cable_finish()
             elseif State.drag.kind == "piano_key" then

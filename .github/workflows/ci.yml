@@ -18,16 +18,14 @@ jobs:
         run: |
           cmake --preset linux-coverage
           cmake --build --preset linux-coverage
-      - name: Run C unit tests and enforce >=95% coverage
+      - name: Run C unit tests, native headless E2E, and enforce >=95% coverage
         run: |
           ctest --test-dir build/linux-coverage --output-on-failure
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 python3 tests/e2e/native_e2e.py ./build/linux-coverage/green_fairy
           gcovr --root . build/linux-coverage --filter '^src/' --fail-under-line 95
       - name: Run Lua unit tests and enforce >=95% coverage
         run: |
           ./build/linux-coverage/gf_lua_test_runner --assets assets --fail-under 95
-      - name: Run native headless E2E suite
-        run: |
-          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 python3 tests/e2e/native_e2e.py ./build/linux-coverage/green_fairy
 
   windows-build:
     runs-on: windows-latest

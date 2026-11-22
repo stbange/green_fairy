@@ -518,6 +518,7 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         "{\"mode\":\"%s\",\"frames\":%llu,\"xrFrames\":%llu,\"activeVoices\":%d,"
         "\"rmsL\":%.4f,\"rmsR\":%.4f,\"voxelsEnabled\":%s,\"drawCalls\":%u,\"reloadCount\":%d,"
         "\"room\":%d,\"camMode\":\"%s\",\"focusedRack\":%d,\"cableCount\":%d,"
+        "\"yaw\":%.4f,\"pitch\":%.4f,"
         "\"visibleRooms\":%d,\"droneLatch\":%s,\"preset\":\"%s\",\"realm\":\"%s\"}",
         gf_input_mode_name(app->lua.input_mode),
         (unsigned long long)app->frame_count,
@@ -531,6 +532,8 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         app->scene.camera.mode == GF_CAM_RACK_FOCUS ? "focus" : "walk",
         app->scene.camera.focused_rack_id,
         cable_cnt,
+        app->scene.camera.yaw,
+        app->scene.camera.pitch,
         app->renderer.last_visible_rooms,
         app->synth.drone_latch ? "true" : "false",
         app->lua.active_preset_name,

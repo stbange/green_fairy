@@ -137,7 +137,26 @@
     }
   }
 
+  function viewportDims() {
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(Math.round(rect.width || window.innerWidth || 320), 320);
+    const h = Math.max(Math.round(rect.height || window.innerHeight || 240), 240);
+    return [w, h];
+  }
+
   function bindInputs() {
+    const touchSlotMap = new Map();
+    let nextTouchSlot = 10;
+    let lastTouchMs = 0;
+
+    function allocTouchSlot(identifier) {
+      if (touchSlotMap.has(identifier)) return touchSlotMap.get(identifier);
+      const slot = nextTouchSlot;
+      nextTouchSlot = nextTouchSlot >= 999 ? 10 : nextTouchSlot + 1;
+      touchSlotMap.set(identifier, slot);
+      return slot;
+    }
+
     function canvasCoords(clientX, clientY) {
       const rect = canvas.getBoundingClientRect();
       const sx = canvas.width / Math.max(rect.width, 1);
@@ -147,36 +166,48 @@
 
     canvas.addEventListener("touchstart", (e) => {
       e.preventDefault();
+      lastTouchMs = Date.now();
       unlockAudio();
       if (!ready) return;
       for (const t of e.changedTouches) {
+        const slot = allocTouchSlot(t.identifier);
         const [x, y] = canvasCoords(t.clientX, t.clientY);
-        Module._gf_web_pointer_ex(0, (t.identifier % 32767) + 10, x, y, 0);
+        Module._gf_web_pointer_ex(0, slot, x, y, 0);
       }
     }, { passive: false });
 
     canvas.addEventListener("touchmove", (e) => {
       e.preventDefault();
+      lastTouchMs = Date.now();
       if (!ready) return;
       for (const t of e.changedTouches) {
+        const slot = allocTouchSlot(t.identifier);
         const [x, y] = canvasCoords(t.clientX, t.clientY);
-        Module._gf_web_pointer_ex(1, (t.identifier % 32767) + 10, x, y, 0);
+        Module._gf_web_pointer_ex(1, slot, x, y, 0);
       }
     }, { passive: false });
 
     function onTouchEnd(e) {
       e.preventDefault();
+      lastTouchMs = Date.now();
       if (!ready) return;
       for (const t of e.changedTouches) {
+        const slot = touchSlotMap.get(t.identifier) ?? allocTouchSlot(t.identifier);
+        touchSlotMap.delete(t.identifier);
         const [x, y] = canvasCoords(t.clientX, t.clientY);
-        Module._gf_web_pointer_ex(2, (t.identifier % 32767) + 10, x, y, 0);
+        Module._gf_web_pointer_ex(2, slot, x, y, 0);
       }
     }
     canvas.addEventListener("touchend", onTouchEnd, { passive: false });
     canvas.addEventListener("touchcancel", onTouchEnd, { passive: false });
 
     let mouseButton = -1;
+    function isSyntheticMouse() {
+      return touchSlotMap.size > 0 || (Date.now() - lastTouchMs) < 650;
+    }
+
     canvas.addEventListener("mousedown", (e) => {
+      if (isSyntheticMouse()) return;
       unlockAudio();
       canvas.focus();
       mouseButton = e.button;
@@ -186,13 +217,13 @@
       Module._gf_web_pointer_ex(0, 1, x, y, extra);
     });
     window.addEventListener("mousemove", (e) => {
-      if (!ready) return;
+      if (!ready || isSyntheticMouse()) return;
       const [x, y] = canvasCoords(e.clientX, e.clientY);
       const extra = mouseButton === 2 ? 2 : 0;
       Module._gf_web_pointer_ex(1, 1, x, y, extra);
     });
     window.addEventListener("mouseup", (e) => {
-      if (mouseButton < 0 || !ready) return;
+      if (mouseButton < 0 || !ready || isSyntheticMouse()) return;
       mouseButton = -1;
       const [x, y] = canvasCoords(e.clientX, e.clientY);
       Module._gf_web_pointer_ex(2, 1, x, y, 0);
@@ -220,9 +251,8 @@
       if (kc > 0) Module._gf_web_key(kc, 0);
     });
 
-    window.addEventListener("resize", () => {
-      const w = Math.max(window.innerWidth, 320);
-      const h = Math.max(window.innerHeight, 240);
+    function handleViewportResize() {
+      const [w, h] = viewportDims();
       canvas.width = w;
       canvas.height = h;
       if (ready && Module._gf_web_resize) {
@@ -231,7 +261,11 @@
       if (!window.GreenFairyXR.isActive()) {
         syncMode(detectInputMode());
       }
-    });
+    }
+    window.addEventListener("resize", handleViewportResize);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleViewportResize);
+    }
 
     if (presetSelect) {
       presetSelect.addEventListener("change", () => {
@@ -307,8 +341,7 @@
     canvas: canvas,
     onRuntimeInitialized: async function () {
       try {
-        const w = Math.max(window.innerWidth, 320);
-        const h = Math.max(window.innerHeight, 240);
+        const [w, h] = viewportDims();
         canvas.width = w;
         canvas.height = h;
         await hydrateExternalAssets();
@@ -317,6 +350,9 @@
         const rc = Module._gf_web_start(dirPtr, w, h, mode);
         Module._free(dirPtr);
         if (rc !== 0) throw new Error("gf_web_start returned " + rc);
+        canvas.width = w;
+        canvas.height = h;
+        if (Module._gf_web_resize) Module._gf_web_resize(w, h);
         bindInputs();
         await window.GreenFairyXR.checkSupport(xrBtn);
         loadingEl.style.display = "none";

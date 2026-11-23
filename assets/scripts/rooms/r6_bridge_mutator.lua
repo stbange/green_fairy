@@ -24,39 +24,53 @@ function R6.build()
         action = "xyz:orb",
     })
 
-    -- 2. Tilted 3D Synthesizer Keyboard & Performance Console in front of player (0, 1.02, 0.75)
-    R6.console_rack = RB.add_rack(6, "3D PERFORMANCE KEYBOARD & TUNING", 0.0, 1.04, 0.85, 0.0, 2.75, 1.15,
+    -- 2. Grand Tilted 61-Key (5-Octave) 3D Concert Synthesizer Console in front of player
+    R6.console_rack = RB.add_rack(6, "61-KEY 3D CONCERT KEYBOARD & TUNING", 0.0, 1.04, 0.85, 0.0, 4.25, 1.38,
                                   {0.32, 0.96, 0.78, 1.0}, -0.72)
 
-    -- 25 Playable 3D Synthesizer Keys (C3 = 48 .. C5 = 72)
-    for k = 0, 24 do
-        local note = 48 + k
+    -- 61 Playable 3D Chromatic Synthesizer Keys (C2 = 36 .. C7 = 96: 36 white + 25 raised black)
+    local white_step = 0.112
+    local x_start = -((36 - 1) * white_step) * 0.5
+    local w_idx = 0
+    for note = 36, 96 do
         local pc = note % 12
         local is_black = (pc == 1 or pc == 3 or pc == 6 or pc == 8 or pc == 10)
-        local lx = -1.20 + k * 0.10
-        local ly = is_black and 0.04 or -0.14
-        local lz = is_black and 0.038 or 0.014
+        local lx, ly, lz, kw, kh, col
+        if is_black then
+            lx = x_start + (w_idx - 0.5) * white_step
+            ly = 0.02
+            lz = 0.044
+            kw, kh = 0.064, 0.30
+            col = {0.14, 0.34, 0.34, 1.0}
+        else
+            w_idx = w_idx + 1
+            lx = x_start + (w_idx - 1) * white_step
+            ly = -0.10
+            lz = 0.015
+            kw, kh = 0.104, 0.50
+            col = (pc == 0) and {0.78, 0.98, 0.90, 1.0} or {0.88, 0.98, 0.95, 1.0}
+        end
         R6.key_widgets[note] = gf.spatial.add_widget({
             room = 6, rack = R6.console_rack, kind = "piano_key",
             pos = {lx, ly, lz},
-            size = {is_black and 0.068 or 0.088, is_black and 0.24 or 0.34, 0},
+            size = {kw, kh, 0},
             aux = note, min = 0.0, max = 1.0, default = 0.0,
-            color = is_black and {0.22, 0.55, 0.48, 1.0} or {0.86, 0.98, 0.94, 1.0},
+            color = col,
             action = "key:3d",
         })
     end
 
     local c_ids = RB.add_controls(6, R6.console_rack, {
-        {kind="switch",    x=-1.05, y=0.33, w=0.095,          min=0, max=1,   param="voice.drone_latch", label="DRONE",   color=RB.COLOR_SWITCH},
-        {kind="switch",    x=-0.65, y=0.33, w=0.095,          min=0, max=1,   default=0,                 label="ARP ON",  action="arp:toggle", color=RB.COLOR_SWITCH},
-        {kind="step_dial", x=-0.20, y=0.33, w=0.095, steps=8, min=0, max=7,   param="tuning.scale",      label="SCALE",   color=RB.COLOR_DIAL},
-        {kind="knob",      x= 0.25, y=0.33, w=0.095,          min=415,max=466,param="tuning.a4",         label="A4 HZ"},
-        {kind="knob",      x= 0.68, y=0.33, w=0.095,          min=0, max=0.6, param="voice.glide",       label="GLIDE"},
-        {kind="switch",    x= 1.05, y=0.33, w=0.095,          min=0, max=1,   param="xy.enabled",        label="XYZ ON",  color=RB.COLOR_SWITCH},
+        {kind="switch",    x=-1.60, y=0.44, w=0.10,           min=0, max=1,   param="voice.drone_latch", label="DRONE",   color=RB.COLOR_SWITCH},
+        {kind="switch",    x=-0.96, y=0.44, w=0.10,           min=0, max=1,   default=0,                 label="ARP ON",  action="arp:toggle", color=RB.COLOR_SWITCH},
+        {kind="step_dial", x=-0.32, y=0.44, w=0.10, steps=8,  min=0, max=7,   param="tuning.scale",      label="SCALE",   color=RB.COLOR_DIAL},
+        {kind="knob",      x= 0.32, y=0.44, w=0.10,           min=415,max=466,param="tuning.a4",         label="A4 HZ"},
+        {kind="knob",      x= 0.96, y=0.44, w=0.10,           min=0, max=0.6, param="voice.glide",       label="GLIDE"},
+        {kind="switch",    x= 1.60, y=0.44, w=0.10,           min=0, max=1,   param="xy.enabled",        label="XYZ ON",  color=RB.COLOR_SWITCH},
     })
     R6.arp_switch = c_ids[2]
 
-    RB.add_jack_strip(6, R6.console_rack, -0.44, {
+    RB.add_jack_strip(6, R6.console_rack, -0.54, {
         {"midi.pitch_cv",      true, "KEY CV",  "cv"},
         {"midi.gate_out",      true, "GATE",    "trig"},
         {"midi.vel_out",       true, "VEL CV",  "cv"},

@@ -3,6 +3,9 @@
 local Floorplan = {
     wisps = {},
     spires = {},
+    shells = {},
+    arches = {},
+    pedestal = -1,
     time = 0.0,
 }
 
@@ -14,6 +17,8 @@ local CORRIDOR_LINKS = {
 function Floorplan.build_architecture()
     Floorplan.wisps = {}
     Floorplan.spires = {}
+    Floorplan.shells = {}
+    Floorplan.arches = {}
 
     local rooms = gf.spatial.rooms()
     for _, rm in ipairs(rooms) do
@@ -22,6 +27,7 @@ function Floorplan.build_architecture()
         local shell = gf.scene.add_mesh("models/room_shell.obj", rm.id)
         gf.scene.set_transform(shell, rm.x, 0.0, rm.z, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
         gf.scene.set_tint(shell, 0.45 + th[1] * 0.55, 0.45 + th[2] * 0.55, 0.45 + th[3] * 0.55, 1.0)
+        Floorplan.shells[#Floorplan.shells + 1] = { id = shell, theme = th }
 
         -- Optional decorative voxel sanctum spires flanking the rear archway
         local sp = gf.scene.add_voxel("voxels/fairy_spire.gfvox", rm.id)
@@ -50,12 +56,32 @@ function Floorplan.build_architecture()
         local arch = gf.scene.add_mesh("models/archway_conduit.obj", 0)
         gf.scene.set_transform(arch, mx, 0.0, mz, 0.0, yaw, 0.0, 1.0, 1.0, math.max(1.0, (dist - 10.5) / 4.0))
         gf.scene.set_tint(arch, 0.55, 0.92, 0.82, 1.0)
+        Floorplan.arches[#Floorplan.arches + 1] = arch
     end
 
     -- Central Room 6 Holographic XYZ Morph Pedestal
-    local ped = gf.scene.add_mesh("models/morph_pedestal.obj", 6)
-    gf.scene.set_transform(ped, 0.0, 0.0, -1.35, 0.0, 0.0, 0.0, 1.15, 1.05, 1.15)
-    gf.scene.set_tint(ped, 0.45, 1.0, 0.84, 1.0)
+    Floorplan.pedestal = gf.scene.add_mesh("models/morph_pedestal.obj", 6)
+    gf.scene.set_transform(Floorplan.pedestal, 0.0, 0.0, -1.35, 0.0, 0.0, 0.0, 1.15, 1.05, 1.15)
+    gf.scene.set_tint(Floorplan.pedestal, 0.45, 1.0, 0.84, 1.0)
+end
+
+function Floorplan.apply_world_tint(r, g, b)
+    for _, sh in ipairs(Floorplan.shells) do
+        local th = sh.theme
+        gf.scene.set_tint(sh.id,
+            0.22 + th[1] * 0.28 + r * 0.48,
+            0.22 + th[2] * 0.28 + g * 0.48,
+            0.22 + th[3] * 0.28 + b * 0.48, 1.0)
+    end
+    for _, arch in ipairs(Floorplan.arches) do
+        gf.scene.set_tint(arch, 0.28 + r * 0.65, 0.28 + g * 0.65, 0.28 + b * 0.65, 1.0)
+    end
+    for _, sp in ipairs(Floorplan.spires) do
+        gf.scene.set_tint(sp, 0.30 + r * 0.70, 0.30 + g * 0.70, 0.30 + b * 0.70, 1.0)
+    end
+    if Floorplan.pedestal and Floorplan.pedestal > 0 then
+        gf.scene.set_tint(Floorplan.pedestal, 0.30 + r * 0.70, 0.30 + g * 0.70, 0.30 + b * 0.70, 1.0)
+    end
 end
 
 function Floorplan.update(dt, tel)

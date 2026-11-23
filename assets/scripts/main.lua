@@ -1,39 +1,60 @@
 -- Green Fairy v2.0: Seven-Room Retro-3D Modular Sanctum Entry Orchestrator
 
-local Arp       = require("dsp.arp")
-local Looper    = require("dsp.looper")
-local Mutator   = require("dsp.mutator")
-local Floorplan = require("rooms.sanctum_floorplan")
-local R1        = require("rooms.r1_oscillators")
-local R2        = require("rooms.r2_filters")
-local R3        = require("rooms.r3_envelopes")
-local R4        = require("rooms.r4_modulation_patchbay")
-local R5        = require("rooms.r5_aetherium_fx")
-local R6        = require("rooms.r6_bridge_mutator")
-local R7        = require("rooms.r7_preset_archive")
-local Compass   = require("ui.compass_minimap")
+local Arp          = require("dsp.arp")
+local Looper       = require("dsp.looper")
+local Mutator      = require("dsp.mutator")
+local Floorplan    = require("rooms.sanctum_floorplan")
+local PresetWorlds = require("scene.preset_worlds")
+local R1           = require("rooms.r1_oscillators")
+local R2           = require("rooms.r2_filters")
+local R3           = require("rooms.r3_envelopes")
+local R4           = require("rooms.r4_modulation_patchbay")
+local R5           = require("rooms.r5_aetherium_fx")
+local R6           = require("rooms.r6_bridge_mutator")
+local R7           = require("rooms.r7_preset_archive")
+local Compass      = require("ui.compass_minimap")
 
 local State = {
     mode = "desktop",
     preset_name = "Emerald Aether",
+    world_theme = "emerald_cavern",
     voices = 0,
     arp = Arp.new(),
     looper = nil,
     pressed_notes = {},
+    music = {energy = 0.0, pitch_norm = 0.5, target_pitch = 0.5, strike = 0.0},
     walk_keys = {w = false, s = false, a = false, d = false},
     drag = nil, -- Active 3D pointer/XR drag interaction (bound to pointer id)
     scene_touches = {}, -- pointer_id -> {x = ..., y = ...} for 1-finger look & 2-finger pinch/walk
     pinch_prev = nil,
 }
 
+local function pulse_music_note(note, vel)
+    local p = (note - 36.0) / 60.0
+    if p < 0.0 then p = 0.0 elseif p > 1.0 then p = 1.0 end
+    State.music.target_pitch = p
+    State.music.strike = math.min(1.0, math.max(State.music.strike, 0.58 + (vel or 0.85) * 0.42))
+    State.music.energy = math.min(1.0, State.music.energy + 0.24)
+end
+
+local function apply_world_for_preset(name, realm)
+    State.world_theme = PresetWorlds.apply(name, realm, Floorplan)
+end
+
 local function on_looper_key_visual(note, down)
-    if down then State.pressed_notes[note] = true else State.pressed_notes[note] = nil end
+    if down then
+        State.pressed_notes[note] = true
+        pulse_music_note(note, 0.82)
+    else
+        State.pressed_notes[note] = nil
+    end
     R6.set_key_visual(note, down)
 end
 
 function State.note_on(note, vel)
     local v = vel or 0.85
     State.pressed_notes[note] = true
+    pulse_music_note(note, v)
     R6.set_key_visual(note, true)
     if State.looper then State.looper:on_live_note_on(note, v) end
     State.arp:note_on(note, v)
@@ -116,8 +137,14 @@ end
 
 local function dispatch_button_action(act)
     if not act or act == "" then return end
+    local prev_name = R7.active_name
     if R1.on_action(act) or R3.on_action(act) or R7.on_action(act) then
         State.preset_name = R7.active_name
+        if R7.active_name ~= prev_name then
+            apply_world_for_preset(R7.active_name, R7.active_realm)
+        elseif act == "vault:audition" then
+            pulse_music_note(62, 0.88)
+        end
         return
     end
     local lp_cmd = act:match("^looper:(.+)$")
@@ -202,6 +229,8 @@ function gf_init()
     State.mode = gf.ui.input_mode()
     gf.scene.clear()
     gf.spatial.clear()
+    PresetWorlds.items = {}
+    PresetWorlds.room_centers = {}
 
     Floorplan.build_architecture()
     R1.build()
@@ -223,17 +252,21 @@ function gf_init()
         State.preset_name = R7.active_name
     end
     gf.spatial.teleport_room(6)
+    apply_world_for_preset(State.preset_name, R7.active_realm)
     gf.spatial.sync_widgets()
     Mutator.clear_history()
-    gf.log(string.format("Green Fairy 7-Room Sanctum initialized (%d presets, %d melodies, mode=%s)",
-                         #R7.all_presets, #State.looper.catalog, State.mode))
+    gf.log(string.format("Green Fairy 7-Room Sanctum initialized (%d presets, %d melodies, world=%s, mode=%s)",
+                         #R7.all_presets, #State.looper.catalog, State.world_theme, State.mode))
 end
 
 function gf_on_preset_path(rel_path)
     local meta = gf.presets.apply_file(rel_path, true)
     if not meta then return false end
     R7.active_name = meta.name or rel_path
+    R7.active_realm = meta.realm or R7.active_realm or "fantasy_realms"
     State.preset_name = R7.active_name
+    gf.presets.set_active_meta(R7.active_name, R7.active_realm)
+    apply_world_for_preset(R7.active_name, R7.active_realm)
     R1.refresh_curves()
     R2.refresh_curves()
     R3.sync_rail()
@@ -279,6 +312,21 @@ function gf_update(dt, tel)
         end
     end
     State.arp:update(dt)
+
+    -- Live music-reactive telemetry (average active pitch, decaying keystroke strike, audio energy)
+    local sum_n, cnt_n = 0, 0
+    for note, held in pairs(State.pressed_notes) do
+        if held then sum_n = sum_n + note; cnt_n = cnt_n + 1 end
+    end
+    if cnt_n > 0 then
+        State.music.target_pitch = clamp01(((sum_n / cnt_n) - 36.0) / 60.0)
+    end
+    local rms = tel and ((tel.rms_l or 0) + (tel.rms_r or 0)) * 0.5 or 0.0
+    local target_e = clamp01(rms * 2.4 + math.min(0.45, cnt_n * 0.14) + State.music.strike * 0.35)
+    State.music.energy = State.music.energy + (target_e - State.music.energy) * math.min(1.0, (dt or 0.016) * 8.0)
+    State.music.pitch_norm = State.music.pitch_norm + (State.music.target_pitch - State.music.pitch_norm) * math.min(1.0, (dt or 0.016) * 6.0)
+    State.music.strike = math.max(0.0, State.music.strike - (dt or 0.016) * 1.9)
+    PresetWorlds.update(dt, tel, State.music)
 end
 
 function gf_render_ui(vp_w, vp_h)
@@ -491,6 +539,7 @@ function gf_select_patch(idx)
     local ok = R7.select_global(idx)
     if ok then
         State.preset_name = R7.active_name
+        apply_world_for_preset(R7.active_name, R7.active_realm)
         R1.refresh_curves(); R2.refresh_curves(); R3.sync_rail()
     end
     return ok

@@ -26,7 +26,7 @@ function R6.build()
 
     -- 2. Grand Tilted 61-Key (5-Octave) 3D Concert Synthesizer Console in front of player
     R6.console_rack = RB.add_rack(6, "61-KEY 3D CONCERT KEYBOARD & TUNING", 0.0, 1.04, 0.85, 0.0, 4.25, 1.38,
-                                  {0.32, 0.96, 0.78, 1.0}, -0.72)
+                                  {0.20, 0.42, 0.44, 1.0}, -0.72)
 
     -- 61 Playable 3D Chromatic Synthesizer Keys (C2 = 36 .. C7 = 96: 36 white + 25 raised black)
     local white_step = 0.112

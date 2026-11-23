@@ -15,7 +15,12 @@ uniform sampler2D u_tex;
 out vec4 frag_color;
 
 void main() {
-    float lit = mix(v_light, 1.0, clamp(u_unlit, 0.0, 1.0));
+    float lit = v_light;
+    if (u_unlit > 1.5) {
+        lit = 1.0;
+    } else if (u_unlit > 0.5) {
+        lit = 0.72 + 0.34 * v_light;
+    }
     vec4 base = v_color * u_tint;
     if (u_use_tex > 0.5) {
         vec4 texel = texture(u_tex, v_uv);
@@ -26,9 +31,10 @@ void main() {
     }
     vec3 col = base.rgb * lit;
     if (u_fog_density > 0.0001 && u_unlit < 1.5 && u_use_tex < 0.5) {
-        float eff_dens = (u_unlit > 0.5) ? (u_fog_density * 0.30) : u_fog_density;
-        float fog_f = 1.0 - exp(-v_dist * eff_dens);
-        col = mix(col, u_fog_color, clamp(fog_f, 0.0, 0.84));
+        float fog_d = max(0.0, v_dist - 24.0);
+        float eff_dens = (u_unlit > 0.5) ? (u_fog_density * 0.55) : u_fog_density;
+        float fog_f = 1.0 - exp(-fog_d * eff_dens);
+        col = mix(col, u_fog_color, clamp(fog_f, 0.0, 0.82));
     }
     if (u_dither > 0.5 && u_unlit < 0.5) {
         vec2 p = mod(floor(gl_FragCoord.xy), 2.0);

@@ -230,7 +230,6 @@ function gf_init()
     gf.scene.clear()
     gf.spatial.clear()
     PresetWorlds.items = {}
-    PresetWorlds.room_centers = {}
 
     Floorplan.build_architecture()
     R1.build()

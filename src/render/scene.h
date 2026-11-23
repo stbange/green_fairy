@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define GF_MAX_SCENE_ENTITIES 256
+#define GF_MAX_SCENE_ENTITIES 640
 #define GF_HUD_MAX_VERTS      16384
 #define GF_HUD_MAX_CMDS       256
 
@@ -25,7 +25,8 @@ typedef struct GFSceneEntity {
     int id;
     bool active;
     bool visible;
-    int room_id; /* 0 = global/corridor, 1..7 = room-culled */
+    bool emissive;
+    int room_id; /* 0 = global/corridor/surroundings, 1..7 = room-culled */
     GFEntityKind kind;
     char asset_path[128];
     GFVec3 pos;
@@ -45,6 +46,16 @@ typedef struct GFScene {
     float cam_near;
     float cam_far;
     GFVec3 light_dir;
+
+    /* Preset-driven sky gradient, atmospheric distance fog & live music-reactive state */
+    bool custom_atmosphere;
+    GFVec3 sky_zenith;
+    GFVec3 sky_horizon;
+    GFVec3 fog_color;
+    float fog_density;
+    float music_energy;
+    float music_pitch;  /* [0..1] smoothed active note height */
+    float music_strike; /* [0..1] decaying impulse on every keystroke */
 
     float snap_res;
     float color_steps;
@@ -98,10 +109,15 @@ void gf_scene_clear_entities(GFScene *sc);
 int gf_scene_add_entity(GFScene *sc, GFEntityKind kind, const char *asset_path);
 GFSceneEntity *gf_scene_find(GFScene *sc, int id);
 bool gf_scene_set_entity_room(GFScene *sc, int id, int room_id);
+bool gf_scene_set_visible(GFScene *sc, int id, bool visible);
+bool gf_scene_set_emissive(GFScene *sc, int id, bool emissive);
 bool gf_scene_set_transform(GFScene *sc, int id, GFVec3 pos, GFVec3 rot, GFVec3 scale);
 bool gf_scene_set_tint(GFScene *sc, int id, GFVec4 tint);
 bool gf_scene_set_sprite_anim(GFScene *sc, int id, GFVec2 size, int frames, int cur_frame);
 bool gf_scene_remove(GFScene *sc, int id);
+void gf_scene_set_atmosphere(GFScene *sc, GFVec3 sky_zenith, GFVec3 sky_horizon,
+                             GFVec3 fog_color, float fog_density);
+void gf_scene_set_music_state(GFScene *sc, float energy, float pitch_norm, float strike_pulse);
 void gf_scene_set_camera(GFScene *sc, GFVec3 pos, GFVec3 target, float fov_deg);
 void gf_scene_step_camera(GFScene *sc, float dt);
 void gf_scene_compute_matrices(const GFScene *sc, float aspect, GFMat4 *out_view, GFMat4 *out_proj);

@@ -45,3 +45,21 @@ The 3D sanctum SHALL support free-roam movement (WASD/mouse-look, mobile touch d
 - **GIVEN** the user in free-walk mode viewing the Aetherizer rack from across the room
 - **WHEN** the user clicks the rack header or triggers rack-focus
 - **THEN** the camera smoothly interpolates to an ergonomic framing of that rack, unlocks the cursor for precise 3D knob/cable dragging, and restores free-walk when exited
+
+### Requirement: Preset-inspired music-reactive 3D surroundings
+For every loaded preset, the synthesizer SHALL dynamically compose external retro-3D surroundings (non-living structures, living plants, living animals, sky gradient, and distance fog) inspired by the preset's name and realm, and animate them in response to keystrokes, volume/spectrum, and pitch.
+
+#### Scenario: Switching presets transforms the 3D surroundings
+- **GIVEN** the synthesizer running with *Emerald Sanctum Choir* displaying giant glowing emerald crystal caverns and soaring choir wisps
+- **WHEN** the user loads *Starfall Sanctuary* and plays notes across low and high registers
+- **THEN** the surroundings switch to deep space with flying star streaks and ringed planets whose warp speed, glow, and elevation react to keystrokes, pitch, and volume
+
+### Requirement: Expanded playable chromatic piano keyboards
+The synthesizer SHALL provide large authentic chromatic keyboards (white keys plus raised black keys) as a 61-key (5-octave, `C2`–`C7`) 3D console in Room 6 and as a collapsible, octave-shiftable on-screen 2D piano on Desktop (49-key) and Mobile Touch (25-key).
+
+#### Scenario: Playing white and raised black keys on the expanded chromatic piano
+- **GIVEN** the synthesizer running in Desktop or Mobile Touch mode
+- **WHEN** the user clicks or touches white keys and raised black keys across octaves outside the computer QWERTY keymap
+- **THEN** the synthesizer triggers the corresponding chromatic pitches with visual key illumination and octave-shift navigation
+
+

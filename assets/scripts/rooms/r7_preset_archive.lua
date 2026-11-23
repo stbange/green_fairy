@@ -23,6 +23,7 @@ local R7 = {
     page = 0,
     active_global_idx = 1,
     active_name = "Emerald Aether",
+    active_realm = "fantasy_realms",
 }
 
 function R7.load_catalog()
@@ -145,7 +146,8 @@ function R7.apply_entry(entry)
     local meta = gf.presets.apply_file(entry.path, true)
     if not meta then return false end
     R7.active_name = meta.name or entry.name
-    gf.presets.set_active_meta(R7.active_name, meta.realm or entry.realm)
+    R7.active_realm = meta.realm or entry.realm or "fantasy_realms"
+    gf.presets.set_active_meta(R7.active_name, R7.active_realm)
     R7.refresh_labels()
     return true
 end

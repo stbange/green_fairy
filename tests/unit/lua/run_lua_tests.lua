@@ -412,6 +412,85 @@ run_test("phrase_looper_recording_overdub_and_108_zimmer_melodies", function()
     gf_on_looper_action("stop")
 end)
 
+-- 7. Preset-Inspired Music-Reactive 3D Worlds (All 7 Biomes + Overlays) & Grand Chromatic Pianos (61-Key 3D + 49-Key Desktop + 25-Key Touch)
+run_test("preset_worlds_music_reactivity_and_grand_pianos", function()
+    local PW = require("scene.preset_worlds")
+    local Floorplan = require("rooms.sanctum_floorplan")
+    local R6 = require("rooms.r6_bridge_mutator")
+    local Compass = require("ui.compass_minimap")
+
+    -- Verify all 7 archetypes + explicit user examples + color overrides + compound living creature/plant overlays
+    local cases = {
+        {"Emerald Sanctum Choir",      "fantasy_realms",       "emerald_cavern"},
+        {"Starfall Sanctuary",         "fantasy_realms",       "starfall_cosmos"},
+        {"Medusa Jellyfish Pulse",     "bioluminescent_abyss", "biolum_ocean"},
+        {"Ancient Oak Breath",         "fantasy_realms",       "enchanted_forest"},
+        {"Seraphim Six Wings",         "astral_choirs",        "winged_sky_sanctum"},
+        {"Oracle of Delphi Vapor",     "ancient_mythology",    "ancient_desert_temple"},
+        {"Clockwork Astrolabe",        "rhythmic_odysseys",    "cyber_clockwork"},
+        {"Unmatched Realm Default",    "deep_space",           "starfall_cosmos"},
+        {"Emerald Whale Medusa Blossom","fantasy_realms",      "emerald_cavern"},
+        {"Solar Phoenix Lotus",        "ancient_mythology",    "winged_sky_sanctum"},
+    }
+    local tel_loud = {
+        rms_l = 0.52, rms_r = 0.48, peak = 0.85, active_voices = 4,
+        bands = {0.7, 0.6, 0.5, 0.5, 0.4, 0.4, 0.3, 0.3},
+    }
+    for _, c in ipairs(cases) do
+        local theme = PW.apply(c[1], c[2], Floorplan)
+        check(theme == c[3], "world theme for '" .. c[1] .. "' expected " .. c[3] .. ", got " .. tostring(theme))
+        check(#PW.items >= 40, "world '" .. c[1] .. "' populated rich 3D surroundings (" .. tostring(#PW.items) .. ")")
+        -- Step music-reactive animation with low pitch, high pitch, keystroke strike, and wrap-around time
+        PW.update(0.10, tel_loud, {energy = 0.85, pitch_norm = 0.15, strike = 1.0})
+        PW.update(1.20, tel_loud, {energy = 0.90, pitch_norm = 0.92, strike = 0.75})
+        PW.update(3.50, tel_loud, {energy = 0.60, pitch_norm = 0.50, strike = 0.20})
+    end
+
+    -- Verify preset path switch changes live world_theme via main.lua
+    check(gf_on_preset_path("patches/fantasy_realms/37_starfall_sanctuary.lua"), "load Starfall Sanctuary")
+    check(gf_get_state().world_theme == "starfall_cosmos", "Starfall Sanctuary -> starfall_cosmos")
+    check(gf_on_preset_path("patches/fantasy_realms/01_emerald_sanctum_choir.lua"), "load Emerald Sanctum Choir")
+    check(gf_get_state().world_theme == "emerald_cavern", "Emerald Sanctum Choir -> emerald_cavern")
+
+    -- Verify Room 6 Grand 61-Key 3D Concert Console (C2=36 .. C7=96)
+    local key_cnt = 0
+    for note = 36, 96 do
+        if R6.key_widgets[note] ~= nil then key_cnt = key_cnt + 1 end
+    end
+    check(key_cnt == 61, "Room 6 3D console has all 61 keys (C2..C7), got " .. key_cnt)
+
+    -- Verify Desktop 49-key Chromatic 2D Piano (white + raised black keys + OCT-/OCT+ + KEYS toggle)
+    gf_on_mode_change("desktop")
+    Compass.keys_open = true
+    local hud = Compass.compute_hud(1280, 720, "desktop", gf.spatial.camera_state())
+    check(hud.keyboard ~= nil and hud.keyboard.octaves == 4, "Desktop 4-octave (49-key) piano open")
+    local whites, blacks = Compass.build_keyboard_layout(hud.keyboard)
+    check(#whites == 29 and #blacks == 20, "49-key piano has 29 white + 20 black keys")
+
+    -- Click a white key (lower half) and a raised black key (upper half) on Desktop piano
+    local w0, b0 = whites[1], blacks[1]
+    check(Compass.note_at_keyboard(hud.keyboard, w0.x + w0.w * 0.3, hud.keyboard[2] + hud.keyboard[4] - 12) == w0.note, "white key hit")
+    check(Compass.note_at_keyboard(hud.keyboard, b0.x + b0.w * 0.5, hud.keyboard[2] + 15) == b0.note, "black key hit priority")
+    gf_on_input({type="pointer_down", id=40, x=b0.x + b0.w * 0.5, y=hud.keyboard[2] + 15, extra=0})
+    gf_render_ui(1280, 720)
+    gf_on_input({type="pointer_up",   id=40, x=b0.x + b0.w * 0.5, y=hud.keyboard[2] + 15, extra=0})
+
+    -- Exercise Desktop & Touch OCT- / OCT+ shift buttons
+    local orig_oct = Compass.desktop_octave
+    Compass.handle_hud_pointer({type="pointer_down", id=41, x=hud.oct_up_btn[1]+8, y=hud.oct_up_btn[2]+8}, 1280, 720, "desktop", gf_get_state())
+    check(Compass.desktop_octave == orig_oct + 1, "desktop OCT+ shifted up")
+    Compass.handle_hud_pointer({type="pointer_down", id=42, x=hud.oct_dn_btn[1]+8, y=hud.oct_dn_btn[2]+8}, 1280, 720, "desktop", gf_get_state())
+    check(Compass.desktop_octave == orig_oct, "desktop OCT- shifted back")
+
+    local thud = Compass.compute_hud(390, 844, "touch", gf.spatial.camera_state())
+    local t_oct = Compass.touch_octave
+    Compass.handle_hud_pointer({type="pointer_down", id=43, x=thud.oct_up_btn[1]+8, y=thud.oct_up_btn[2]+8}, 390, 844, "touch", gf_get_state())
+    check(Compass.touch_octave == t_oct + 1, "touch OCT+ shifted up")
+    Compass.handle_hud_pointer({type="pointer_down", id=44, x=thud.oct_dn_btn[1]+8, y=thud.oct_dn_btn[2]+8}, 390, 844, "touch", gf_get_state())
+    check(Compass.touch_octave == t_oct, "touch OCT- shifted back")
+    gf_render_ui(390, 844)
+end)
+
 debug.sethook()
 
 local target_files = {
@@ -429,6 +508,7 @@ local target_files = {
     "scripts/rooms/r5_aetherium_fx.lua",
     "scripts/rooms/r6_bridge_mutator.lua",
     "scripts/rooms/r7_preset_archive.lua",
+    "scripts/scene/preset_worlds.lua",
     "scripts/ui/compass_minimap.lua",
 }
 

@@ -184,6 +184,12 @@ static void test_lua_patchbay_spatial_mutator_and_presets(void) {
         "local sid = gf.scene.add_sprite('sprites/fairy_wisp.tga', 1)\n"
         "local vid = gf.scene.add_voxel('voxels/fairy_spire.gfvox', 1)\n"
         "assert(gf.scene.set_entity_room(mid, 2))\n"
+        "assert(gf.scene.set_visible(mid, false) and gf.scene.set_visible(mid, true))\n"
+        "assert(gf.scene.set_emissive(mid, true))\n"
+        "assert(gf.scene.remove(vid))\n"
+        "gf.scene.set_atmosphere(0.01, 0.02, 0.06, 0.08, 0.05, 0.16, 0.03, 0.03, 0.09, 0.008)\n"
+        "gf.scene.set_music_state(0.75, 0.60, 0.90)\n"
+        "gf.scene.set_world_theme('starfall_cosmos')\n"
         "gf.scene.set_xr_laser(true, 0, 1.2, 0, 0, 1.5, -3)\n"
         "gf.scene.set_xr_laser(false)\n"
         "local snap = gf.mutator.snapshot()\n"
@@ -216,6 +222,7 @@ static void test_lua_patchbay_spatial_mutator_and_presets(void) {
     GF_ASSERT(gf_lua_load_entry(&host, "scripts/sanctum_test.lua"));
     GF_ASSERT_STR_EQ(host.active_preset_name, "Nebula Bloom");
     GF_ASSERT_STR_EQ(host.active_preset_realm, "deep_space");
+    GF_ASSERT_STR_EQ(host.active_world_theme, "starfall_cosmos");
 
     /* Pick a cable ring via C-to-Lua pick_ray when ring is populated */
     GFVertex cverts[4096];

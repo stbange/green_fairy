@@ -1147,6 +1147,52 @@ static int l_scene_set_retro(lua_State *L) {
     return 0;
 }
 
+static int l_scene_remove(lua_State *L) {
+    int id = (int)luaL_checkinteger(L, 1);
+    lua_pushboolean(L, gf_scene_remove(get_host(L)->scene, id));
+    return 1;
+}
+
+static int l_scene_set_visible(lua_State *L) {
+    int id = (int)luaL_checkinteger(L, 1);
+    bool vis = lua_toboolean(L, 2) != 0;
+    lua_pushboolean(L, gf_scene_set_visible(get_host(L)->scene, id, vis));
+    return 1;
+}
+
+static int l_scene_set_emissive(lua_State *L) {
+    int id = (int)luaL_checkinteger(L, 1);
+    bool em = lua_toboolean(L, 2) != 0;
+    lua_pushboolean(L, gf_scene_set_emissive(get_host(L)->scene, id, em));
+    return 1;
+}
+
+static int l_scene_set_atmosphere(lua_State *L) {
+    GFScene *sc = get_host(L)->scene;
+    GFVec3 zen = gf_vec3((float)luaL_checknumber(L, 1), (float)luaL_checknumber(L, 2), (float)luaL_checknumber(L, 3));
+    GFVec3 hor = gf_vec3((float)luaL_checknumber(L, 4), (float)luaL_checknumber(L, 5), (float)luaL_checknumber(L, 6));
+    GFVec3 fog = gf_vec3((float)luaL_checknumber(L, 7), (float)luaL_checknumber(L, 8), (float)luaL_checknumber(L, 9));
+    float dens = (float)luaL_optnumber(L, 10, 0.022);
+    gf_scene_set_atmosphere(sc, zen, hor, fog, dens);
+    return 0;
+}
+
+static int l_scene_set_music_state(lua_State *L) {
+    GFScene *sc = get_host(L)->scene;
+    float energy = (float)luaL_optnumber(L, 1, 0.0);
+    float pitch  = (float)luaL_optnumber(L, 2, 0.5);
+    float strike = (float)luaL_optnumber(L, 3, 0.0);
+    gf_scene_set_music_state(sc, energy, pitch, strike);
+    return 0;
+}
+
+static int l_scene_set_world_theme(lua_State *L) {
+    GFLuaHost *h = get_host(L);
+    const char *th = luaL_optstring(L, 1, "emerald_cavern");
+    snprintf(h->active_world_theme, sizeof(h->active_world_theme), "%s", th);
+    return 0;
+}
+
 static int l_scene_set_xr_laser(lua_State *L) {
     GFScene *sc = get_host(L)->scene;
     sc->xr_laser_active = lua_toboolean(L, 1) != 0;
@@ -1326,11 +1372,15 @@ static const luaL_Reg g_mutator_lib[] = {
 };
 
 static const luaL_Reg g_scene_lib[] = {
-    {"clear", l_scene_clear}, {"add_mesh", l_scene_add_mesh},
+    {"clear", l_scene_clear}, {"remove", l_scene_remove},
+    {"add_mesh", l_scene_add_mesh},
     {"add_sprite", l_scene_add_sprite}, {"add_voxel", l_scene_add_voxel},
     {"set_entity_room", l_scene_set_entity_room},
+    {"set_visible", l_scene_set_visible}, {"set_emissive", l_scene_set_emissive},
     {"set_transform", l_scene_set_transform}, {"set_tint", l_scene_set_tint},
     {"set_sprite_anim", l_scene_set_sprite_anim}, {"set_camera", l_scene_set_camera},
+    {"set_atmosphere", l_scene_set_atmosphere}, {"set_music_state", l_scene_set_music_state},
+    {"set_world_theme", l_scene_set_world_theme},
     {"set_voxels_enabled", l_scene_set_voxels_enabled}, {"get_voxels_enabled", l_scene_get_voxels_enabled},
     {"set_retro", l_scene_set_retro}, {"set_xr_laser", l_scene_set_xr_laser},
     {NULL, NULL}
@@ -1404,6 +1454,7 @@ bool gf_lua_init(GFLuaHost *h, const GFAssetManager *am, GFSynth *synth,
     h->viewport_h = 720;
     snprintf(h->active_preset_name, sizeof(h->active_preset_name), "Init Sanctum");
     snprintf(h->active_preset_realm, sizeof(h->active_preset_realm), "fantasy_realms");
+    snprintf(h->active_world_theme, sizeof(h->active_world_theme), "emerald_cavern");
     snprintf(h->looper_state, sizeof(h->looper_state), "stopped");
     snprintf(h->active_melody_name, sizeof(h->active_melody_name), "None");
     h->L = create_sandboxed_vm(h);

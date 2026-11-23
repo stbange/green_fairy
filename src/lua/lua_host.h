@@ -27,6 +27,7 @@ typedef struct GFLuaHost {
     char entry_script[128];
     char active_preset_name[64];
     char active_preset_realm[40];
+    char active_world_theme[48];
     char looper_state[24];
     char active_melody_name[64];
     int looper_event_count;

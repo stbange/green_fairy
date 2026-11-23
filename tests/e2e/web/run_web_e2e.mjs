@@ -195,11 +195,31 @@ async function main() {
       assert(bootInfo.catalogCount === 320, `Expected 320 presets in catalog, got ${bootInfo.catalogCount}`);
       assert(bootInfo.melodyCount === 108, `Expected 108 Hans Zimmer melodies in catalog, got ${bootInfo.melodyCount}`);
       assert(bootInfo.fetchedCount < 120, `Boot should not eagerly block on all 320+108 files (fetched ${bootInfo.fetchedCount})`);
+      assert(bootInfo.status.worldTheme === "emerald_cavern", `Expected Emerald Sanctum Choir -> emerald_cavern, got ${bootInfo.status.worldTheme}`);
+
+      // Preset-driven 3D world transitions: Starfall Sanctuary -> starfall_cosmos, Medusa Jellyfish -> biolum_ocean
+      const okStarfall = await page.evaluate(() => window.GreenFairy.loadPreset("patches/fantasy_realms/37_starfall_sanctuary.lua"));
+      assert(okStarfall, "On-demand loadPreset for Starfall Sanctuary failed");
+      let st = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(st.worldTheme === "starfall_cosmos", `Expected Starfall Sanctuary -> starfall_cosmos, got ${st.worldTheme}`);
+
+      const okJelly = await page.evaluate(() => window.GreenFairy.loadPreset("patches/bioluminescent_abyss/04_medusa_jellyfish_pulse.lua"));
+      assert(okJelly, "On-demand loadPreset for Medusa Jellyfish Pulse failed");
+      st = await page.evaluate(() => window.GreenFairy.getStatus());
+      assert(st.worldTheme === "biolum_ocean", `Expected Medusa Jellyfish Pulse -> biolum_ocean, got ${st.worldTheme}`);
+
+      // Click directly on the big Desktop 49-key chromatic piano (bottom strip, white key + raised black key)
+      await page.mouse.move(140, 675);
+      await page.mouse.down();
+      await page.waitForTimeout(160);
+      const stPianoW = await page.evaluate(() => window.GreenFairy.getStatus());
+      await page.mouse.up();
+      assert(stPianoW.activeVoices >= 1, `Expected Desktop 49-key piano white key to trigger voice, got ${stPianoW.activeVoices}`);
 
       // On-demand HTTP preset loading across Deep Space & Astral Choirs realms
       const okSpace = await page.evaluate(() => window.GreenFairy.loadPreset("patches/deep_space/05_oort_cloud_dust.lua"));
       assert(okSpace, "On-demand loadPreset for Deep Space failed");
-      let st = await page.evaluate(() => window.GreenFairy.getStatus());
+      st = await page.evaluate(() => window.GreenFairy.getStatus());
       assert(st.realm === "deep_space" && st.preset.includes("Oort Cloud"), `Unexpected preset status: ${JSON.stringify(st)}`);
       assert(httpLog.some((u) => u.includes("patches/deep_space/05_oort_cloud_dust.lua")), "Preset was not fetched via HTTP");
 

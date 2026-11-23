@@ -316,14 +316,65 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
 
     r->last_draw_calls = 0;
     r->gl.Viewport(vp_x, vp_y, vp_w, vp_h);
-    if (clear_bg) {
+    float rms = tel ? (tel->rms_l + tel->rms_r) * 0.5f : 0.0f;
+    float pulse = gf_clampf(rms + sc->music_energy * 0.35f + sc->music_strike * 0.45f, 0.0f, 1.5f);
+    float p_shift = (sc->music_pitch - 0.5f) * 0.14f;
+
+    GFVec3 sky_top, sky_bot, fog_col;
+    float fog_dens = 0.0f;
+    if (sc->custom_atmosphere) {
+        float g_add = gf_clampf(pulse * 0.09f, 0.0f, 0.18f);
+        sky_top = gf_vec3(
+            gf_clampf(sc->sky_zenith.x + g_add * 0.6f + (p_shift > 0.0f ? p_shift * 0.35f : 0.0f), 0.0f, 1.0f),
+            gf_clampf(sc->sky_zenith.y + g_add * 0.8f, 0.0f, 1.0f),
+            gf_clampf(sc->sky_zenith.z + g_add * 0.9f + (p_shift < 0.0f ? -p_shift * 0.45f : 0.0f), 0.0f, 1.0f));
+        sky_bot = gf_vec3(
+            gf_clampf(sc->sky_horizon.x + g_add * 0.9f + p_shift * 0.25f, 0.0f, 1.0f),
+            gf_clampf(sc->sky_horizon.y + g_add * 1.1f, 0.0f, 1.0f),
+            gf_clampf(sc->sky_horizon.z + g_add * 0.9f - p_shift * 0.25f, 0.0f, 1.0f));
+        fog_col = gf_vec3(
+            gf_clampf(sc->fog_color.x + g_add * 0.7f, 0.0f, 1.0f),
+            gf_clampf(sc->fog_color.y + g_add * 0.85f, 0.0f, 1.0f),
+            gf_clampf(sc->fog_color.z + g_add * 0.7f, 0.0f, 1.0f));
+        fog_dens = sc->fog_density;
+    } else {
         const GFRoomDef *cur_rm = gf_sanctum_room_def(sc->camera.current_room);
-        float glow = tel ? gf_clampf((tel->rms_l + tel->rms_r) * 0.16f, 0.0f, 0.12f) : 0.0f;
+        float glow = gf_clampf(rms * 0.16f, 0.0f, 0.12f);
         float br = cur_rm ? cur_rm->theme_rgb.x * 0.055f : 0.03f;
         float bg = cur_rm ? cur_rm->theme_rgb.y * 0.065f : 0.06f;
         float bb = cur_rm ? cur_rm->theme_rgb.z * 0.085f : 0.08f;
-        r->gl.ClearColor(br + glow * 0.3f, bg + glow, bb + glow * 0.6f, 1.0f);
+        sky_top = gf_vec3(br + glow * 0.3f, bg + glow, bb + glow * 0.6f);
+        sky_bot = gf_vec3(br * 1.6f + glow * 0.4f, bg * 1.6f + glow, bb * 1.6f + glow * 0.7f);
+        fog_col = sky_top;
+        fog_dens = 0.0f;
+    }
+
+    if (clear_bg) {
+        r->gl.ClearColor(sky_top.x, sky_top.y, sky_top.z, 1.0f);
         r->gl.Clear(GF_GL_COLOR_BUFFER_BIT | GF_GL_DEPTH_BUFFER_BIT);
+
+        if (sc->custom_atmosphere) {
+            /* 1-draw-call music-reactive Zenith-to-Horizon Sky Backdrop behind 3D world */
+            r->gl.Disable(GF_GL_DEPTH_TEST);
+            r->gl.Disable(GF_GL_BLEND);
+            GFMat4 ortho = gf_mat4_ortho(0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f);
+            GFHudVertex sky_v[6] = {
+                {0.0f, 0.0f, 0.0f, 0.0f, sky_top.x, sky_top.y, sky_top.z, 1.0f},
+                {1.0f, 0.0f, 1.0f, 0.0f, sky_top.x, sky_top.y, sky_top.z, 1.0f},
+                {1.0f, 1.0f, 1.0f, 1.0f, sky_bot.x, sky_bot.y, sky_bot.z, 1.0f},
+                {0.0f, 0.0f, 0.0f, 0.0f, sky_top.x, sky_top.y, sky_top.z, 1.0f},
+                {1.0f, 1.0f, 1.0f, 1.0f, sky_bot.x, sky_bot.y, sky_bot.z, 1.0f},
+                {0.0f, 1.0f, 0.0f, 1.0f, sky_bot.x, sky_bot.y, sky_bot.z, 1.0f},
+            };
+            r->gl.UseProgram(r->prog_hud);
+            r->gl.UniformMatrix4fv(r->gl.GetUniformLocation(r->prog_hud, "u_ortho"), 1, 0, ortho.m);
+            r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_hud, "u_use_tex"), 0.0f);
+            r->gl.BindVertexArray(r->hud_vao);
+            r->gl.BindBuffer(GF_GL_ARRAY_BUFFER, r->hud_vbo);
+            r->gl.BufferData(GF_GL_ARRAY_BUFFER, (GFGLsizeiptr)sizeof(sky_v), sky_v, GF_GL_DYNAMIC_DRAW);
+            r->gl.DrawArrays(GF_GL_TRIANGLES, 0, 6);
+            r->last_draw_calls++;
+        }
     }
 
     /* Evaluate portal & frustum room visibility across all 7 rooms */
@@ -350,7 +401,9 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
     r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_snap_res"), sc->snap_res);
     r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_color_steps"), sc->color_steps);
     r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_dither"), sc->dither_enabled ? 1.0f : 0.0f);
-    r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_audio_pulse"), tel ? (tel->rms_l + tel->rms_r) * 0.5f : 0.0f);
+    r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_audio_pulse"), pulse);
+    r->gl.Uniform3f(r->gl.GetUniformLocation(r->prog_mesh, "u_fog_color"), fog_col.x, fog_col.y, fog_col.z);
+    r->gl.Uniform1f(r->gl.GetUniformLocation(r->prog_mesh, "u_fog_density"), fog_dens);
 
     GFGLint loc_model   = r->gl.GetUniformLocation(r->prog_mesh, "u_model");
     GFGLint loc_tint    = r->gl.GetUniformLocation(r->prog_mesh, "u_tint");
@@ -361,7 +414,7 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
     r->gl.Uniform1f(loc_unlit, 0.0f);
     r->gl.Uniform1i(loc_tex, 0);
 
-    /* 1a. Scene entities (room shells, archway conduits, pedestals, voxels) */
+    /* 1a. Scene entities (room shells, archway conduits, pedestals, voxels & preset-world environments) */
     for (int i = 0; i < GF_MAX_SCENE_ENTITIES; ++i) {
         const GFSceneEntity *e = &sc->entities[i];
         if (!e->active || !e->visible) continue;
@@ -372,12 +425,14 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
         GFGpuMesh *gm = get_or_load_mesh(r, e->asset_path, e->kind == GF_ENT_VOXEL);
         if (!gm) continue;
         GFMat4 model = gf_mat4_trs(e->pos, e->rot, e->scale);
+        r->gl.Uniform1f(loc_unlit, e->emissive ? 1.0f : 0.0f);
         r->gl.UniformMatrix4fv(loc_model, 1, 0, model.m);
         r->gl.Uniform4f(loc_tint, e->tint.x, e->tint.y, e->tint.z, e->tint.w);
         r->gl.BindVertexArray(gm->vao);
         r->gl.DrawElements(GF_GL_TRIANGLES, (GFGLsizei)gm->index_count, GF_GL_UNSIGNED_INT, NULL);
         r->last_draw_calls++;
     }
+    r->gl.Uniform1f(loc_unlit, 0.0f);
 
     /* 1b. 3D Synth Rack Cabinets */
     if (sc->spatial.rack_count > 0) {
@@ -409,7 +464,9 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
 
         GFMat4 m = gf_spatial_widget_model_matrix(&sc->spatial, w);
         GFVec4 c = w->color;
-        if (w->id == sc->spatial.active_widget_id || w->id == sc->spatial.hovered_widget_id ||
+        if (w->kind == GF_W3D_PIANO_KEY && w->norm_val > 0.5f) {
+            c = (GFVec4){0.38f, 1.0f, 0.78f, 1.0f};
+        } else if (w->id == sc->spatial.active_widget_id || w->id == sc->spatial.hovered_widget_id ||
             (sc->cable_drag.active && w->port_id >= 0 && w->port_id == sc->cable_drag.hovered_port)) {
             c.x = gf_clampf(c.x * 1.35f + 0.25f, 0.0f, 1.0f);
             c.y = gf_clampf(c.y * 1.35f + 0.25f, 0.0f, 1.0f);
@@ -429,6 +486,7 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
         if (rv_cnt > 0) {
             const GFRoomDef *cur_rm = sc->use_camera_rig ? gf_sanctum_room_def(sc->camera.current_room) : NULL;
             GFMat4 rm_mat = cur_rm ? gf_mat4_translate(cur_rm->center) : gf_mat4_identity();
+            r->gl.Uniform1f(loc_unlit, 1.0f);
             r->gl.UniformMatrix4fv(loc_model, 1, 0, rm_mat.m);
             r->gl.Uniform4f(loc_tint, 0.45f, 1.0f, 0.72f, 0.9f);
             r->gl.BindVertexArray(r->ribbon_vao);
@@ -464,7 +522,7 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
     if (curve_verts > 0) {
         r->gl.UniformMatrix4fv(loc_model, 1, 0, id_mat.m);
         r->gl.Uniform4f(loc_tint, 1.0f, 1.0f, 1.0f, 1.0f);
-        r->gl.Uniform1f(loc_unlit, 1.0f);
+        r->gl.Uniform1f(loc_unlit, 2.0f);
         r->gl.Uniform1f(loc_use_tex, 0.0f);
         r->gl.BindVertexArray(r->dyn3d_vao);
         r->gl.BindBuffer(GF_GL_ARRAY_BUFFER, r->dyn3d_vbo);
@@ -483,7 +541,7 @@ void gf_gl_renderer_render_view(GFGlRenderer *r, GFScene *sc, const GFAudioTelem
             r->gl.BindTexture(GF_GL_TEXTURE_2D, r->font_tex);
             r->gl.UniformMatrix4fv(loc_model, 1, 0, id_mat.m);
             r->gl.Uniform4f(loc_tint, 1.0f, 1.0f, 1.0f, 1.0f);
-            r->gl.Uniform1f(loc_unlit, 1.0f);
+            r->gl.Uniform1f(loc_unlit, 2.0f);
             r->gl.Uniform1f(loc_use_tex, 1.0f);
             r->gl.BindVertexArray(r->dyn3d_vao);
             r->gl.BindBuffer(GF_GL_ARRAY_BUFFER, r->dyn3d_vbo);

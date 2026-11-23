@@ -155,6 +155,9 @@ void gf_spatial_update_widget_bounds(GFSpatialUI *ui, GFWidget3D *w) {
         case GF_W3D_XYZ_ORB:
             w->half_extents = gf_vec3(sx * 0.65f, sx * 0.65f, sx * 0.65f);
             break;
+        case GF_W3D_PIANO_KEY:
+            w->half_extents = gf_vec3(sx * 0.49f, sy * 0.50f, 0.022f);
+            break;
         default:
             w->half_extents = gf_vec3(sx * 0.55f, sy * 0.55f, 0.055f);
             break;

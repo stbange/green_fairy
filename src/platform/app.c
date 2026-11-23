@@ -531,7 +531,7 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         "\"room\":%d,\"camMode\":\"%s\",\"focusedRack\":%d,\"cableCount\":%d,"
         "\"yaw\":%.4f,\"pitch\":%.4f,"
         "\"looperState\":\"%s\",\"melody\":\"%s\",\"loopEvents\":%d,"
-        "\"visibleRooms\":%d,\"droneLatch\":%s,\"preset\":\"%s\",\"realm\":\"%s\"}",
+        "\"visibleRooms\":%d,\"droneLatch\":%s,\"preset\":\"%s\",\"realm\":\"%s\",\"worldTheme\":\"%s\"}",
         gf_input_mode_name(app->lua.input_mode),
         (unsigned long long)app->frame_count,
         (unsigned long long)app->xr_frame_count,
@@ -552,5 +552,6 @@ int gf_app_get_status_json(const GFApp *app, char *out_buf, size_t out_cap) {
         app->renderer.last_visible_rooms,
         app->synth.drone_latch ? "true" : "false",
         app->lua.active_preset_name,
-        app->lua.active_preset_realm);
+        app->lua.active_preset_realm,
+        app->lua.active_world_theme);
 }

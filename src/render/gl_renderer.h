@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define GF_GL_CACHE_MAX   64
+#define GF_GL_CACHE_MAX   128
 #define GF_DYN3D_MAX_VERTS 32768
 
 typedef struct GFGpuMesh {

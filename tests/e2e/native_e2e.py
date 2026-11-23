@@ -65,6 +65,17 @@ def verify_external_assets_and_clean_src(repo_root, sibling_assets):
                 melody_files.append(fn)
     assert len(melody_files) >= 108, f"Expected >=108 external .lua melodies beside binary, found {len(melody_files)}"
 
+    env_assets = [
+        "models/env_crystal_cluster.obj", "models/env_cave_stalactite.obj",
+        "models/env_star_streak.obj", "models/env_planet_ringed.obj",
+        "models/env_tree_canopy.obj", "models/env_creature_whale.obj",
+        "models/env_creature_jelly.obj", "models/env_creature_bird.obj",
+        "sprites/env_star_spark.tga", "sprites/env_butterfly_wisp.tga",
+        "voxels/env_emerald_arch.gfvox", "scripts/scene/preset_worlds.lua",
+    ]
+    for rel in env_assets:
+        assert os.path.isfile(os.path.join(sibling_assets, rel)), f"Missing external env asset: {rel}"
+
 
 def main():
     if len(sys.argv) < 2:
@@ -82,6 +93,8 @@ def main():
     with tempfile.TemporaryDirectory(prefix="gf_native_e2e_") as tmp:
         room_ppms = {r: os.path.join(tmp, f"room_{r}.ppm") for r in range(1, 8)}
         ppm_focus = os.path.join(tmp, "r1_focus.ppm")
+        ppm_world_emerald = os.path.join(tmp, "world_emerald.ppm")
+        ppm_world_starfall = os.path.join(tmp, "world_starfall.ppm")
         ppm_vox_off = os.path.join(tmp, "r6_vox_off.ppm")
         ppm_touch = os.path.join(tmp, "r6_touch.ppm")
 
@@ -146,6 +159,9 @@ def main():
             "NOTE_OFF 64",
             # Record a short 2-note phrase into Looper, release all live keys, and verify looped playback!
             "PRESET patches/fantasy_realms/01_emerald_sanctum_choir.lua",
+            "TELEPORT 6",
+            "STEP 4",
+            f"SAVE_PPM {ppm_world_emerald}",
             "LOOPER record",
             "NOTE_ON 48 0.90",
             "STEP 15",
@@ -159,7 +175,15 @@ def main():
             "MELODY melodies/dream_architectures/01_time_in_limbo_cycle.lua",
             "STEP 4",
             "LOOPER stop",
+            # Switch preset to Starfall Sanctuary & verify 3D surroundings visibly transform
+            "PRESET patches/fantasy_realms/37_starfall_sanctuary.lua",
+            "TELEPORT 6",
+            "NOTE_ON 67 0.90",
+            "STEP 6",
+            f"SAVE_PPM {ppm_world_starfall}",
+            "NOTE_OFF 67",
             # Voxel & Mobile Touch checks in Room 6
+            "PRESET patches/fantasy_realms/01_emerald_sanctum_choir.lua",
             "TELEPORT 6",
             "VOXELS 0",
             "STEP 2",
@@ -206,10 +230,16 @@ def main():
         focus_diff = frame_diff(room_imgs[1], d_focus)
         assert focus_diff > 5000, f"Rack-Focus did not zoom camera onto rack (diff={focus_diff})"
 
+        # Verify preset-inspired 3D world transformation (Emerald Sanctum Choir vs Starfall Sanctuary)
+        _, _, d_em = read_ppm(ppm_world_emerald)
+        _, _, d_sf = read_ppm(ppm_world_starfall)
+        world_diff = frame_diff(d_em, d_sf)
+        assert world_diff > 4000, f"Preset world switch did not visibly transform 3D surroundings (diff={world_diff})"
+
         # Verify Voxel toggle & Touch mode diffs
         _, _, d_voff = read_ppm(ppm_vox_off)
         _, _, d_touch = read_ppm(ppm_touch)
-        assert frame_diff(room_imgs[6], d_voff) > 100, "Voxel toggle had no visual effect"
+        assert frame_diff(d_em, d_voff) > 100, "Voxel toggle had no visual effect"
         assert frame_diff(d_voff, d_touch) > 500, "Mobile touch mode had no visual effect"
 
         # Verify Modular Cable Unplugging & Re-Patching + Mutator Audio Changes!

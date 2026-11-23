@@ -134,6 +134,18 @@ static void test_scene_and_hud_batch(void) {
 
     GF_ASSERT(gf_scene_set_transform(&sc, m1, gf_vec3(0, 1, 0), gf_vec3(0, 0.5f, 0), gf_vec3(1, 1, 1)));
     GF_ASSERT(!gf_scene_set_transform(&sc, 9999, gf_vec3(0, 0, 0), gf_vec3(0, 0, 0), gf_vec3(1, 1, 1)));
+    GF_ASSERT(gf_scene_set_visible(&sc, m1, false));
+    GF_ASSERT(gf_scene_set_visible(&sc, m1, true));
+    GF_ASSERT(!gf_scene_set_visible(&sc, 9999, false));
+    GF_ASSERT(gf_scene_set_emissive(&sc, m1, true));
+    GF_ASSERT(!gf_scene_set_emissive(&sc, 9999, true));
+    gf_scene_set_atmosphere(NULL, gf_vec3(0, 0, 0), gf_vec3(0, 0, 0), gf_vec3(0, 0, 0), 0.02f);
+    gf_scene_set_atmosphere(&sc, gf_vec3(0.02f, 0.04f, 0.12f), gf_vec3(0.08f, 0.18f, 0.25f),
+                            gf_vec3(0.04f, 0.10f, 0.15f), 0.022f);
+    GF_ASSERT(sc.custom_atmosphere && sc.fog_density > 0.02f);
+    gf_scene_set_music_state(NULL, 0.5f, 0.5f, 0.5f);
+    gf_scene_set_music_state(&sc, 0.85f, 0.72f, 0.90f);
+    GF_ASSERT(sc.music_energy > 0.8f && sc.music_strike > 0.8f);
     GF_ASSERT(gf_scene_set_tint(&sc, m1, (GFVec4){0.2f, 1.0f, 0.5f, 1.0f}));
     GF_ASSERT(!gf_scene_set_tint(&sc, 9999, (GFVec4){1, 1, 1, 1}));
     GF_ASSERT(gf_scene_set_sprite_anim(&sc, s1, (GFVec2){1.0f, 1.0f}, 4, -1));
@@ -196,7 +208,10 @@ static void test_gl_renderer_and_error_paths(void) {
 
     GFScene sc;
     gf_scene_init(&sc);
-    gf_scene_add_entity(&sc, GF_ENT_MESH, "models/crystal_octa.obj");
+    int me = gf_scene_add_entity(&sc, GF_ENT_MESH, "models/crystal_octa.obj");
+    gf_scene_set_emissive(&sc, me, true);
+    int hid = gf_scene_add_entity(&sc, GF_ENT_MESH, "models/crystal_octa.obj");
+    gf_scene_set_visible(&sc, hid, false);
     gf_scene_add_entity(&sc, GF_ENT_VOXEL, "voxels/fairy_spire.gfvox");
     int sp = gf_scene_add_entity(&sc, GF_ENT_SPRITE, "sprites/fairy_wisp.tga");
     gf_scene_set_sprite_anim(&sc, sp, (GFVec2){0.7f, 0.7f}, 4, 2);
@@ -207,18 +222,21 @@ static void test_gl_renderer_and_error_paths(void) {
     GFMat4 view, proj;
     gf_scene_compute_matrices(&sc, 1.33f, &view, &proj);
 
-    /* Render with voxels enabled -> mesh + voxel + ribbon + sprite = 4 draw calls */
+    /* Render with voxels enabled -> mesh + voxel + ribbon + sprite = 4 draw calls (hidden entity skipped) */
     sc.use_camera_rig = false;
     sc.voxels_enabled = true;
     gf_gl_renderer_render_view(&r, &sc, &tel, &view, &proj, 0, 0, 320, 240, true);
     GF_ASSERT(r.last_draw_calls == 4);
 
-    /* Render again (cache hit!) with voxels disabled -> 3 draw calls */
+    /* Render again with custom atmosphere sky backdrop & music pulse, voxels disabled -> 3 + 1 sky = 4 */
     sc.voxels_enabled = false;
+    gf_scene_set_atmosphere(&sc, gf_vec3(0.01f, 0.05f, 0.04f), gf_vec3(0.04f, 0.20f, 0.14f),
+                            gf_vec3(0.02f, 0.12f, 0.09f), 0.022f);
+    gf_scene_set_music_state(&sc, 0.75f, 0.65f, 0.80f);
     gf_gl_renderer_render_view(&r, &sc, &tel, &view, &proj, 0, 0, 320, 240, true);
-    GF_ASSERT(r.last_draw_calls == 3);
+    GF_ASSERT(r.last_draw_calls == 4);
 
-    /* Populate 3D synth racks, widgets, holographic curves, world-space text, XR laser & catenary cables */
+    /* Populate 3D synth racks, widgets (incl. pressed piano key), curves, text, XR laser & cables */
     sc.use_camera_rig = true;
     gf_camera_teleport_room(&sc.camera, 1);
     gf_scene_step_camera(&sc, 0.016f);
@@ -235,6 +253,11 @@ static void test_gl_renderer_and_error_paths(void) {
     wd.kind = GF_W3D_KNOB; wd.local_pos = gf_vec3(0, 0.2f, 0.01f); wd.label = "MORPH";
     int wk = gf_spatial_add_widget(&sc.spatial, &wd);
     sc.spatial.hovered_widget_id = wk;
+    wd.kind = GF_W3D_PIANO_KEY; wd.local_pos = gf_vec3(0.2f, 0.0f, 0.02f); wd.size = (GFVec2){0.08f, 0.35f}; wd.default_val = 1.0f; wd.label = "";
+    int wp = gf_spatial_add_widget(&sc.spatial, &wd);
+    GFWidget3D *pw = gf_spatial_get_widget(&sc.spatial, wp);
+    if (pw) pw->norm_val = 1.0f;
+    wd.size = (GFVec2){0.1f, 0.1f}; wd.default_val = 0.0f;
     wd.kind = GF_W3D_JACK_OUT; wd.port_id = GF_PORT_OSC_1_OUT; wd.local_pos = gf_vec3(-0.3f, -0.4f, 0.01f); wd.label = "OUT";
     gf_spatial_add_widget(&sc.spatial, &wd);
     wd.kind = GF_W3D_JACK_IN; wd.port_id = GF_PORT_FLT_1_IN; wd.local_pos = gf_vec3(0.3f, -0.4f, 0.01f); wd.label = "IN";
@@ -259,7 +282,7 @@ static void test_gl_renderer_and_error_paths(void) {
 
     gf_scene_compute_matrices(&sc, 1.33f, &view, &proj);
     gf_gl_renderer_render_view(&r, &sc, &tel, &view, &proj, 0, 0, 320, 240, true);
-    GF_ASSERT(r.last_draw_calls >= 9);
+    GF_ASSERT(r.last_draw_calls >= 10);
     GF_ASSERT(r.last_visible_rooms < 7); /* Distant rooms behind camera were culled! */
 
     /* HUD + WebXR stereo eye rendering */

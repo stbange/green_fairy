@@ -18,8 +18,16 @@ void gf_scene_init(GFScene *sc) {
     sc->cam_up = gf_vec3(0.0f, 1.0f, 0.0f);
     sc->cam_fov_deg = sc->camera.fov_deg;
     sc->cam_near = 0.08f;
-    sc->cam_far = 85.0f;
+    sc->cam_far = 135.0f;
     sc->light_dir = gf_vec3_normalize(gf_vec3(0.55f, 0.88f, 0.45f));
+    sc->custom_atmosphere = false;
+    sc->sky_zenith  = gf_vec3(0.015f, 0.045f, 0.055f);
+    sc->sky_horizon = gf_vec3(0.035f, 0.095f, 0.110f);
+    sc->fog_color   = gf_vec3(0.025f, 0.075f, 0.088f);
+    sc->fog_density = 0.014f;
+    sc->music_energy = 0.0f;
+    sc->music_pitch  = 0.5f;
+    sc->music_strike = 0.0f;
     sc->snap_res = 360.0f;
     sc->color_steps = 32.0f;
     sc->dither_enabled = true;
@@ -42,6 +50,7 @@ int gf_scene_add_entity(GFScene *sc, GFEntityKind kind, const char *asset_path) 
             e->id = sc->next_id++;
             e->active = true;
             e->visible = true;
+            e->emissive = false;
             e->room_id = 0;
             e->kind = kind;
             snprintf(e->asset_path, sizeof(e->asset_path), "%s", asset_path);
@@ -70,6 +79,20 @@ bool gf_scene_set_entity_room(GFScene *sc, int id, int room_id) {
     GFSceneEntity *e = gf_scene_find(sc, id);
     if (!e) return false;
     e->room_id = room_id;
+    return true;
+}
+
+bool gf_scene_set_visible(GFScene *sc, int id, bool visible) {
+    GFSceneEntity *e = gf_scene_find(sc, id);
+    if (!e) return false;
+    e->visible = visible;
+    return true;
+}
+
+bool gf_scene_set_emissive(GFScene *sc, int id, bool emissive) {
+    GFSceneEntity *e = gf_scene_find(sc, id);
+    if (!e) return false;
+    e->emissive = emissive;
     return true;
 }
 
@@ -103,6 +126,23 @@ bool gf_scene_remove(GFScene *sc, int id) {
     if (!e) return false;
     e->active = false;
     return true;
+}
+
+void gf_scene_set_atmosphere(GFScene *sc, GFVec3 sky_zenith, GFVec3 sky_horizon,
+                             GFVec3 fog_color, float fog_density) {
+    if (!sc) return;
+    sc->custom_atmosphere = true;
+    sc->sky_zenith = sky_zenith;
+    sc->sky_horizon = sky_horizon;
+    sc->fog_color = fog_color;
+    sc->fog_density = gf_clampf(fog_density, 0.0f, 0.08f);
+}
+
+void gf_scene_set_music_state(GFScene *sc, float energy, float pitch_norm, float strike_pulse) {
+    if (!sc) return;
+    sc->music_energy = gf_clampf(energy, 0.0f, 1.5f);
+    sc->music_pitch  = gf_clampf(pitch_norm, 0.0f, 1.0f);
+    sc->music_strike = gf_clampf(strike_pulse, 0.0f, 1.0f);
 }
 
 void gf_scene_set_camera(GFScene *sc, GFVec3 pos, GFVec3 target, float fov_deg) {

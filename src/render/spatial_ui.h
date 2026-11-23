@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 #define GF_MAX_RACKS_3D      48
-#define GF_MAX_WIDGETS_3D    768
+#define GF_MAX_WIDGETS_3D    1024
 #define GF_MAX_CURVES_3D     24
 #define GF_CURVE_MAX_PTS     128
 

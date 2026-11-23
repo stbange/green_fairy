@@ -13,10 +13,12 @@ uniform float u_audio_pulse;
 out vec4 v_color;
 out vec2 v_uv;
 out float v_light;
+out float v_dist;
 
 void main() {
     vec4 world_pos = u_model * vec4(a_pos, 1.0);
-    vec4 clip = u_proj * u_view * world_pos;
+    vec4 view_pos = u_view * world_pos;
+    vec4 clip = u_proj * view_pos;
     if (u_snap_res > 1.0 && clip.w > 0.25) {
         vec2 ndc = clip.xy / clip.w;
         ndc = floor(ndc * u_snap_res + 0.5) / u_snap_res;
@@ -25,7 +27,8 @@ void main() {
     gl_Position = clip;
     vec3 world_n = normalize(mat3(u_model) * a_normal);
     float diff = max(dot(world_n, normalize(u_light_dir)), 0.0);
-    v_light = 0.28 + 0.72 * diff + 0.25 * u_audio_pulse;
+    v_light = 0.28 + 0.72 * diff + 0.28 * u_audio_pulse;
     v_color = a_color;
     v_uv = a_uv;
+    v_dist = length(view_pos.xyz);
 }

@@ -444,6 +444,10 @@ run_test("preset_worlds_music_reactivity_and_grand_pianos", function()
         PW.update(0.10, tel_loud, {energy = 0.85, pitch_norm = 0.15, strike = 1.0})
         PW.update(1.20, tel_loud, {energy = 0.90, pitch_norm = 0.92, strike = 0.75})
         PW.update(3.50, tel_loud, {energy = 0.60, pitch_norm = 0.50, strike = 0.20})
+        for _, it in ipairs(PW.items) do
+            local dist = math.sqrt((it.wx or 0) * (it.wx or 0) + (it.wz or 0) * (it.wz or 0))
+            check(dist >= 34.99, "world entity intruded inside sanctum perimeter (" .. c[1] .. ", r=" .. tostring(dist) .. ")")
+        end
     end
 
     -- Verify preset path switch changes live world_theme via main.lua

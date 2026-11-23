@@ -66,21 +66,24 @@ function Floorplan.build_architecture()
 end
 
 function Floorplan.apply_world_tint(r, g, b)
+    -- Keep foreground sanctum architecture in sleek dark basalt/gunmetal slate
+    -- with only a refined ~10% ambient bounce reflection so it stays coloristically
+    -- separated from the vibrant distant surrounding world.
     for _, sh in ipairs(Floorplan.shells) do
         local th = sh.theme
         gf.scene.set_tint(sh.id,
-            0.22 + th[1] * 0.28 + r * 0.48,
-            0.22 + th[2] * 0.28 + g * 0.48,
-            0.22 + th[3] * 0.28 + b * 0.48, 1.0)
+            0.22 + th[1] * 0.07 + r * 0.09,
+            0.24 + th[2] * 0.07 + g * 0.09,
+            0.28 + th[3] * 0.07 + b * 0.09, 1.0)
     end
     for _, arch in ipairs(Floorplan.arches) do
-        gf.scene.set_tint(arch, 0.28 + r * 0.65, 0.28 + g * 0.65, 0.28 + b * 0.65, 1.0)
+        gf.scene.set_tint(arch, 0.30 + r * 0.12, 0.32 + g * 0.12, 0.36 + b * 0.12, 1.0)
     end
     for _, sp in ipairs(Floorplan.spires) do
-        gf.scene.set_tint(sp, 0.30 + r * 0.70, 0.30 + g * 0.70, 0.30 + b * 0.70, 1.0)
+        gf.scene.set_tint(sp, 0.28 + r * 0.26, 0.30 + g * 0.26, 0.34 + b * 0.26, 1.0)
     end
     if Floorplan.pedestal and Floorplan.pedestal > 0 then
-        gf.scene.set_tint(Floorplan.pedestal, 0.30 + r * 0.70, 0.30 + g * 0.70, 0.30 + b * 0.70, 1.0)
+        gf.scene.set_tint(Floorplan.pedestal, 0.32 + r * 0.24, 0.35 + g * 0.24, 0.38 + b * 0.24, 1.0)
     end
 end
 

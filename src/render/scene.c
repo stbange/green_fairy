@@ -18,7 +18,7 @@ void gf_scene_init(GFScene *sc) {
     sc->cam_up = gf_vec3(0.0f, 1.0f, 0.0f);
     sc->cam_fov_deg = sc->camera.fov_deg;
     sc->cam_near = 0.08f;
-    sc->cam_far = 135.0f;
+    sc->cam_far = 260.0f;
     sc->light_dir = gf_vec3_normalize(gf_vec3(0.55f, 0.88f, 0.45f));
     sc->custom_atmosphere = false;
     sc->sky_zenith  = gf_vec3(0.015f, 0.045f, 0.055f);

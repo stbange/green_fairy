@@ -47,12 +47,12 @@ The 3D sanctum SHALL support free-roam movement (WASD/mouse-look, mobile touch d
 - **THEN** the camera smoothly interpolates to an ergonomic framing of that rack, unlocks the cursor for precise 3D knob/cable dragging, and restores free-walk when exited
 
 ### Requirement: Preset-inspired music-reactive 3D surroundings
-For every loaded preset, the synthesizer SHALL dynamically compose external retro-3D surroundings (non-living structures, living plants, living animals, sky gradient, and distance fog) inspired by the preset's name and realm, and animate them in response to keystrokes, volume/spectrum, and pitch.
+For every loaded preset, the synthesizer SHALL compose external retro-3D surroundings (non-living structures, living plants, living animals, sky gradient, and distant fog) physically outside the 7-room sanctum perimeter (`R >= 35m`), coloristically separated from the dark architectural sanctum with stylish preset-matched palettes, and animated by keystrokes, volume/spectrum, and pitch.
 
 #### Scenario: Switching presets transforms the 3D surroundings
-- **GIVEN** the synthesizer running with *Emerald Sanctum Choir* displaying giant glowing emerald crystal caverns and soaring choir wisps
+- **GIVEN** the synthesizer running with *Emerald Sanctum Choir* displaying distant giant emerald crystal caverns outside the dark basalt sanctum
 - **WHEN** the user loads *Starfall Sanctuary* and plays notes across low and high registers
-- **THEN** the surroundings switch to deep space with flying star streaks and ringed planets whose warp speed, glow, and elevation react to keystrokes, pitch, and volume
+- **THEN** the distant surroundings switch to deep space with flying star streaks and ringed planets outside the sanctum whose warp speed, glow, and elevation react to keystrokes, pitch, and volume
 
 ### Requirement: Expanded playable chromatic piano keyboards
 The synthesizer SHALL provide large authentic chromatic keyboards (white keys plus raised black keys) as a 61-key (5-octave, `C2`–`C7`) 3D console in Room 6 and as a collapsible, octave-shiftable on-screen 2D piano on Desktop (49-key) and Mobile Touch (25-key).
